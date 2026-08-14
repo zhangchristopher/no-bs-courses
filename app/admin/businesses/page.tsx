@@ -49,7 +49,7 @@ export default async function AdminBusinessesPage() {
           <p className="text-sm text-zinc-500 dark:text-zinc-400">No pending submissions.</p>
         )}
         {pending.map((p) => (
-          <div key={p.owner_id} className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+          <div key={p.owner_id} className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
             <p className="font-medium text-zinc-900 dark:text-zinc-50">{p.business_name}</p>
             <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
               Owner: {p.owner_name || "(no name)"} &lt;{p.owner_email}&gt;
@@ -74,7 +74,7 @@ export default async function AdminBusinessesPage() {
                 <input type="hidden" name="owner_id" value={p.owner_id} />
                 <button
                   type="submit"
-                  className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
+                  className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
                 >
                   Approve
                 </button>
@@ -85,11 +85,11 @@ export default async function AdminBusinessesPage() {
                   type="text"
                   name="reason"
                   placeholder="Rejection reason (optional)"
-                  className="min-w-[12rem] flex-1 rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                  className="min-w-[12rem] flex-1 rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
                 />
                 <button
                   type="submit"
-                  className="rounded-lg border border-red-300 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950"
+                  className="rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950"
                 >
                   Reject
                 </button>
@@ -115,7 +115,7 @@ export default async function AdminBusinessesPage() {
         {subscribers.map((s) => (
           <div
             key={s.owner_id}
-            className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+            className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-zinc-200 p-4 dark:border-zinc-800"
           >
             <div>
               <p className="font-medium text-zinc-900 dark:text-zinc-50">
@@ -138,7 +138,7 @@ export default async function AdminBusinessesPage() {
                 <input type="hidden" name="owner_id" value={s.owner_id} />
                 <button
                   type="submit"
-                  className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                  className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900"
                 >
                   Mark setup fee as refunded
                 </button>

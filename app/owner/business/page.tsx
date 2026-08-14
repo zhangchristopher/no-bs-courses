@@ -42,18 +42,18 @@ export default async function OwnerBusinessPage({
       </p>
 
       {submitted && (
-        <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
           Submitted for review.
         </p>
       )}
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
           {error}
         </p>
       )}
 
       {business?.business_verification_status === "verified" ? (
-        <div className="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-300">
+        <div className="mt-6 rounded-md border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-300">
           ✓ Business verified — {business.business_name}. Visit your{" "}
           <Link href="/owner/dashboard" className="underline">
             dashboard
@@ -61,16 +61,16 @@ export default async function OwnerBusinessPage({
           to claim courses or subscribe.
         </div>
       ) : business?.business_verification_status === "pending" ? (
-        <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-300">
+        <div className="mt-6 rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-300">
           Your paperwork for {business.business_name} is awaiting admin review.
         </div>
       ) : (
         <form
           action={submitBusinessInfoAction}
-          className="mt-6 flex flex-col gap-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+          className="mt-6 flex flex-col gap-4 rounded-md border border-zinc-200 p-4 dark:border-zinc-800"
         >
           {business?.business_verification_status === "rejected" && (
-            <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+            <p className="rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
               Your previous submission was rejected
               {business.business_rejection_reason ? `: ${business.business_rejection_reason}` : "."}{" "}
               You can resubmit below.
@@ -83,7 +83,7 @@ export default async function OwnerBusinessPage({
               type="text"
               required
               defaultValue={business?.business_name ?? ""}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -93,7 +93,7 @@ export default async function OwnerBusinessPage({
               type="text"
               required
               defaultValue={business?.business_registration_number ?? ""}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -103,7 +103,7 @@ export default async function OwnerBusinessPage({
               type="text"
               required
               defaultValue={business?.business_state ?? ""}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -114,12 +114,12 @@ export default async function OwnerBusinessPage({
               required
               placeholder="Link to your LLC/registration document"
               defaultValue={business?.business_paperwork_url ?? ""}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <button
             type="submit"
-            className="self-start rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="self-start rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             Submit for review
           </button>

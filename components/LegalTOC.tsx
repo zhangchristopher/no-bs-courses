@@ -16,7 +16,7 @@ export default function LegalTOC({ items }: { items: { id: string; label: string
   };
 
   return (
-    <nav className="mt-8 rounded-lg border border-zinc-200 p-5 dark:border-zinc-800" aria-label="Table of contents">
+    <nav className="mt-8 rounded-md border border-zinc-200 p-5 dark:border-zinc-800" aria-label="Table of contents">
       <p className="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-500">
         On this page
       </p>

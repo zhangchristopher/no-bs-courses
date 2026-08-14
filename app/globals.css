@@ -10,29 +10,38 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
+  --font-headline: var(--font-archivo);
+
+  /* Brand red, sampled directly from the logo's strikethrough mark
+     (measured ~#df0002 across the actual PNG) — replaces Tailwind's stock
+     "red" scale so every existing red-600 / bg-red-950 / dark:text-red-400
+     class site-wide picks up the real brand red instead of a generic
+     muted one. Anchored at 600 to match how the codebase already uses
+     red-600 as its primary tone. */
+  --color-red-50: #fef1f1;
+  --color-red-100: #fde1e1;
+  --color-red-200: #fbc4c4;
+  --color-red-300: #f79a9a;
+  --color-red-400: #f16060;
+  --color-red-500: #e82626;
+  --color-red-600: #e00000;
+  --color-red-700: #b80000;
+  --color-red-800: #950000;
+  --color-red-900: #7a0000;
+  --color-red-950: #440000;
 }
 
-/* Dark mode follows the OS/browser preference (no manual toggle). The zinc
-   scale is overridden here — rather than left at Tailwind's near-black
-   default — so every existing dark:bg-zinc-900 / dark:border-zinc-800 /
-   dark:text-zinc-400 class site-wide renders as a warm charcoal grey
-   instead of near-black, closer to Claude's own dark theme. */
+/* Dark mode follows the OS/browser preference (no manual toggle). Deliberately
+   near-black, not an inverted-light-mode grey — a "no BS" brand should look
+   like it meant to be dark, not like a light theme with the values flipped.
+   This intentionally reverses an earlier warm-charcoal experiment: that
+   softened the contrast in a way that reads as "friendly SaaS," which is
+   the opposite of the brand. Tailwind's own zinc scale is already close to
+   true black at the 900/950 end, so it's left un-overridden here. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #262624;
-    --foreground: #f5f4ee;
-
-    --color-zinc-50: #f5f4ee;
-    --color-zinc-100: #e8e5dc;
-    --color-zinc-200: #d6d2c6;
-    --color-zinc-300: #beb9ac;
-    --color-zinc-400: #9c978a;
-    --color-zinc-500: #7e7a6d;
-    --color-zinc-600: #625e53;
-    --color-zinc-700: #4c4940;
-    --color-zinc-800: #3b3934;
-    --color-zinc-900: #302f2b;
-    --color-zinc-950: #1e1d1b;
+    --background: #0a0a0a;
+    --foreground: #fafafa;
   }
 }
 
@@ -40,4 +49,28 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Headlines get the heavy grotesk everywhere, site-wide, from the tag
+   itself — not per-component classes that can drift out of sync. Only
+   font-family is set here: Tailwind's utility classes live in a cascade
+   layer, and unlayered rules like this one always beat layered ones
+   regardless of specificity, so setting font-weight/tracking here too
+   would silently flatten every font-black/tracking-tight utility already
+   in use back down to one fixed value. Weight and tracking stay
+   per-element, exactly as they already are throughout the site.  */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-headline), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* No italics or script treatments anywhere — reads as soft/fancy, wrong
+   register for a brand built on saying the blunt thing. Belt-and-suspenders
+   against a future `italic` class slipping into a quote or citation. */
+em,
+i,
+cite {
+  font-style: normal;
 }

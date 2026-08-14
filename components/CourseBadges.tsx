@@ -24,11 +24,13 @@ export function RegisteredBusinessBadge({ size = "md" }: { size?: BadgeSize }) {
   );
 }
 
-// Brand green, matching the checkmark in the No BS Courses logo.
+// Brand red, matching the logo's own mark — not green. The site runs a
+// strict two-color system (black/white base, red as the one deliberate
+// accent), and a verified badge is exactly the kind of moment red is for.
 export function VerifiedCourseBadge({ size = "md" }: { size?: BadgeSize }) {
   return (
     <span
-      className={`inline-flex items-center font-medium text-green-600 dark:text-green-500 ${textSizeClasses[size]}`}
+      className={`inline-flex items-center font-medium text-red-600 dark:text-red-500 ${textSizeClasses[size]}`}
     >
       <CheckMarkIcon className={`${iconSizeClasses[size]} shrink-0`} />
       Verified Course

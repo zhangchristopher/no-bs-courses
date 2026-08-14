@@ -58,7 +58,7 @@ export default async function AdminFlagsPage() {
         {flags.map((flag, i) => (
           <div
             key={flag.id}
-            className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950"
+            className="rounded-md border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950"
           >
             <div className="flex items-center justify-between">
               <Link
@@ -77,7 +77,7 @@ export default async function AdminFlagsPage() {
               {flag.flag_reason} ({formatDate(flag.window_start)} – {formatDate(flag.window_end)})
             </p>
 
-            <div className="mt-3 rounded-lg bg-white p-3 dark:bg-zinc-900">
+            <div className="mt-3 rounded-md bg-white p-3 dark:bg-zinc-900">
               <div className="text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400">
                 Recent reviews
               </div>
@@ -106,7 +106,7 @@ export default async function AdminFlagsPage() {
               <input type="hidden" name="flag_id" value={flag.id} />
               <button
                 type="submit"
-                className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
+                className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
               >
                 Mark reviewed
               </button>

@@ -55,29 +55,29 @@ export default async function VerifyCoursePage({
       </p>
 
       {course.affiliate_link_status === "verified" && (
-        <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
           ✓ Your affiliate link is verified and live.
         </p>
       )}
       {course.affiliate_link_status === "pending" && (
-        <p className="mt-4 rounded-lg bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+        <p className="mt-4 rounded-md bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
           Your submission is awaiting admin review.
         </p>
       )}
       {course.affiliate_link_status === "rejected" && (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
           Your previous submission was rejected
           {course.affiliate_link_rejection_reason ? `: ${course.affiliate_link_rejection_reason}` : "."} You
           can resubmit below.
         </p>
       )}
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
           {error}
         </p>
       )}
 
-      <div className="mt-6 max-h-64 overflow-y-auto rounded-lg border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
+      <div className="mt-6 max-h-64 overflow-y-auto rounded-md border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
         <p className="text-xs font-semibold uppercase text-zinc-500 dark:text-zinc-400">
           Sample terms — not legally binding. Replace with real reviewed legal terms before
           using this in production.
@@ -108,7 +108,7 @@ export default async function VerifyCoursePage({
             required
             defaultValue={course.affiliate_url ?? ""}
             placeholder="https://..."
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
         </label>
 
@@ -119,7 +119,7 @@ export default async function VerifyCoursePage({
             type="text"
             required
             defaultValue={course.contract_signed_name ?? ""}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
         </label>
 
@@ -130,7 +130,7 @@ export default async function VerifyCoursePage({
 
         <button
           type="submit"
-          className="self-start rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="self-start rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           {course.contract_signed_at ? "Update agreement" : "Sign agreement"}
         </button>

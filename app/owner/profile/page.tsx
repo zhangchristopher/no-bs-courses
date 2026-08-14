@@ -48,14 +48,14 @@ export default async function OwnerProfilePage({
       </p>
 
       {updated && (
-        <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
           Display name updated.
         </p>
       )}
 
       <form
         action={updateOwnerPublicNameAction}
-        className="mt-6 flex flex-col gap-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+        className="mt-6 flex flex-col gap-4 rounded-md border border-zinc-200 p-4 dark:border-zinc-800"
       >
         <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
           Display name
@@ -64,12 +64,12 @@ export default async function OwnerProfilePage({
             type="text"
             placeholder="An alias or online handle works fine"
             defaultValue={name ?? ""}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
         </label>
         <button
           type="submit"
-          className="self-start rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="self-start rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           Save
         </button>

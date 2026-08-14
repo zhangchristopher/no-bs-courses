@@ -64,7 +64,7 @@ export default async function AdminVerificationsPage() {
         {listings.map((listing) => (
           <div
             key={listing.course_id}
-            className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+            className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800"
           >
             <div className="flex items-center justify-between">
               <span className="font-medium text-zinc-900 dark:text-zinc-50">{listing.title}</span>
@@ -90,7 +90,7 @@ export default async function AdminVerificationsPage() {
                   : "Unknown"}
             </p>
 
-            <div className="mt-3 rounded-lg bg-zinc-50 p-3 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+            <div className="mt-3 rounded-md bg-zinc-50 p-3 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
               {listing.thumbnail_url && (
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   Thumbnail: {listing.thumbnail_url}
@@ -117,7 +117,7 @@ export default async function AdminVerificationsPage() {
                 <input type="hidden" name="course_id" value={listing.course_id} />
                 <button
                   type="submit"
-                  className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
+                  className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
                 >
                   Approve
                 </button>
@@ -126,7 +126,7 @@ export default async function AdminVerificationsPage() {
                 <input type="hidden" name="course_id" value={listing.course_id} />
                 <button
                   type="submit"
-                  className="rounded-lg border border-red-300 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950"
+                  className="rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950"
                 >
                   Reject
                 </button>

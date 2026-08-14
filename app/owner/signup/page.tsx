@@ -25,7 +25,7 @@ export default async function OwnerSignUpPage({
       <AccountTypeToggle active="business" callbackUrl={callbackUrl} />
 
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
           {error}
         </p>
       )}
@@ -39,7 +39,7 @@ export default async function OwnerSignUpPage({
             name="name"
             type="text"
             placeholder="An alias or online handle works fine"
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
           <span className="mt-1 block text-xs font-normal text-zinc-500 dark:text-zinc-400">
             Only ever seen by the No BS Courses team, never shown publicly — use an alias if
@@ -54,7 +54,7 @@ export default async function OwnerSignUpPage({
             name="email"
             type="email"
             required
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
         </label>
         <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -63,7 +63,7 @@ export default async function OwnerSignUpPage({
             name="phone"
             type="tel"
             placeholder="Optional"
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
         </label>
         <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -74,7 +74,7 @@ export default async function OwnerSignUpPage({
             required
             minLength={8}
             placeholder="At least 8 characters"
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
         </label>
         <div className="flex flex-col gap-2">
@@ -89,7 +89,7 @@ export default async function OwnerSignUpPage({
         </div>
         <button
           type="submit"
-          className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           Sign up
         </button>

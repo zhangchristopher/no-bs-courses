@@ -45,7 +45,7 @@ export default function ReviewSection({
       </h2>
 
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
           {error}
         </p>
       )}
@@ -63,7 +63,7 @@ export default function ReviewSection({
         {isSignedIn && (!myReview || editable) && (
           <form
             action={submitReviewAction}
-            className="flex flex-col gap-3 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+            className="flex flex-col gap-3 rounded-md border border-zinc-200 p-4 dark:border-zinc-800"
           >
             <input type="hidden" name="course_id" value={courseId} />
             <input type="hidden" name="slug" value={slug} />
@@ -100,13 +100,13 @@ export default function ReviewSection({
                 rows={4}
                 defaultValue={myReview?.review_text ?? ""}
                 placeholder="What did you think of this course?"
-                className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
               />
             </label>
 
             <button
               type="submit"
-              className="self-start rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              className="self-start rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
               {myReview ? "Update review" : "Submit review"}
             </button>
@@ -140,7 +140,7 @@ export default function ReviewSection({
             <div className="flex items-center gap-2">
               <Stars rating={review.rating} />
               {review.verified_purchase && (
-                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                <span className="rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
                   Verified
                 </span>
               )}
@@ -171,11 +171,11 @@ export default function ReviewSection({
                     name="purchase_evidence"
                     required
                     placeholder="Order number, receipt email, etc."
-                    className="min-w-[14rem] flex-1 rounded-lg border border-zinc-300 px-3 py-1.5 text-xs focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                    className="min-w-[14rem] flex-1 rounded-md border border-zinc-300 px-3 py-1.5 text-xs focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
                   />
                   <button
                     type="submit"
-                    className="rounded-lg border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
+                    className="rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
                   >
                     Verify your purchase
                   </button>
@@ -212,12 +212,12 @@ export default function ReviewSection({
                     rows={2}
                     required
                     placeholder="Thank the reviewer or address their feedback..."
-                    className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                    className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
                   />
                 </label>
                 <button
                   type="submit"
-                  className="self-start rounded-lg border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
+                  className="self-start rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
                 >
                   Post response
                 </button>

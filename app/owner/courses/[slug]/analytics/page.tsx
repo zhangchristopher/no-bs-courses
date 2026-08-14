@@ -49,25 +49,25 @@ export default async function CourseAnalyticsPage({ params }: { params: Params }
       </h1>
 
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+        <div className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
           <div className="text-xs uppercase text-zinc-500 dark:text-zinc-400">Views (30d)</div>
           <div className="mt-1 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
             {analytics.views30d}
           </div>
         </div>
-        <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+        <div className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
           <div className="text-xs uppercase text-zinc-500 dark:text-zinc-400">Clicks (30d)</div>
           <div className="mt-1 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
             {analytics.clicks30d}
           </div>
         </div>
-        <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+        <div className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
           <div className="text-xs uppercase text-zinc-500 dark:text-zinc-400">CTR</div>
           <div className="mt-1 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
             {analytics.ctr !== null ? `${analytics.ctr}%` : "—"}
           </div>
         </div>
-        <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+        <div className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
           <div className="text-xs uppercase text-zinc-500 dark:text-zinc-400">
             Unique visitors (30d)
           </div>
@@ -116,7 +116,7 @@ export default async function CourseAnalyticsPage({ params }: { params: Params }
             {analytics.topReferrers.map((r) => (
               <div
                 key={r.source}
-                className="flex items-center justify-between rounded-lg border border-zinc-200 px-3 py-2 text-sm dark:border-zinc-800"
+                className="flex items-center justify-between rounded-md border border-zinc-200 px-3 py-2 text-sm dark:border-zinc-800"
               >
                 <span className="text-zinc-700 dark:text-zinc-300">{r.source}</span>
                 <span className="font-medium text-zinc-900 dark:text-zinc-50">{r.count}</span>
@@ -129,19 +129,19 @@ export default async function CourseAnalyticsPage({ params }: { params: Params }
       <section className="mt-8">
         <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Reviews</h2>
         <div className="mt-2 grid grid-cols-3 gap-4">
-          <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+          <div className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
             <div className="text-xs uppercase text-zinc-500 dark:text-zinc-400">Total</div>
             <div className="mt-1 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
               {analytics.totalReviews}
             </div>
           </div>
-          <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+          <div className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
             <div className="text-xs uppercase text-zinc-500 dark:text-zinc-400">Average rating</div>
             <div className="mt-1 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
               {analytics.averageRating !== null ? analytics.averageRating.toFixed(1) : "—"}
             </div>
           </div>
-          <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+          <div className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
             <div className="text-xs uppercase text-zinc-500 dark:text-zinc-400">
               Purchase-verified
             </div>
@@ -170,7 +170,7 @@ export default async function CourseAnalyticsPage({ params }: { params: Params }
             {analytics.sectionConversions.map((s) => (
               <div
                 key={s.sectionType}
-                className="flex items-center justify-between rounded-lg border border-zinc-200 px-3 py-2 text-sm dark:border-zinc-800"
+                className="flex items-center justify-between rounded-md border border-zinc-200 px-3 py-2 text-sm dark:border-zinc-800"
               >
                 <span className="text-zinc-700 dark:text-zinc-300">{s.label}</span>
                 <span className="text-zinc-500 dark:text-zinc-400">
@@ -185,7 +185,7 @@ export default async function CourseAnalyticsPage({ params }: { params: Params }
         )}
       </section>
 
-      <section className="mt-8 rounded-lg border border-dashed border-zinc-300 p-4 dark:border-zinc-700">
+      <section className="mt-8 rounded-md border border-dashed border-zinc-300 p-4 dark:border-zinc-700">
         <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
           Not tracked yet
         </h2>

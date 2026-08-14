@@ -54,7 +54,7 @@ export default async function AdminPurchaseVerificationsPage() {
           <p className="text-sm text-zinc-500 dark:text-zinc-400">No pending submissions.</p>
         )}
         {pending.map((p) => (
-          <div key={p.review_id} className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+          <div key={p.review_id} className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
             <div className="flex items-center justify-between">
               <Link
                 href={`/courses/${p.course_slug}`}
@@ -70,7 +70,7 @@ export default async function AdminPurchaseVerificationsPage() {
             <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
               Reviewer: {p.reviewer_name || "(no name)"} &lt;{p.reviewer_email}&gt;
             </p>
-            <div className="mt-3 rounded-lg bg-zinc-50 p-3 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+            <div className="mt-3 rounded-md bg-zinc-50 p-3 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
               <div className="text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400">
                 Evidence
               </div>
@@ -84,7 +84,7 @@ export default async function AdminPurchaseVerificationsPage() {
                 <input type="hidden" name="reviewer_id" value={p.reviewer_id} />
                 <button
                   type="submit"
-                  className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
+                  className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
                 >
                   Approve
                 </button>
@@ -94,7 +94,7 @@ export default async function AdminPurchaseVerificationsPage() {
                 <input type="hidden" name="course_id" value={p.course_id} />
                 <button
                   type="submit"
-                  className="rounded-lg border border-red-300 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950"
+                  className="rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950"
                 >
                   Reject
                 </button>

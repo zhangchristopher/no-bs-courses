@@ -58,7 +58,7 @@ export default async function AdminAffiliateLinksPage() {
         {pending.map((link) => (
           <div
             key={link.course_id}
-            className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+            className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800"
           >
             <div className="flex items-center justify-between">
               <Link
@@ -79,7 +79,7 @@ export default async function AdminAffiliateLinksPage() {
               Signed as: {link.contract_signed_name}
             </p>
 
-            <div className="mt-3 grid grid-cols-1 gap-2 rounded-lg bg-zinc-50 p-3 text-sm dark:bg-zinc-900 sm:grid-cols-2">
+            <div className="mt-3 grid grid-cols-1 gap-2 rounded-md bg-zinc-50 p-3 text-sm dark:bg-zinc-900 sm:grid-cols-2">
               <div>
                 <div className="text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400">
                   Official platform URL
@@ -113,7 +113,7 @@ export default async function AdminAffiliateLinksPage() {
                 <input type="hidden" name="course_id" value={link.course_id} />
                 <button
                   type="submit"
-                  className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
+                  className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
                 >
                   Approve
                 </button>
@@ -124,11 +124,11 @@ export default async function AdminAffiliateLinksPage() {
                   type="text"
                   name="reason"
                   placeholder="Rejection reason (optional)"
-                  className="min-w-[12rem] flex-1 rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                  className="min-w-[12rem] flex-1 rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
                 />
                 <button
                   type="submit"
-                  className="rounded-lg border border-red-300 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950"
+                  className="rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950"
                 >
                   Reject
                 </button>

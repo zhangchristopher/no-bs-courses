@@ -27,18 +27,18 @@ export default async function AddCoursePage({
       </p>
 
       {submitted && (
-        <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
           Thanks! Your course submission is pending review.
         </p>
       )}
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
           {error}
         </p>
       )}
 
       {!isSignedIn ? (
-        <div className="mt-6 rounded-lg border border-zinc-200 p-4 text-sm text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
+        <div className="mt-6 rounded-md border border-zinc-200 p-4 text-sm text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
           <Link href="/signin?callbackUrl=/courses/new" className="underline">
             Sign in
           </Link>{" "}
@@ -47,7 +47,7 @@ export default async function AddCoursePage({
       ) : (
         <form
           action={submitNewCourseAction}
-          className="mt-6 flex flex-col gap-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+          className="mt-6 flex flex-col gap-4 rounded-md border border-zinc-200 p-4 dark:border-zinc-800"
         >
           <Honeypot />
           <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -56,7 +56,7 @@ export default async function AddCoursePage({
               name="title"
               type="text"
               required
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -65,7 +65,7 @@ export default async function AddCoursePage({
               name="provider_name"
               type="text"
               required
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -75,7 +75,7 @@ export default async function AddCoursePage({
               type="url"
               required
               placeholder="https://..."
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -84,7 +84,7 @@ export default async function AddCoursePage({
               name="category"
               type="text"
               placeholder="e.g. Web Development"
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -92,7 +92,7 @@ export default async function AddCoursePage({
             <textarea
               name="description"
               rows={3}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
             <span className="mt-1 block text-xs font-normal text-zinc-500 dark:text-zinc-400">
               500 words max. Verified owners with an active Registered Business subscription get
@@ -104,7 +104,7 @@ export default async function AddCoursePage({
             <textarea
               name="syllabus"
               rows={4}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <div className="grid grid-cols-2 gap-4">
@@ -115,7 +115,7 @@ export default async function AddCoursePage({
                 type="number"
                 step="0.01"
                 min="0"
-                className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
               />
             </label>
             <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -125,7 +125,7 @@ export default async function AddCoursePage({
                 type="number"
                 step="0.01"
                 min="0"
-                className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
               />
             </label>
           </div>
@@ -134,7 +134,7 @@ export default async function AddCoursePage({
             <input
               name="prerequisites"
               type="text"
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -142,12 +142,12 @@ export default async function AddCoursePage({
             <input
               name="thumbnail_url"
               type="url"
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <button
             type="submit"
-            className="self-start rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="self-start rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             Submit for review
           </button>

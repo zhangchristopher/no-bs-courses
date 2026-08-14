@@ -36,23 +36,23 @@ export default async function AccountPage({
       <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{summary.email}</p>
 
       {plan === "success" && (
-        <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
           Payment received. It can take a few seconds for Stripe to confirm — refresh if your
           plan still shows free.
         </p>
       )}
       {plan === "cancelled" && (
-        <p className="mt-4 rounded-lg bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+        <p className="mt-4 rounded-md bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
           Checkout was cancelled. No charge was made.
         </p>
       )}
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
           {error}
         </p>
       )}
 
-      <div className="mt-6 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+      <div className="mt-6 rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
         {isPaidPlan ? (
           <p className="text-sm text-emerald-700 dark:text-emerald-400">
             ✓ Paid plan — $5/mo, unlimited access to every paid course.
@@ -70,7 +70,7 @@ export default async function AccountPage({
             <form action={startCustomerPlanCheckoutAction} className="mt-3">
               <button
                 type="submit"
-                className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+                className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
               >
                 Upgrade — $5/mo
               </button>

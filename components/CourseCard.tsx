@@ -15,7 +15,7 @@ export default function CourseCard({ course }: { course: CourseListItem }) {
   return (
     <Link
       href={`/courses/${course.slug}`}
-      className="group flex flex-col overflow-hidden rounded-lg border border-zinc-200 bg-white transition hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+      className="group flex flex-col overflow-hidden rounded-md border border-zinc-200 bg-white transition hover:border-2 hover:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-50"
     >
       {course.thumbnail_url ? (
         <div className="relative h-36 w-full bg-zinc-100 dark:bg-zinc-800">
@@ -28,10 +28,17 @@ export default function CourseCard({ course }: { course: CourseListItem }) {
           />
         </div>
       ) : (
-        <div className="h-36 w-full bg-zinc-100 dark:bg-zinc-800" />
+        // No real thumbnail from the provider — a bold typographic tile
+        // beats either a blank box or a random stock photo that isn't
+        // actually the course.
+        <div className="flex h-36 w-full items-center justify-center bg-zinc-900 p-4 dark:bg-black">
+          <p className="line-clamp-3 text-center font-headline text-lg font-black uppercase leading-tight tracking-tight text-white">
+            {course.title}
+          </p>
+        </div>
       )}
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <h3 className="font-medium text-zinc-900 group-hover:underline dark:text-zinc-50">
+        <h3 className="font-semibold text-zinc-900 group-hover:underline dark:text-zinc-50">
           {course.title}
         </h3>
         <p className="text-sm text-zinc-500 dark:text-zinc-400">{course.provider_name}</p>

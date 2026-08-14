@@ -66,12 +66,12 @@ export default async function EditOwnerCoursePage({
       </h1>
 
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
           {error}
         </p>
       )}
       {updated === "discount" && (
-        <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
           Discount updated.
         </p>
       )}
@@ -86,7 +86,7 @@ export default async function EditOwnerCoursePage({
             name="description"
             rows={3}
             defaultValue={course.description ?? ""}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
           <span className="mt-1 block text-xs font-normal text-zinc-500 dark:text-zinc-400">
             1000 words max (Registered Business limit).
@@ -99,7 +99,7 @@ export default async function EditOwnerCoursePage({
             name="syllabus"
             rows={5}
             defaultValue={course.syllabus ?? ""}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
         </label>
 
@@ -112,7 +112,7 @@ export default async function EditOwnerCoursePage({
               step="0.01"
               min="0"
               defaultValue={course.price ?? ""}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
           <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -123,7 +123,7 @@ export default async function EditOwnerCoursePage({
               step="0.01"
               min="0"
               defaultValue={course.duration_hours ?? ""}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
             />
           </label>
         </div>
@@ -134,7 +134,7 @@ export default async function EditOwnerCoursePage({
             name="prerequisites"
             type="text"
             defaultValue={course.prerequisites ?? ""}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
         </label>
 
@@ -144,13 +144,13 @@ export default async function EditOwnerCoursePage({
             name="thumbnail_url"
             type="url"
             defaultValue={course.thumbnail_url ?? ""}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
         </label>
 
         <button
           type="submit"
-          className="self-start rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="self-start rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           Save changes
         </button>
@@ -164,7 +164,7 @@ export default async function EditOwnerCoursePage({
           Add up to {MAX_SECTIONS_PER_COURSE} extra sections to your listing, one of each type.
         </p>
 
-        <div className="mt-4 rounded-lg border border-violet-200 bg-violet-50 p-4 dark:border-violet-900 dark:bg-violet-950">
+        <div className="mt-4 rounded-md border border-violet-200 bg-violet-50 p-4 dark:border-violet-900 dark:bg-violet-950">
           <p className="text-sm font-medium text-violet-900 dark:text-violet-200">
             {course.affiliate_link_status === "verified"
               ? "✓ Affiliate Link"
@@ -197,7 +197,7 @@ export default async function EditOwnerCoursePage({
           </Link>
         </div>
 
-        <div className="mt-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+        <div className="mt-4 rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
           <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
             Affiliate discount
           </h3>
@@ -214,12 +214,12 @@ export default async function EditOwnerCoursePage({
                   min="0"
                   placeholder="Shown crossed out"
                   defaultValue={course.compare_at_price ?? ""}
-                  className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                  className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
                 />
               </label>
               <button
                 type="submit"
-                className="self-start rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
+                className="self-start rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
               >
                 Save discount
               </button>
@@ -236,7 +236,7 @@ export default async function EditOwnerCoursePage({
           {sections.map((section) => (
             <div
               key={section.id}
-              className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+              className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800"
             >
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -261,7 +261,7 @@ export default async function EditOwnerCoursePage({
                 <img
                   src={section.image_url}
                   alt={sectionTypeLabel(section.section_type)}
-                  className="mt-2 max-h-40 rounded-lg object-cover"
+                  className="mt-2 max-h-40 rounded-md object-cover"
                 />
               )}
               {section.video_url && (
@@ -281,7 +281,7 @@ export default async function EditOwnerCoursePage({
         {canAddSection ? (
           <form
             action={addCourseSectionAction}
-            className="mt-4 flex flex-col gap-3 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+            className="mt-4 flex flex-col gap-3 rounded-md border border-zinc-200 p-4 dark:border-zinc-800"
           >
             <input type="hidden" name="course_id" value={course.id} />
             <input type="hidden" name="slug" value={course.slug} />
@@ -291,7 +291,7 @@ export default async function EditOwnerCoursePage({
               <select
                 name="section_type"
                 required
-                className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
               >
                 {availableTypes.map((t) => (
                   <option key={t.value} value={t.value}>
@@ -307,7 +307,7 @@ export default async function EditOwnerCoursePage({
                 name="content"
                 rows={3}
                 required
-                className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
               />
             </label>
 
@@ -317,7 +317,7 @@ export default async function EditOwnerCoursePage({
                 <input
                   name="image_url"
                   type="url"
-                  className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                  className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
                 />
               </label>
               <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
@@ -326,14 +326,14 @@ export default async function EditOwnerCoursePage({
                   name="video_url"
                   type="url"
                   placeholder="YouTube, Vimeo, direct link..."
-                  className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                  className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
                 />
               </label>
             </div>
 
             <button
               type="submit"
-              className="self-start rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
+              className="self-start rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
             >
               Add section
             </button>

@@ -54,30 +54,30 @@ export default async function OwnerDashboardPage({
         <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">Your courses</h1>
         <Link
           href="/courses/new"
-          className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
+          className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
         >
           Add a course
         </Link>
       </div>
 
       {businessParam === "success" && (
-        <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
           Payment received. It can take a few seconds for Stripe to confirm — refresh this page
           if Registered Business still shows inactive.
         </p>
       )}
       {businessParam === "cancelled" && (
-        <p className="mt-4 rounded-lg bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+        <p className="mt-4 rounded-md bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
           Checkout was cancelled. No charge was made — you can try again below.
         </p>
       )}
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
           {error}
         </p>
       )}
 
-      <section className="mt-6 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+      <section className="mt-6 rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
         <h2 className="text-sm font-medium uppercase text-zinc-500 dark:text-zinc-400">
           Registered Business
         </h2>
@@ -113,7 +113,7 @@ export default async function OwnerDashboardPage({
             <form action={startBusinessSubscriptionCheckoutAction}>
               <button
                 type="submit"
-                className="shrink-0 rounded-lg bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+                className="shrink-0 rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
               >
                 Subscribe — $99 + $50/mo
               </button>
@@ -131,7 +131,7 @@ export default async function OwnerDashboardPage({
             {pendingListings.map((listing) => (
               <div
                 key={listing.course_id}
-                className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-300"
+                className="rounded-md border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-300"
               >
                 {listing.title} — awaiting admin content review.
               </div>
@@ -150,7 +150,7 @@ export default async function OwnerDashboardPage({
               <Link
                 key={claim.course_id}
                 href={`/courses/${claim.slug}`}
-                className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-800 hover:underline dark:border-amber-900 dark:bg-amber-950 dark:text-amber-300"
+                className="rounded-md border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-800 hover:underline dark:border-amber-900 dark:bg-amber-950 dark:text-amber-300"
               >
                 {claim.title} — awaiting admin claim review.
               </Link>
@@ -169,7 +169,7 @@ export default async function OwnerDashboardPage({
               <Link
                 key={claim.course_id}
                 href={`/courses/${claim.slug}`}
-                className="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700 hover:underline dark:border-red-900 dark:bg-red-950 dark:text-red-300"
+                className="rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700 hover:underline dark:border-red-900 dark:bg-red-950 dark:text-red-300"
               >
                 {claim.title} — {claim.claim_rejection_reason} (click to appeal)
               </Link>
@@ -199,7 +199,7 @@ export default async function OwnerDashboardPage({
               return (
                 <div
                   key={course.id}
-                  className="flex flex-col gap-3 rounded-lg border border-zinc-200 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800"
+                  className="flex flex-col gap-3 rounded-md border border-zinc-200 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800"
                 >
                   <div>
                     <div className="font-medium text-zinc-900 dark:text-zinc-50">
@@ -229,7 +229,7 @@ export default async function OwnerDashboardPage({
                     {hasControl ? (
                       <Link
                         href={`/owner/courses/${course.slug}/edit`}
-                        className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
+                        className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
                       >
                         Edit listing
                       </Link>

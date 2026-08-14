@@ -1,17 +1,27 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Archivo } from "next/font/google";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import AddCourseFab from "@/components/AddCourseFab";
 import "./globals.css";
 
-// A clean, neutral interface sans — the closest freely-licensed match to
-// Claude's own UI typography (Anthropic's actual product font isn't
-// redistributable), used for both the wordmark and all body text.
+// Body copy: a clean, neutral interface sans, kept highly readable at
+// small sizes.
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+});
+
+// Headlines: a heavy, high-contrast grotesk — the brand needs to sound like
+// it's telling you a hard truth, not like a generic SaaS template, and a
+// timid font undercuts that no matter what the copy says. Applied globally
+// to every heading via the --font-headline token in globals.css, not
+// per-component, so it can't drift out of sync page to page.
+const archivo = Archivo({
+  variable: "--font-archivo",
+  subsets: ["latin"],
+  weight: ["700", "800", "900"],
 });
 
 const DESCRIPTION =
@@ -40,7 +50,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} h-full scroll-smooth antialiased`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${archivo.variable} h-full scroll-smooth antialiased`}
+    >
       <body className="min-h-full flex flex-col">
         <SiteHeader />
         {children}

@@ -169,7 +169,7 @@ export default async function CourseDetailPage({
       />
 
       {unlocked && course.thumbnail_url && (
-        <div className="relative mt-6 h-56 w-full overflow-hidden rounded-lg bg-zinc-100 sm:h-72 dark:bg-zinc-800">
+        <div className="relative mt-6 h-56 w-full overflow-hidden rounded-md bg-zinc-100 sm:h-72 dark:bg-zinc-800">
           <Image
             src={course.thumbnail_url}
             alt={course.title}
@@ -182,11 +182,11 @@ export default async function CourseDetailPage({
       )}
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+        <span className="rounded-md bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
           {course.category ?? "Uncategorized"}
         </span>
         {course.verification_status !== "verified" && (
-          <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+          <span className="rounded-md bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-300">
             {course.verification_status}
           </span>
         )}
@@ -195,20 +195,20 @@ export default async function CourseDetailPage({
       </div>
 
       {submitted && (
-        <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
           Your claim has been submitted for admin review. We&apos;ll email you once it&apos;s
           decided.
         </p>
       )}
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
           {error}
         </p>
       )}
 
       {course.verification_status === "pending" &&
         ownerSession?.user?.id === course.verified_owner_id && (
-          <p className="mt-4 rounded-lg bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+          <p className="mt-4 rounded-md bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
             Your claim on this course is awaiting admin review.
           </p>
         )}
@@ -216,7 +216,7 @@ export default async function CourseDetailPage({
       {course.verification_status === "unclaimed" &&
         ownerSession?.user?.id === course.claim_rejection_owner_id &&
         course.claim_rejection_reason && (
-          <p className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+          <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
             Your claim on this course was rejected: {course.claim_rejection_reason}. You can
             claim it again below to appeal.
           </p>
@@ -278,12 +278,12 @@ export default async function CourseDetailPage({
             href={`/go/${course.slug}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-1 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="mt-4 inline-flex items-center gap-1 rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             Go to course →
           </a>
 
-          <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg border border-zinc-200 p-4 sm:grid-cols-3 dark:border-zinc-800">
+          <div className="mt-6 grid grid-cols-2 gap-4 rounded-md border border-zinc-200 p-4 sm:grid-cols-3 dark:border-zinc-800">
             <div>
               <div className="text-xs uppercase text-zinc-500 dark:text-zinc-400">Price</div>
               <div className="mt-1 flex items-baseline gap-2">
@@ -355,7 +355,7 @@ export default async function CourseDetailPage({
                 <img
                   src={section.image_url}
                   alt={sectionTypeLabel(section.section_type)}
-                  className="mt-3 max-h-80 w-full rounded-lg object-cover"
+                  className="mt-3 max-h-80 w-full rounded-md object-cover"
                 />
               )}
               {section.video_url && (
@@ -372,7 +372,7 @@ export default async function CourseDetailPage({
           ))}
 
           {unlockedParam && (
-            <p className="mt-8 rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+            <p className="mt-8 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
               Payment received — it can take a few seconds for Stripe to confirm. Refresh if this
               still shows locked.
             </p>
@@ -392,7 +392,7 @@ export default async function CourseDetailPage({
           />
         </>
       ) : (
-        <section className="mt-6 rounded-lg border border-zinc-200 bg-zinc-50 p-6 text-center dark:border-zinc-800 dark:bg-zinc-900">
+        <section className="mt-6 rounded-md border border-zinc-200 bg-zinc-50 p-6 text-center dark:border-zinc-800 dark:bg-zinc-900">
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
             Pricing, description, syllabus, rating, and reviews for this course are locked.
           </p>
@@ -411,7 +411,7 @@ export default async function CourseDetailPage({
                   <input type="hidden" name="slug" value={course.slug} />
                   <button
                     type="submit"
-                    className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
+                    className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
                   >
                     Use 1 bonus credit ({access.bonusCredits} available)
                   </button>
@@ -422,7 +422,7 @@ export default async function CourseDetailPage({
                 <input type="hidden" name="slug" value={course.slug} />
                 <button
                   type="submit"
-                  className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+                  className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
                 >
                   Unlock this course — $0.99
                 </button>
