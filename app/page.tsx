@@ -13,12 +13,10 @@ import {
   Layers,
   Megaphone,
   HelpCircle,
-  ShieldCheck,
-  UserCheck,
-  ArrowRight,
 } from "lucide-react";
 import { categorySlug, getCategoryShowcases } from "@/lib/courses";
 import { SITE_NAME } from "@/lib/site";
+import { ArrowIcon, ClaimIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "One Course. One New Career. No BS.",
@@ -96,23 +94,16 @@ const CATEGORY_BLURBS: Record<string, string> = {
   Design: "Learn to design interfaces people actually want to use.",
 };
 
-function Eyebrow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <p className={`text-xs font-bold uppercase tracking-[0.2em] text-red-600 dark:text-red-500 ${className}`}>
-      {children}
-    </p>
-  );
-}
-
 export default async function Home() {
   const categories = await getCategoryShowcases();
 
   return (
     <main className="flex flex-1 flex-col">
-      {/* HERO — always dark, regardless of site theme: this is the one section
-          built to showcase the custom generated art, and dark/red art reads
-          badly dropped onto a white background. Matches the same
-          "always dark" pattern already used below for Problem/Pledge/CTA. */}
+      {/* HERO — always dark, regardless of site theme. The custom generated
+          art is an abstract red-lit render, not a photographic subject, so
+          it's grayscaled here rather than forced into a photo-collage
+          treatment it can't support — same "keep the real asset, drop the
+          color accent" move used on the other two brand-art sections below. */}
       <section className="relative isolate overflow-hidden bg-black">
         <Image
           src="/homepage/hero-bg.png"
@@ -120,22 +111,22 @@ export default async function Home() {
           fill
           priority
           sizes="100vw"
-          className="object-cover opacity-90"
+          className="object-cover opacity-90 grayscale"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
 
         <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-44">
           <div className="max-w-3xl">
-            <span className="inline-flex items-center rounded-md border border-red-900 bg-red-950/50 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
+            <span className="inline-flex items-center border border-cream/30 px-3 py-1 text-[11px] font-bold uppercase tracking-eyebrow text-cream">
               No BS. Just verified reviews.
             </span>
-            <h1 className="mt-6 text-5xl font-black leading-[0.97] tracking-[-0.03em] text-white sm:text-7xl lg:text-[5.5rem]">
+            <h1 className="mt-6 text-5xl font-black uppercase leading-[0.97] tracking-display text-cream sm:text-7xl lg:text-[5.5rem]">
               One course.
               <br />
-              <span className="text-red-500">One new career.</span>
+              One new career.
             </h1>
-            <p className="mt-7 max-w-xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+            <p className="mt-7 max-w-xl text-base leading-relaxed text-cream/60 sm:text-lg">
               MIT, Harvard, and Stanford already publish real lectures online — much of it
               free. The knowledge was never locked behind a $160,000 degree. The debt was.{" "}
               {SITE_NAME} helps you find which online courses actually teach it well, before
@@ -144,22 +135,22 @@ export default async function Home() {
             <div className="mt-10">
               <Link
                 href="/courses"
-                className="group inline-flex w-full items-center justify-center gap-2 rounded-md bg-red-600 px-8 py-4 text-center text-sm font-bold uppercase tracking-[0.1em] text-white transition hover:bg-red-500 active:scale-[0.98] sm:w-auto"
+                className="group inline-flex w-full items-center justify-center gap-2 bg-cream px-8 py-4 text-center text-sm font-bold uppercase tracking-label text-black transition hover:bg-cream/80 active:scale-[0.98] sm:w-auto"
               >
                 See the real reviews
-                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                <ArrowIcon className="h-4 w-4 transition group-hover:translate-x-1" />
               </Link>
             </div>
-            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-medium text-zinc-400">
+            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-medium text-cream/60">
               <span className="inline-flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 shrink-0 text-red-500" /> Verified-purchase
+                <ClaimIcon index={0} className="h-4 w-4 shrink-0 text-cream" /> Verified-purchase
                 reviews only
               </span>
               <span className="inline-flex items-center gap-2">
-                <Ban className="h-4 w-4 shrink-0 text-red-500" /> Zero pay-to-rank
+                <ClaimIcon index={1} className="h-4 w-4 shrink-0 text-cream" /> Zero pay-to-rank
               </span>
               <span className="inline-flex items-center gap-2">
-                <UserCheck className="h-4 w-4 shrink-0 text-red-500" /> Every review tied to
+                <ClaimIcon index={2} className="h-4 w-4 shrink-0 text-cream" /> Every review tied to
                 a real account
               </span>
             </div>
@@ -167,65 +158,62 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* PROBLEM — always dark, regardless of site theme: the hard-truth section */}
-      <section className="bg-zinc-950 py-20 sm:py-28">
+      {/* PROBLEM — always dark. No eyebrow above the heading: the heading
+          carries its own weight. */}
+      <section className="bg-black py-20 sm:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
-            <Eyebrow>The Problem</Eyebrow>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-5xl">
+            <h2 className="text-3xl font-black uppercase tracking-headline text-cream sm:text-5xl">
               Finding a course isn&apos;t the hard part. Knowing if it&apos;s any good is.
             </h2>
           </div>
-          <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden bg-zinc-800 sm:grid-cols-3">
+          <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden bg-cream/10 sm:grid-cols-3">
             {PROBLEMS.map((p) => (
-              <div
-                key={p.title}
-                className="border-t-4 border-red-600 bg-zinc-950 p-8 transition hover:bg-zinc-900"
-              >
-                <p.icon className="h-6 w-6 text-red-500" strokeWidth={2.5} />
-                <h3 className="mt-4 font-semibold text-white">{p.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-400">{p.body}</p>
+              <div key={p.title} className="border-t-2 border-cream bg-black p-8 transition hover:bg-cream/5">
+                <p.icon className="h-6 w-6 text-cream" strokeWidth={1.5} />
+                <h3 className="mt-4 font-semibold uppercase tracking-tight text-cream">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-cream/55">{p.body}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* PLEDGE — the manifesto: leans hardest into the brand, custom art on the right */}
-      <section className="bg-red-600 py-20 sm:py-28">
+      {/* PLEDGE — the manifesto. Flips to the light cream ground (rather
+          than repeating the dark hero/problem treatment a third time) so
+          the page keeps a dark/dark/light/light/light/dark rhythm instead
+          of flattening into one long dark run. */}
+      <section className="bg-cream py-20 sm:py-28 dark:bg-cream-dark">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-14 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-100">
-                The Pledge
-              </p>
-              <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-5xl">
+              <h2 className="text-3xl font-black uppercase tracking-headline text-ink dark:text-ink-dark sm:text-5xl">
                 Here&apos;s what we will never do.
               </h2>
-              <p className="mt-4 max-w-xl text-red-50">
+              <p className="mt-4 max-w-xl text-ink/60 dark:text-ink-dark/60">
                 Not a mission statement. A description of how the system is actually built.
               </p>
-              <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden bg-red-500/40 sm:grid-cols-2">
+              <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden bg-hairline dark:bg-hairline-dark sm:grid-cols-2">
                 {PLEDGES.map((p) => (
-                  <div key={p.title} className="flex gap-4 bg-red-600 p-6 sm:p-7">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-white/30 bg-white">
-                      <p.icon className="h-4 w-4 text-red-600" strokeWidth={2.5} />
+                  <div key={p.title} className="flex gap-4 bg-cream p-6 dark:bg-cream-dark sm:p-7">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center border border-ink dark:border-ink-dark">
+                      <p.icon className="h-4 w-4 text-ink dark:text-ink-dark" strokeWidth={1.5} />
                     </span>
                     <div>
-                      <h3 className="font-bold text-white">{p.title}</h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-red-50">{p.body}</p>
+                      <h3 className="font-bold uppercase tracking-tight text-ink dark:text-ink-dark">{p.title}</h3>
+                      <p className="mt-1.5 text-sm leading-relaxed text-ink/60 dark:text-ink-dark/60">{p.body}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="relative hidden aspect-4/5 overflow-hidden rounded-md border border-white/10 lg:block">
+            <div className="relative hidden aspect-4/5 overflow-hidden border border-hairline dark:border-hairline-dark lg:block">
               <Image
                 src="/homepage/pledge-visual.png"
                 alt=""
                 fill
                 sizes="(max-width: 1024px) 0px, 40vw"
-                className="object-cover"
+                className="object-cover grayscale"
               />
             </div>
           </div>
@@ -233,30 +221,27 @@ export default async function Home() {
       </section>
 
       {/* SOLUTION — the clean, documented proof */}
-      <section className="bg-white py-20 sm:py-28 dark:bg-zinc-950">
+      <section className="bg-cream py-20 sm:py-28 dark:bg-cream-dark">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
-            <Eyebrow>The System</Eyebrow>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-zinc-900 sm:text-5xl dark:text-zinc-50">
+            <h2 className="text-3xl font-black uppercase tracking-headline text-ink sm:text-5xl dark:text-ink-dark">
               Real learners. Real reviews. No pay-to-rank.
             </h2>
-            <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
+            <p className="mt-4 text-lg text-ink/60 dark:text-ink-dark/60">
               This is exactly how {SITE_NAME} keeps its ratings honest — not a marketing
               promise, the actual system.
             </p>
           </div>
-          <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden bg-zinc-200 sm:grid-cols-2 dark:bg-zinc-800">
+          <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden bg-hairline sm:grid-cols-2 dark:bg-hairline-dark">
             {FEATURES.map((f) => (
               <div
                 key={f.title}
-                className="flex gap-4 bg-white p-8 transition hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+                className="flex gap-4 bg-cream p-8 transition hover:bg-ink/[0.03] dark:bg-cream-dark dark:hover:bg-ink-dark/[0.04]"
               >
-                <f.icon className="h-6 w-6 shrink-0 text-red-600" strokeWidth={2.5} />
+                <f.icon className="h-6 w-6 shrink-0 text-ink dark:text-ink-dark" strokeWidth={1.5} />
                 <div>
-                  <h3 className="font-semibold text-zinc-900 dark:text-zinc-50">{f.title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                    {f.body}
-                  </p>
+                  <h3 className="font-semibold uppercase tracking-tight text-ink dark:text-ink-dark">{f.title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-ink/60 dark:text-ink-dark/60">{f.body}</p>
                 </div>
               </div>
             ))}
@@ -265,20 +250,19 @@ export default async function Home() {
       </section>
 
       {/* CATEGORY BROWSE */}
-      <section className="bg-zinc-50 py-20 sm:py-28 dark:bg-zinc-900">
+      <section className="bg-ink/[0.03] py-20 sm:py-28 dark:bg-ink-dark/[0.04]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Eyebrow>Browse</Eyebrow>
-          <h2 className="mt-3 text-3xl font-black tracking-tight text-zinc-900 sm:text-5xl dark:text-zinc-50">
+          <h2 className="text-3xl font-black uppercase tracking-headline text-ink sm:text-5xl dark:text-ink-dark">
             Find your next course
           </h2>
-          <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden bg-zinc-200 sm:grid-cols-3 dark:bg-zinc-800">
+          <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden bg-hairline sm:grid-cols-3 dark:bg-hairline-dark">
             {categories.map((c) => (
               <Link
                 key={c.category}
                 href={`/courses/category/${categorySlug(c.category)}`}
-                className="group bg-white transition hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+                className="group bg-cream transition hover:bg-ink/[0.03] dark:bg-cream-dark dark:hover:bg-ink-dark/[0.04]"
               >
-                <div className="relative h-40 w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                <div className="relative h-40 w-full overflow-hidden bg-ink/5 dark:bg-ink-dark/10">
                   {c.thumbnail_url && (
                     <Image
                       src={c.thumbnail_url}
@@ -290,13 +274,13 @@ export default async function Home() {
                   )}
                 </div>
                 <div className="p-6">
-                  <h3 className="font-semibold text-zinc-900 transition group-hover:text-red-600 dark:text-zinc-50">
+                  <h3 className="font-semibold uppercase tracking-tight text-ink transition group-hover:opacity-60 dark:text-ink-dark">
                     {c.category}
                   </h3>
-                  <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                  <p className="mt-1 text-sm text-ink/50 dark:text-ink-dark/50">
                     {CATEGORY_BLURBS[c.category] ?? "Compare courses side by side."}
                   </p>
-                  <p className="mt-3 text-xs font-medium uppercase tracking-wide text-zinc-400 dark:text-zinc-500">
+                  <p className="mt-3 text-[11px] font-medium uppercase tracking-label tabular-nums text-ink/40 dark:text-ink-dark/40">
                     {c.count} course{c.count === 1 ? "" : "s"}
                   </p>
                 </div>
@@ -307,31 +291,31 @@ export default async function Home() {
       </section>
 
       {/* FINAL CTA — always dark, with a low-opacity ambient texture from the
-          custom art (subtle by design, not competing with the type) */}
+          same grayscaled brand art */}
       <section className="relative isolate overflow-hidden bg-black py-20 sm:py-28">
         <Image
           src="/homepage/cta-bg.png"
           alt=""
           fill
           sizes="100vw"
-          className="object-cover opacity-20"
+          className="object-cover opacity-20 grayscale"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black via-black/60 to-black" />
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-black tracking-tight text-white sm:text-5xl">
+          <h2 className="text-3xl font-black uppercase tracking-headline text-cream sm:text-5xl">
             Stop guessing. Start learning.
           </h2>
-          <p className="mt-4 text-zinc-400">
+          <p className="mt-4 text-cream/60">
             Every review here comes from someone who paid for the course and stuck around
             long enough to know if it was worth it.
           </p>
           <div className="mt-8">
             <Link
               href="/courses"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-red-600 px-8 py-4 text-sm font-bold uppercase tracking-[0.1em] text-white transition hover:bg-red-500 active:scale-[0.98] sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 bg-cream px-8 py-4 text-sm font-bold uppercase tracking-label text-black transition hover:bg-cream/80 active:scale-[0.98] sm:w-auto"
             >
               See the real reviews
-              <ArrowRight className="h-4 w-4" />
+              <ArrowIcon className="h-4 w-4 transition group-hover:translate-x-1" />
             </Link>
           </div>
         </div>

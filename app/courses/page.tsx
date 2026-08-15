@@ -9,6 +9,7 @@ import {
   COURSE_SORT_OPTIONS,
 } from "@/lib/courses";
 import CourseCard from "@/components/CourseCard";
+import { Button } from "@/components/ui/Button";
 
 type SearchParams = Promise<{ q?: string; sort?: string }>;
 
@@ -54,7 +55,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: Sear
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+      <h1 className="text-3xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
         Browse Courses
       </h1>
 
@@ -64,18 +65,17 @@ export default async function CoursesPage({ searchParams }: { searchParams: Sear
           name="q"
           defaultValue={q ?? ""}
           placeholder="Search by title, provider, or category..."
-          className="w-full max-w-md rounded-md border border-zinc-300 px-4 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+          className="w-full max-w-md border border-hairline bg-transparent px-4 py-2 text-sm text-ink placeholder:text-ink/40 focus:border-ink focus:outline-none dark:border-hairline-dark dark:text-ink-dark dark:placeholder:text-ink-dark/40 dark:focus:border-ink-dark"
         />
-        <button
-          type="submit"
-          className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-        >
+        <Button type="submit" size="md">
           Search
-        </button>
+        </Button>
       </form>
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        <span className="text-sm text-zinc-500 dark:text-zinc-400">Sort by:</span>
+        <span className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+          Sort by
+        </span>
         {COURSE_SORT_OPTIONS.map((opt) => {
           const params = new URLSearchParams();
           if (q) params.set("q", q);
@@ -88,8 +88,8 @@ export default async function CoursesPage({ searchParams }: { searchParams: Sear
               href={href}
               className={
                 active
-                  ? "rounded-md bg-zinc-900 px-3 py-1 text-xs font-medium text-white dark:bg-zinc-50 dark:text-zinc-900"
-                  : "rounded-md border border-zinc-300 px-3 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                  ? "bg-ink px-3 py-1 text-[11px] font-semibold uppercase tracking-eyebrow text-cream dark:bg-ink-dark dark:text-cream-dark"
+                  : "border border-hairline px-3 py-1 text-[11px] font-semibold uppercase tracking-eyebrow text-ink/70 hover:border-ink dark:border-hairline-dark dark:text-ink-dark/70 dark:hover:border-ink-dark"
               }
             >
               {opt.label}
@@ -98,7 +98,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: Sear
         })}
       </div>
 
-      <p className="mt-4 text-zinc-600 dark:text-zinc-400">
+      <p className="mt-4 text-ink/60 dark:text-ink-dark/60">
         {q ? (
           <>
             {total} result{total === 1 ? "" : "s"} for &ldquo;{q}&rdquo;.{" "}
@@ -114,7 +114,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: Sear
       </p>
 
       {categories.length === 0 && (
-        <p className="mt-10 text-zinc-500 dark:text-zinc-400">
+        <p className="mt-10 text-ink/50 dark:text-ink-dark/50">
           No courses matched your search. Try a different title, provider, or category.
         </p>
       )}
@@ -129,7 +129,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: Sear
         <div className="mt-10 flex flex-col gap-12">
           {categories.map(([category, courses]) => (
             <section key={category}>
-              <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+              <h2 className="text-xl font-black uppercase tracking-tight text-ink dark:text-ink-dark">
                 <Link href={`/courses/category/${categorySlug(category)}`} className="hover:underline">
                   {category}
                 </Link>

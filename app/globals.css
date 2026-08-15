@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f3ec;
+  --foreground: #000000;
   color-scheme: light dark;
 }
 
@@ -11,6 +11,29 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-headline: var(--font-archivo);
+
+  /* Editorial-minimal palette: cream ground, pure black ink. Named so every
+     page pulls from one source instead of retyping #f6f3ec / #141414 as
+     arbitrary values. */
+  --color-cream: #f6f3ec;
+  --color-cream-dark: #141414;
+  --color-ink: #000000;
+  --color-ink-dark: #f6f3ec;
+
+  /* Hairline border convention: black/cream at low opacity, not a solid
+     zinc-* border color. Both values proven in the editorial-minimal
+     mockup before being promoted here. */
+  --color-hairline: rgb(0 0 0 / 0.1);
+  --color-hairline-dark: rgb(246 243 236 / 0.15);
+
+  /* Named tracking values so the hard-won display tracking (-0.04em — NOT
+     Tailwind's tracking-tighter, which is -0.05em and visibly too tight on
+     the giant wordmark) can't silently drift the next time this gets
+     edited. */
+  --tracking-eyebrow: 0.08em;
+  --tracking-label: 0.1em;
+  --tracking-display: -0.04em;
+  --tracking-headline: -0.03em;
 
   /* Brand red, sampled directly from the logo's strikethrough mark
      (measured ~#df0002 across the actual PNG) — replaces Tailwind's stock
@@ -34,14 +57,13 @@
 /* Dark mode follows the OS/browser preference (no manual toggle). Deliberately
    near-black, not an inverted-light-mode grey — a "no BS" brand should look
    like it meant to be dark, not like a light theme with the values flipped.
-   This intentionally reverses an earlier warm-charcoal experiment: that
-   softened the contrast in a way that reads as "friendly SaaS," which is
-   the opposite of the brand. Tailwind's own zinc scale is already close to
-   true black at the 900/950 end, so it's left un-overridden here. */
+   The pairing inverts cleanly: #141414 is the same dark fill the editorial
+   mockup already uses for its category tiles, and cream becomes the "ink" —
+   no new colors introduced, just the two roles swapped. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #fafafa;
+    --background: #141414;
+    --foreground: #f6f3ec;
   }
 }
 
@@ -73,4 +95,45 @@ em,
 i,
 cite {
   font-style: normal;
+}
+
+/* Browser-native surfaces, themed from the palette instead of left at
+   browser defaults — text selection, focus rings, scrollbar. This is the
+   cheapest signal that a page was designed rather than assembled, and the
+   one most often skipped. Promoted site-wide from a pattern validated on
+   the editorial-minimal mockup. */
+::selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+/* Sections that are deliberately dark regardless of site theme (category
+   strips, always-dark marketing bands) mark themselves .on-dark so focus
+   rings stay visible against a black fill instead of vanishing into it. */
+.on-dark:focus-visible {
+  outline-color: #f6f3ec;
+}
+
+html {
+  scrollbar-color: var(--foreground) var(--background);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--foreground);
+  border: 2px solid var(--background);
 }

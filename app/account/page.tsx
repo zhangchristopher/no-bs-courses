@@ -3,6 +3,11 @@ import type { Metadata } from "next";
 import { auth } from "@/auth";
 import { getAccountSummary } from "@/lib/paywall";
 import { startCustomerPlanCheckoutAction } from "./actions";
+import { AuthShell } from "@/components/ui/AuthShell";
+import { StatusBanner } from "@/components/ui/StatusBanner";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { CheckMarkIcon } from "@/components/icons";
 
 export const metadata: Metadata = { title: "Your Account" };
 
@@ -16,14 +21,11 @@ export default async function AccountPage({
 
   if (!session?.user?.id) {
     return (
-      <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Sign in required
-        </h1>
-        <Link href="/signin" className="mt-4 inline-block underline">
+      <AuthShell title="Sign in required">
+        <Link href="/signin" className="inline-block underline">
           Sign in
         </Link>
-      </main>
+      </AuthShell>
     );
   }
 
@@ -32,52 +34,46 @@ export default async function AccountPage({
 
   return (
     <main className="mx-auto max-w-xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">Your account</h1>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{summary.email}</p>
+      <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+        Your account
+      </h1>
+      <p className="mt-2 text-sm text-ink/60 dark:text-ink-dark/60">{summary.email}</p>
 
       {plan === "success" && (
-        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <StatusBanner tone="success">
           Payment received. It can take a few seconds for Stripe to confirm — refresh if your
           plan still shows free.
-        </p>
+        </StatusBanner>
       )}
       {plan === "cancelled" && (
-        <p className="mt-4 rounded-md bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-          Checkout was cancelled. No charge was made.
-        </p>
+        <StatusBanner tone="warning">Checkout was cancelled. No charge was made.</StatusBanner>
       )}
-      {error && (
-        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-          {error}
-        </p>
-      )}
+      {error && <StatusBanner tone="error">{error}</StatusBanner>}
 
-      <div className="mt-6 rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
+      <Card className="mt-6">
         {isPaidPlan ? (
-          <p className="text-sm text-emerald-700 dark:text-emerald-400">
-            ✓ Paid plan — $5/mo, unlimited access to every paid course.
+          <p className="flex items-center gap-2 text-sm text-ink dark:text-ink-dark">
+            <CheckMarkIcon className="h-4 w-4 shrink-0" />
+            Paid plan — $5/mo, unlimited access to every paid course.
           </p>
         ) : (
           <>
-            <p className="text-sm text-zinc-700 dark:text-zinc-300">
+            <p className="text-sm tabular-nums text-ink/75 dark:text-ink-dark/75">
               Free plan — {summary.unlocksThisMonth} of 3 free paid-course unlocks used this
               month.
             </p>
-            <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
+            <p className="mt-1 text-sm tabular-nums text-ink/75 dark:text-ink-dark/75">
               Bonus unlock credits: {summary.bonus_unlock_credits} (earned from verified
               reviews)
             </p>
             <form action={startCustomerPlanCheckoutAction} className="mt-3">
-              <button
-                type="submit"
-                className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-              >
+              <Button type="submit" size="sm">
                 Upgrade — $5/mo
-              </button>
+              </Button>
             </form>
           </>
         )}
-      </div>
+      </Card>
     </main>
   );
 }

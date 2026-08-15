@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { getAdminSession } from "@/lib/admin";
 import { getPendingPurchaseVerifications } from "@/lib/purchaseVerifications";
 import { approvePurchaseVerificationAction, rejectPurchaseVerificationAction } from "./actions";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = { title: "Purchase Verifications" };
 
@@ -22,10 +24,10 @@ export default async function AdminPurchaseVerificationsPage() {
   if (!session.authorized) {
     return (
       <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
+        <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
           Not authorized
         </h1>
-        <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+        <p className="mt-2 text-ink/60 dark:text-ink-dark/60">
           {session.reason === "signed-out"
             ? "Sign in with the admin account to view purchase verifications."
             : "Your account does not have access to this page."}
@@ -41,37 +43,37 @@ export default async function AdminPurchaseVerificationsPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
+      <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
         Purchase Verifications
       </h1>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-        {pending.length} pending review{pending.length === 1 ? "" : "s"}. Signed in as{" "}
-        {session.email}. Approving grants the reviewer a bonus paid-course unlock credit.
+      <p className="mt-2 text-sm tabular-nums text-ink/60 dark:text-ink-dark/60">
+        {pending.length} pending review{pending.length === 1 ? "" : "s"}. Approving grants the
+        reviewer a bonus paid-course unlock credit.
       </p>
 
       <div className="mt-8 flex flex-col gap-6">
         {pending.length === 0 && (
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">No pending submissions.</p>
+          <p className="text-sm text-ink/50 dark:text-ink-dark/50">No pending submissions.</p>
         )}
         {pending.map((p) => (
-          <div key={p.review_id} className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
+          <Card key={p.review_id}>
             <div className="flex items-center justify-between">
               <Link
                 href={`/courses/${p.course_slug}`}
                 target="_blank"
-                className="font-medium text-zinc-900 hover:underline dark:text-zinc-50"
+                className="font-medium text-ink hover:underline dark:text-ink-dark"
               >
                 {p.course_title}
               </Link>
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="text-xs tabular-nums text-ink/50 dark:text-ink-dark/50">
                 Submitted {formatDate(p.created_at)}
               </span>
             </div>
-            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="mt-1 text-sm text-ink/55 dark:text-ink-dark/55">
               Reviewer: {p.reviewer_name || "(no name)"} &lt;{p.reviewer_email}&gt;
             </p>
-            <div className="mt-3 rounded-md bg-zinc-50 p-3 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-              <div className="text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400">
+            <div className="mt-3 border border-hairline bg-ink/[0.02] p-3 text-sm text-ink/75 dark:border-hairline-dark dark:bg-ink-dark/[0.03] dark:text-ink-dark/75">
+              <div className="text-xs font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
                 Evidence
               </div>
               <p className="mt-1 whitespace-pre-line">{p.purchase_evidence}</p>
@@ -82,25 +84,19 @@ export default async function AdminPurchaseVerificationsPage() {
                 <input type="hidden" name="review_id" value={p.review_id} />
                 <input type="hidden" name="course_id" value={p.course_id} />
                 <input type="hidden" name="reviewer_id" value={p.reviewer_id} />
-                <button
-                  type="submit"
-                  className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
-                >
+                <Button type="submit" size="sm">
                   Approve
-                </button>
+                </Button>
               </form>
               <form action={rejectPurchaseVerificationAction}>
                 <input type="hidden" name="review_id" value={p.review_id} />
                 <input type="hidden" name="course_id" value={p.course_id} />
-                <button
-                  type="submit"
-                  className="rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950"
-                >
+                <Button type="submit" variant="secondary" size="sm">
                   Reject
-                </button>
+                </Button>
               </form>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </main>

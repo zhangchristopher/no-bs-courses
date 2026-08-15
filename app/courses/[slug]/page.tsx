@@ -8,6 +8,10 @@ import StarRating from "@/components/StarRating";
 import ReviewSection from "@/components/ReviewSection";
 import TrackedSection from "@/components/TrackedSection";
 import { RegisteredBusinessBadge, VerifiedCourseBadge } from "@/components/CourseBadges";
+import { Button } from "@/components/ui/Button";
+import { StatusBanner } from "@/components/ui/StatusBanner";
+import { Card } from "@/components/ui/Card";
+import { ArrowIcon, PlayIcon } from "@/components/icons";
 import { categorySlug, getCourseBySlug } from "@/lib/courses";
 import { getCourseModerationStatus } from "@/lib/verifications";
 import { getReviewsForCourse, getUserReviewForCourse } from "@/lib/reviews";
@@ -95,10 +99,10 @@ export default async function CourseDetailPage({
       if (isSubmitter || adminSession.authorized) {
         return (
           <main className="mx-auto max-w-sm px-4 py-16 sm:px-6 text-center">
-            <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-2xl font-black uppercase tracking-tight text-ink dark:text-ink-dark">
               &ldquo;{moderation.title}&rdquo;
             </h1>
-            <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+            <p className="mt-3 text-sm text-ink/60 dark:text-ink-dark/60">
               {moderation.listing_status === "rejected"
                 ? "This submission was rejected by an admin and isn't public."
                 : "This course is pending admin review and isn't public yet."}
@@ -169,7 +173,7 @@ export default async function CourseDetailPage({
       />
 
       {unlocked && course.thumbnail_url && (
-        <div className="relative mt-6 h-56 w-full overflow-hidden rounded-md bg-zinc-100 sm:h-72 dark:bg-zinc-800">
+        <div className="relative mt-6 h-56 w-full overflow-hidden bg-ink/5 sm:h-72 dark:bg-ink-dark/10">
           <Image
             src={course.thumbnail_url}
             alt={course.title}
@@ -182,11 +186,11 @@ export default async function CourseDetailPage({
       )}
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
-        <span className="rounded-md bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+        <span className="border border-hairline px-3 py-1 text-[11px] font-semibold uppercase tracking-eyebrow text-ink/70 dark:border-hairline-dark dark:text-ink-dark/70">
           {course.category ?? "Uncategorized"}
         </span>
         {course.verification_status !== "verified" && (
-          <span className="rounded-md bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+          <span className="border border-dashed border-ink/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-eyebrow text-ink/70 dark:border-ink-dark/40 dark:text-ink-dark/70">
             {course.verification_status}
           </span>
         )}
@@ -195,35 +199,29 @@ export default async function CourseDetailPage({
       </div>
 
       {submitted && (
-        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <StatusBanner tone="success">
           Your claim has been submitted for admin review. We&apos;ll email you once it&apos;s
           decided.
-        </p>
+        </StatusBanner>
       )}
-      {error && (
-        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-          {error}
-        </p>
-      )}
+      {error && <StatusBanner tone="error">{error}</StatusBanner>}
 
       {course.verification_status === "pending" &&
         ownerSession?.user?.id === course.verified_owner_id && (
-          <p className="mt-4 rounded-md bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-            Your claim on this course is awaiting admin review.
-          </p>
+          <StatusBanner tone="warning">Your claim on this course is awaiting admin review.</StatusBanner>
         )}
 
       {course.verification_status === "unclaimed" &&
         ownerSession?.user?.id === course.claim_rejection_owner_id &&
         course.claim_rejection_reason && (
-          <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+          <StatusBanner tone="error">
             Your claim on this course was rejected: {course.claim_rejection_reason}. You can
             claim it again below to appeal.
-          </p>
+          </StatusBanner>
         )}
 
       {course.verification_status === "unclaimed" && (
-        <div className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
+        <div className="mt-4 text-sm text-ink/60 dark:text-ink-dark/60">
           {!ownerSession?.user?.id ? (
             <>
               Are you the creator of this course?{" "}
@@ -263,7 +261,7 @@ export default async function CourseDetailPage({
         </div>
       )}
 
-      <h1 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+      <h1 className="mt-3 text-3xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
         {course.title}
       </h1>
 
@@ -272,44 +270,44 @@ export default async function CourseDetailPage({
           <div className="mt-2">
             <StarRating score={course.overall_score} reviewCount={course.total_reviews} />
           </div>
-          <p className="mt-1 text-zinc-600 dark:text-zinc-400">by {course.provider_name}</p>
+          <p className="mt-1 text-ink/60 dark:text-ink-dark/60">by {course.provider_name}</p>
 
-          <a
-            href={`/go/${course.slug}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-1 rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-          >
-            Go to course →
-          </a>
+          <Button href={`/go/${course.slug}`} target="_blank" rel="noopener noreferrer" className="group mt-4">
+            Go to course
+            <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Button>
 
-          <div className="mt-6 grid grid-cols-2 gap-4 rounded-md border border-zinc-200 p-4 sm:grid-cols-3 dark:border-zinc-800">
+          <div className="mt-6 grid grid-cols-2 gap-4 border border-hairline p-4 sm:grid-cols-3 dark:border-hairline-dark">
             <div>
-              <div className="text-xs uppercase text-zinc-500 dark:text-zinc-400">Price</div>
-              <div className="mt-1 flex items-baseline gap-2">
-                <span className="font-medium text-zinc-900 dark:text-zinc-50">
+              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+                Price
+              </div>
+              <div className="mt-1 flex items-baseline gap-2 tabular-nums">
+                <span className="font-medium text-ink dark:text-ink-dark">
                   {course.price ? `$${course.price}` : "N/A"}
                 </span>
                 {course.compare_at_price &&
                   course.price &&
                   Number(course.compare_at_price) > Number(course.price) && (
-                    <span className="text-sm text-zinc-400 line-through dark:text-zinc-500">
+                    <span className="text-sm text-ink/40 line-through dark:text-ink-dark/40">
                       ${course.compare_at_price}
                     </span>
                   )}
               </div>
             </div>
             <div>
-              <div className="text-xs uppercase text-zinc-500 dark:text-zinc-400">Duration</div>
-              <div className="mt-1 font-medium text-zinc-900 dark:text-zinc-50">
+              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+                Duration
+              </div>
+              <div className="mt-1 font-medium tabular-nums text-ink dark:text-ink-dark">
                 {course.duration_hours ? `${course.duration_hours} hours` : "N/A"}
               </div>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <div className="text-xs uppercase text-zinc-500 dark:text-zinc-400">
+              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
                 Prerequisites
               </div>
-              <div className="mt-1 font-medium text-zinc-900 dark:text-zinc-50">
+              <div className="mt-1 font-medium text-ink dark:text-ink-dark">
                 {course.prerequisites || "None listed"}
               </div>
             </div>
@@ -317,10 +315,10 @@ export default async function CourseDetailPage({
 
           {course.description && (
             <section className="mt-8">
-              <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+              <h2 className="text-lg font-black uppercase tracking-tight text-ink dark:text-ink-dark">
                 Description
               </h2>
-              <p className="mt-2 whitespace-pre-line text-zinc-700 dark:text-zinc-300">
+              <p className="mt-2 whitespace-pre-line text-ink/75 dark:text-ink-dark/75">
                 {course.description}
               </p>
             </section>
@@ -328,10 +326,10 @@ export default async function CourseDetailPage({
 
           {course.syllabus && (
             <section className="mt-8">
-              <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+              <h2 className="text-lg font-black uppercase tracking-tight text-ink dark:text-ink-dark">
                 Syllabus
               </h2>
-              <p className="mt-2 whitespace-pre-line text-zinc-700 dark:text-zinc-300">
+              <p className="mt-2 whitespace-pre-line text-ink/75 dark:text-ink-dark/75">
                 {course.syllabus}
               </p>
             </section>
@@ -344,10 +342,10 @@ export default async function CourseDetailPage({
               sectionId={section.id}
               className="mt-8"
             >
-              <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+              <h2 className="text-lg font-black uppercase tracking-tight text-ink dark:text-ink-dark">
                 {sectionTypeLabel(section.section_type)}
               </h2>
-              <p className="mt-2 whitespace-pre-line text-zinc-700 dark:text-zinc-300">
+              <p className="mt-2 whitespace-pre-line text-ink/75 dark:text-ink-dark/75">
                 {section.content}
               </p>
               {section.image_url && (
@@ -355,7 +353,7 @@ export default async function CourseDetailPage({
                 <img
                   src={section.image_url}
                   alt={sectionTypeLabel(section.section_type)}
-                  className="mt-3 max-h-80 w-full rounded-md object-cover"
+                  className="mt-3 max-h-80 w-full object-cover"
                 />
               )}
               {section.video_url && (
@@ -363,19 +361,19 @@ export default async function CourseDetailPage({
                   href={section.video_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-1 text-sm font-medium underline"
+                  className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium underline"
                 >
-                  ▶ Watch video
+                  <PlayIcon className="h-4 w-4" /> Watch video
                 </a>
               )}
             </TrackedSection>
           ))}
 
           {unlockedParam && (
-            <p className="mt-8 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+            <StatusBanner tone="success">
               Payment received — it can take a few seconds for Stripe to confirm. Refresh if this
               still shows locked.
-            </p>
+            </StatusBanner>
           )}
 
           <ReviewSection
@@ -392,8 +390,8 @@ export default async function CourseDetailPage({
           />
         </>
       ) : (
-        <section className="mt-6 rounded-md border border-zinc-200 bg-zinc-50 p-6 text-center dark:border-zinc-800 dark:bg-zinc-900">
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <Card className="mt-6 text-center">
+          <p className="text-sm text-ink/60 dark:text-ink-dark/60">
             Pricing, description, syllabus, rating, and reviews for this course are locked.
           </p>
           {access.reason === "signin_required" ? (
@@ -409,23 +407,17 @@ export default async function CourseDetailPage({
                 <form action={spendBonusCreditAction}>
                   <input type="hidden" name="course_id" value={course.id} />
                   <input type="hidden" name="slug" value={course.slug} />
-                  <button
-                    type="submit"
-                    className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
-                  >
+                  <Button type="submit" variant="secondary" size="sm">
                     Use 1 bonus credit ({access.bonusCredits} available)
-                  </button>
+                  </Button>
                 </form>
               )}
               <form action={startCourseUnlockCheckoutAction}>
                 <input type="hidden" name="course_id" value={course.id} />
                 <input type="hidden" name="slug" value={course.slug} />
-                <button
-                  type="submit"
-                  className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-                >
+                <Button type="submit" size="sm">
                   Unlock this course — $0.99
-                </button>
+                </Button>
               </form>
               <form action={startCustomerPlanCheckoutAction}>
                 <button type="submit" className="text-sm underline">
@@ -434,7 +426,7 @@ export default async function CourseDetailPage({
               </form>
             </div>
           )}
-        </section>
+        </Card>
       )}
     </main>
   );

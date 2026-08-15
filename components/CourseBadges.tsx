@@ -12,11 +12,11 @@ const iconSizeClasses: Record<BadgeSize, string> = {
   md: "h-3.5 w-3.5",
 };
 
-// Just an icon + colored label — no pill/background container.
+// Just an icon + label — no pill/background container.
 export function RegisteredBusinessBadge({ size = "md" }: { size?: BadgeSize }) {
   return (
     <span
-      className={`inline-flex items-center font-medium text-zinc-500 dark:text-zinc-400 ${textSizeClasses[size]}`}
+      className={`inline-flex items-center font-medium uppercase tracking-eyebrow text-ink/55 dark:text-ink-dark/55 ${textSizeClasses[size]}`}
     >
       <ShieldIcon className={`${iconSizeClasses[size]} shrink-0`} />
       Registered Business
@@ -24,13 +24,14 @@ export function RegisteredBusinessBadge({ size = "md" }: { size?: BadgeSize }) {
   );
 }
 
-// Brand red, matching the logo's own mark — not green. The site runs a
-// strict two-color system (black/white base, red as the one deliberate
-// accent), and a verified badge is exactly the kind of moment red is for.
+// Monochrome, matching the site's blunt-badge language established on the
+// editorial-minimal design — status is shown by weight/opacity, not a
+// reserved accent color. Verified reads darker/heavier than Registered
+// Business since it's the stronger claim.
 export function VerifiedCourseBadge({ size = "md" }: { size?: BadgeSize }) {
   return (
     <span
-      className={`inline-flex items-center font-medium text-red-600 dark:text-red-500 ${textSizeClasses[size]}`}
+      className={`inline-flex items-center font-medium uppercase tracking-eyebrow text-ink dark:text-ink-dark ${textSizeClasses[size]}`}
     >
       <CheckMarkIcon className={`${iconSizeClasses[size]} shrink-0`} />
       Verified Course

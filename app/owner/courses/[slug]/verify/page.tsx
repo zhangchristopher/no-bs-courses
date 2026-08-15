@@ -4,6 +4,11 @@ import { notFound } from "next/navigation";
 import { ownerAuth } from "@/owner-auth";
 import { getOwnedCourseForContract } from "@/lib/ownerCourses";
 import { signContractAction } from "./actions";
+import { AuthShell } from "@/components/ui/AuthShell";
+import { FormField } from "@/components/ui/FormField";
+import { StatusBanner } from "@/components/ui/StatusBanner";
+import { Button } from "@/components/ui/Button";
+import { ArrowIcon } from "@/components/icons";
 
 type Params = Promise<{ slug: string }>;
 type SearchParams = Promise<{ error?: string }>;
@@ -23,14 +28,11 @@ export default async function VerifyCoursePage({
 
   if (!session?.user?.id) {
     return (
-      <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Sign in required
-        </h1>
-        <Link href="/owner/signin" className="mt-4 inline-block underline">
+      <AuthShell title="Sign in required" maxWidthClassName="max-w-2xl">
+        <Link href="/owner/signin" className="inline-block underline">
           Sign in
         </Link>
-      </main>
+      </AuthShell>
     );
   }
 
@@ -40,14 +42,17 @@ export default async function VerifyCoursePage({
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
-      <Link href="/owner/dashboard" className="text-sm text-zinc-500 hover:underline dark:text-zinc-400">
-        &larr; Back to dashboard
+      <Link
+        href="/owner/dashboard"
+        className="inline-flex items-center gap-1.5 text-sm text-ink/55 hover:underline dark:text-ink-dark/55"
+      >
+        <ArrowIcon direction="left" className="h-3.5 w-3.5" /> Back to dashboard
       </Link>
 
-      <h1 className="mt-3 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
+      <h1 className="mt-3 text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
         Verified Course agreement — &ldquo;{course.title}&rdquo;
       </h1>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="mt-2 text-sm text-ink/60 dark:text-ink-dark/60">
         Submitting this goes to an admin for review — the &ldquo;Verified Course&rdquo; badge,
         click analytics, and the ability to respond to reviews only activate once your affiliate
         link is approved. It replaces the plain course-site link everywhere visitors click
@@ -55,30 +60,22 @@ export default async function VerifyCoursePage({
       </p>
 
       {course.affiliate_link_status === "verified" && (
-        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-          ✓ Your affiliate link is verified and live.
-        </p>
+        <StatusBanner tone="success">Your affiliate link is verified and live.</StatusBanner>
       )}
       {course.affiliate_link_status === "pending" && (
-        <p className="mt-4 rounded-md bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-          Your submission is awaiting admin review.
-        </p>
+        <StatusBanner tone="warning">Your submission is awaiting admin review.</StatusBanner>
       )}
       {course.affiliate_link_status === "rejected" && (
-        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <StatusBanner tone="error">
           Your previous submission was rejected
           {course.affiliate_link_rejection_reason ? `: ${course.affiliate_link_rejection_reason}` : "."} You
           can resubmit below.
-        </p>
+        </StatusBanner>
       )}
-      {error && (
-        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-          {error}
-        </p>
-      )}
+      {error && <StatusBanner tone="error">{error}</StatusBanner>}
 
-      <div className="mt-6 max-h-64 overflow-y-auto rounded-md border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
-        <p className="text-xs font-semibold uppercase text-zinc-500 dark:text-zinc-400">
+      <div className="mt-6 max-h-64 overflow-y-auto border border-hairline bg-ink/[0.02] p-4 text-sm text-ink/75 dark:border-hairline-dark dark:bg-ink-dark/[0.03] dark:text-ink-dark/75">
+        <p className="text-xs font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
           Sample terms — not legally binding. Replace with real reviewed legal terms before
           using this in production.
         </p>
@@ -100,43 +97,33 @@ export default async function VerifyCoursePage({
         <input type="hidden" name="course_id" value={course.id} />
         <input type="hidden" name="slug" value={course.slug} />
 
-        <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-          Your affiliate link
-          <input
-            name="affiliate_url"
-            type="url"
-            required
-            defaultValue={course.affiliate_url ?? ""}
-            placeholder="https://..."
-            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-          />
-        </label>
+        <FormField
+          label="Your affiliate link"
+          name="affiliate_url"
+          type="url"
+          required
+          defaultValue={course.affiliate_url ?? ""}
+          placeholder="https://..."
+        />
+        <FormField
+          label="Type your full legal name to sign"
+          name="signed_name"
+          type="text"
+          required
+          defaultValue={course.contract_signed_name ?? ""}
+        />
 
-        <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-          Type your full legal name to sign
-          <input
-            name="signed_name"
-            type="text"
-            required
-            defaultValue={course.contract_signed_name ?? ""}
-            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-          />
-        </label>
-
-        <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
-          <input type="checkbox" name="agree" required className="accent-zinc-900" />
+        <label className="flex items-center gap-2 text-sm text-ink/70 dark:text-ink-dark/70">
+          <input type="checkbox" name="agree" required className="accent-ink dark:accent-ink-dark" />
           I have read and agree to the terms above.
         </label>
 
-        <button
-          type="submit"
-          className="self-start rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-        >
+        <Button type="submit" className="self-start">
           {course.contract_signed_at ? "Update agreement" : "Sign agreement"}
-        </button>
+        </Button>
 
         {course.contract_signed_at && (
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="text-xs text-ink/50 dark:text-ink-dark/50">
             Originally signed {new Date(course.contract_signed_at).toLocaleDateString()}.
           </p>
         )}

@@ -1,6 +1,7 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { confirmEmailVerificationAction } from "./actions";
+import { AuthShell } from "@/components/ui/AuthShell";
+import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = { title: "Verify Email" };
 
@@ -19,64 +20,46 @@ export default async function VerifyEmailPage({
 
   if (status === "success") {
     return (
-      <main className="mx-auto max-w-sm px-4 py-16 sm:px-6 text-center">
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">Email verified</h1>
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+      <AuthShell title="Email verified" align="center">
+        <p className="text-sm text-ink/60 dark:text-ink-dark/60">
           Your {type === "owner" ? "business" : "learner"} account email is confirmed.
         </p>
-        <Link
-          href={type === "owner" ? "/owner/dashboard" : "/courses"}
-          className="mt-6 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-        >
+        <Button href={type === "owner" ? "/owner/dashboard" : "/courses"} className="mt-6">
           Continue
-        </Link>
-      </main>
+        </Button>
+      </AuthShell>
     );
   }
 
   if (status === "error") {
     return (
-      <main className="mx-auto max-w-sm px-4 py-16 sm:px-6 text-center">
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Couldn&apos;t verify email
-        </h1>
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+      <AuthShell title="Couldn't verify email" align="center">
+        <p className="text-sm text-ink/60 dark:text-ink-dark/60">
           {ERROR_MESSAGES[reason ?? ""] ?? "Something went wrong verifying this link."}
         </p>
-      </main>
+      </AuthShell>
     );
   }
 
   if (!token) {
     return (
-      <main className="mx-auto max-w-sm px-4 py-16 sm:px-6 text-center">
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Missing verification link
-        </h1>
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+      <AuthShell title="Missing verification link" align="center">
+        <p className="text-sm text-ink/60 dark:text-ink-dark/60">
           Open the verification link from your email to continue.
         </p>
-      </main>
+      </AuthShell>
     );
   }
 
   return (
-    <main className="mx-auto max-w-sm px-4 py-16 sm:px-6 text-center">
-      <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-        Confirm your email address
-      </h1>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+    <AuthShell title="Confirm your email address" align="center">
+      <p className="text-sm text-ink/60 dark:text-ink-dark/60">
         Click below to finish verifying your No BS Courses account email.
       </p>
       <form action={confirmEmailVerificationAction} className="mt-6">
         <input type="hidden" name="token" value={token} />
-        <button
-          type="submit"
-          className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-        >
-          Verify email
-        </button>
+        <Button type="submit">Verify email</Button>
       </form>
-    </main>
+    </AuthShell>
   );
 }

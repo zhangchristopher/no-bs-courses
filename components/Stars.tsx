@@ -5,7 +5,7 @@ export default function Stars({ rating }: { rating: number }) {
       {Array.from({ length: 5 }, (_, i) => (
         <span
           key={i}
-          className={i < rounded ? "text-amber-500" : "text-zinc-300 dark:text-zinc-700"}
+          className={i < rounded ? "text-ink dark:text-ink-dark" : "text-ink/20 dark:text-ink-dark/20"}
         >
           ★
         </span>

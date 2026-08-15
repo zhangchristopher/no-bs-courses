@@ -15,6 +15,12 @@ import {
   addCourseSectionAction,
   deleteCourseSectionAction,
 } from "./actions";
+import { AuthShell } from "@/components/ui/AuthShell";
+import { FormField, FormTextarea } from "@/components/ui/FormField";
+import { StatusBanner } from "@/components/ui/StatusBanner";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { ArrowIcon, CheckMarkIcon, LockIcon, PlayIcon } from "@/components/icons";
 
 type Params = Promise<{ slug: string }>;
 type SearchParams = Promise<{ error?: string; updated?: string }>;
@@ -34,14 +40,11 @@ export default async function EditOwnerCoursePage({
 
   if (!session?.user?.id) {
     return (
-      <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Sign in required
-        </h1>
-        <Link href="/owner/signin" className="mt-4 inline-block underline">
+      <AuthShell title="Sign in required" maxWidthClassName="max-w-2xl">
+        <Link href="/owner/signin" className="inline-block underline">
           Sign in
         </Link>
-      </main>
+      </AuthShell>
     );
   }
 
@@ -57,124 +60,80 @@ export default async function EditOwnerCoursePage({
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
-      <Link href="/owner/dashboard" className="text-sm text-zinc-500 hover:underline dark:text-zinc-400">
-        &larr; Back to dashboard
+      <Link
+        href="/owner/dashboard"
+        className="inline-flex items-center gap-1.5 text-sm text-ink/55 hover:underline dark:text-ink-dark/55"
+      >
+        <ArrowIcon direction="left" className="h-3.5 w-3.5" /> Back to dashboard
       </Link>
 
-      <h1 className="mt-3 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
+      <h1 className="mt-3 text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
         Edit &ldquo;{course.title}&rdquo;
       </h1>
 
-      {error && (
-        <p className="mt-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-          {error}
-        </p>
-      )}
-      {updated === "discount" && (
-        <p className="mt-4 rounded-md bg-emerald-50 px-4 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-          Discount updated.
-        </p>
-      )}
+      {error && <StatusBanner tone="error">{error}</StatusBanner>}
+      {updated === "discount" && <StatusBanner tone="success">Discount updated.</StatusBanner>}
 
       <form action={updateOwnerCourseAction} className="mt-6 flex flex-col gap-4">
         <input type="hidden" name="course_id" value={course.id} />
         <input type="hidden" name="slug" value={course.slug} />
 
-        <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-          Description
-          <textarea
-            name="description"
-            rows={3}
-            defaultValue={course.description ?? ""}
-            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-          />
-          <span className="mt-1 block text-xs font-normal text-zinc-500 dark:text-zinc-400">
-            1000 words max (Registered Business limit).
-          </span>
-        </label>
-
-        <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-          Syllabus
-          <textarea
-            name="syllabus"
-            rows={5}
-            defaultValue={course.syllabus ?? ""}
-            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-          />
-        </label>
+        <FormTextarea
+          label="Description"
+          name="description"
+          rows={3}
+          defaultValue={course.description ?? ""}
+          helperText="1000 words max (Registered Business limit)."
+        />
+        <FormTextarea label="Syllabus" name="syllabus" rows={5} defaultValue={course.syllabus ?? ""} />
 
         <div className="grid grid-cols-2 gap-4">
-          <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-            Price (USD)
-            <input
-              name="price"
-              type="number"
-              step="0.01"
-              min="0"
-              defaultValue={course.price ?? ""}
-              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-            />
-          </label>
-          <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-            Duration (hours)
-            <input
-              name="duration_hours"
-              type="number"
-              step="0.01"
-              min="0"
-              defaultValue={course.duration_hours ?? ""}
-              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-            />
-          </label>
+          <FormField
+            label="Price (USD)"
+            name="price"
+            type="number"
+            step="0.01"
+            min="0"
+            defaultValue={course.price ?? ""}
+          />
+          <FormField
+            label="Duration (hours)"
+            name="duration_hours"
+            type="number"
+            step="0.01"
+            min="0"
+            defaultValue={course.duration_hours ?? ""}
+          />
         </div>
 
-        <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-          Prerequisites
-          <input
-            name="prerequisites"
-            type="text"
-            defaultValue={course.prerequisites ?? ""}
-            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-          />
-        </label>
+        <FormField label="Prerequisites" name="prerequisites" type="text" defaultValue={course.prerequisites ?? ""} />
+        <FormField label="Thumbnail URL" name="thumbnail_url" type="url" defaultValue={course.thumbnail_url ?? ""} />
 
-        <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-          Thumbnail URL
-          <input
-            name="thumbnail_url"
-            type="url"
-            defaultValue={course.thumbnail_url ?? ""}
-            className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-          />
-        </label>
-
-        <button
-          type="submit"
-          className="self-start rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-        >
+        <Button type="submit" className="self-start">
           Save changes
-        </button>
+        </Button>
       </form>
 
-      <section className="mt-10 border-t border-zinc-200 pt-6 dark:border-zinc-800">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+      <section className="mt-10 border-t border-hairline pt-6 dark:border-hairline-dark">
+        <h2 className="text-lg font-black uppercase tracking-tight text-ink dark:text-ink-dark">
           Extra sections ({sections.length}/{MAX_SECTIONS_PER_COURSE})
         </h2>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="mt-1 text-sm text-ink/60 dark:text-ink-dark/60">
           Add up to {MAX_SECTIONS_PER_COURSE} extra sections to your listing, one of each type.
         </p>
 
-        <div className="mt-4 rounded-md border border-violet-200 bg-violet-50 p-4 dark:border-violet-900 dark:bg-violet-950">
-          <p className="text-sm font-medium text-violet-900 dark:text-violet-200">
+        <Card tone={course.affiliate_link_status === "verified" ? "default" : "warning"} className="mt-4">
+          <p className="flex items-center gap-1.5 text-sm font-semibold text-ink dark:text-ink-dark">
+            {course.affiliate_link_status === "verified" && <CheckMarkIcon className="h-4 w-4 shrink-0" />}
             {course.affiliate_link_status === "verified"
-              ? "✓ Affiliate Link"
+              ? "Affiliate Link"
               : course.affiliate_link_status === "pending"
                 ? "Affiliate Link (pending review)"
                 : course.affiliate_link_status === "rejected"
                   ? "Affiliate Link (rejected)"
                   : "Affiliate Link"}
           </p>
-          <p className="mt-1 text-sm text-violet-800 dark:text-violet-300">
+          <p className="mt-1 text-sm text-ink/70 dark:text-ink-dark/70">
             {course.affiliate_link_status === "verified"
               ? "Your affiliate link is verified and live. Update it or review the Verified Course agreement anytime — resubmitting requires re-approval."
               : course.affiliate_link_status === "pending"
@@ -185,75 +144,64 @@ export default async function EditOwnerCoursePage({
           </p>
           <Link
             href={`/owner/courses/${course.slug}/verify`}
-            className="mt-2 inline-block text-sm font-medium text-violet-900 underline dark:text-violet-200"
+            className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-ink underline dark:text-ink-dark"
           >
             {course.affiliate_link_status === "verified"
-              ? "Manage affiliate link →"
+              ? "Manage affiliate link"
               : course.affiliate_link_status === "pending"
-                ? "View submission →"
+                ? "View submission"
                 : course.affiliate_link_status === "rejected"
-                  ? "Resubmit affiliate link →"
-                  : "Add affiliate link & unlock Verified Course →"}
+                  ? "Resubmit affiliate link"
+                  : "Add affiliate link & unlock Verified Course"}
+            <ArrowIcon className="h-3.5 w-3.5" />
           </Link>
-        </div>
+        </Card>
 
-        <div className="mt-4 rounded-md border border-zinc-200 p-4 dark:border-zinc-800">
-          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+        <Card className="mt-4">
+          <h3 className="text-sm font-semibold uppercase tracking-eyebrow text-ink dark:text-ink-dark">
             Affiliate discount
           </h3>
           {course.affiliate_link_status === "verified" ? (
             <form action={updateDiscountAction} className="mt-2 flex flex-col gap-3">
               <input type="hidden" name="course_id" value={course.id} />
               <input type="hidden" name="slug" value={course.slug} />
-              <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-                Compare-at price (optional)
-                <input
-                  name="compare_at_price"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  placeholder="Shown crossed out"
-                  defaultValue={course.compare_at_price ?? ""}
-                  className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-                />
-              </label>
-              <button
-                type="submit"
-                className="self-start rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
-              >
+              <FormField
+                label="Compare-at price (optional)"
+                name="compare_at_price"
+                type="number"
+                step="0.01"
+                min="0"
+                placeholder="Shown crossed out"
+                defaultValue={course.compare_at_price ?? ""}
+              />
+              <Button type="submit" variant="secondary" size="sm" className="self-start">
                 Save discount
-              </button>
+              </Button>
             </form>
           ) : (
-            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-              🔒 Discounts are a Verified Course perk — available once your affiliate link is
-              verified.
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-ink/55 dark:text-ink-dark/55">
+              <LockIcon className="h-3.5 w-3.5 shrink-0" /> Discounts are a Verified Course perk —
+              available once your affiliate link is verified.
             </p>
           )}
-        </div>
+        </Card>
 
         <div className="mt-4 flex flex-col gap-3">
           {sections.map((section) => (
-            <div
-              key={section.id}
-              className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800"
-            >
+            <Card key={section.id}>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
+                <span className="text-sm font-semibold uppercase tracking-eyebrow text-ink dark:text-ink-dark">
                   {sectionTypeLabel(section.section_type)}
                 </span>
                 <form action={deleteCourseSectionAction}>
                   <input type="hidden" name="section_id" value={section.id} />
                   <input type="hidden" name="slug" value={course.slug} />
-                  <button
-                    type="submit"
-                    className="text-xs text-red-700 hover:underline dark:text-red-400"
-                  >
+                  <button type="submit" className="text-xs text-ink/60 hover:underline dark:text-ink-dark/60">
                     Remove
                   </button>
                 </form>
               </div>
-              <p className="mt-2 whitespace-pre-line text-sm text-zinc-700 dark:text-zinc-300">
+              <p className="mt-2 whitespace-pre-line text-sm text-ink/75 dark:text-ink-dark/75">
                 {section.content}
               </p>
               {section.image_url && (
@@ -261,7 +209,7 @@ export default async function EditOwnerCoursePage({
                 <img
                   src={section.image_url}
                   alt={sectionTypeLabel(section.section_type)}
-                  className="mt-2 max-h-40 rounded-md object-cover"
+                  className="mt-2 max-h-40 object-cover"
                 />
               )}
               {section.video_url && (
@@ -269,29 +217,26 @@ export default async function EditOwnerCoursePage({
                   href={section.video_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-block text-sm underline"
+                  className="mt-2 inline-flex items-center gap-1.5 text-sm underline"
                 >
-                  ▶ Watch video
+                  <PlayIcon className="h-4 w-4" /> Watch video
                 </a>
               )}
-            </div>
+            </Card>
           ))}
         </div>
 
         {canAddSection ? (
-          <form
-            action={addCourseSectionAction}
-            className="mt-4 flex flex-col gap-3 rounded-md border border-zinc-200 p-4 dark:border-zinc-800"
-          >
+          <form action={addCourseSectionAction} className="mt-4 flex flex-col gap-3 border border-hairline p-4 dark:border-hairline-dark">
             <input type="hidden" name="course_id" value={course.id} />
             <input type="hidden" name="slug" value={course.slug} />
 
-            <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
+            <label className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink dark:text-ink-dark">
               Section type
               <select
                 name="section_type"
                 required
-                className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                className="mt-2 w-full border border-hairline bg-transparent px-3 py-2 text-sm normal-case tracking-normal text-ink focus:border-ink focus:outline-none dark:border-hairline-dark dark:bg-cream-dark dark:text-ink-dark dark:focus:border-ink-dark"
               >
                 {availableTypes.map((t) => (
                   <option key={t.value} value={t.value}>
@@ -301,45 +246,19 @@ export default async function EditOwnerCoursePage({
               </select>
             </label>
 
-            <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-              Content
-              <textarea
-                name="content"
-                rows={3}
-                required
-                className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-              />
-            </label>
+            <FormTextarea label="Content" name="content" rows={3} required />
 
             <div className="grid grid-cols-2 gap-4">
-              <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-                Image URL (optional)
-                <input
-                  name="image_url"
-                  type="url"
-                  className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-                />
-              </label>
-              <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-                Video URL (optional)
-                <input
-                  name="video_url"
-                  type="url"
-                  placeholder="YouTube, Vimeo, direct link..."
-                  className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-                />
-              </label>
+              <FormField label="Image URL (optional)" name="image_url" type="url" />
+              <FormField label="Video URL (optional)" name="video_url" type="url" placeholder="YouTube, Vimeo, direct link..." />
             </div>
 
-            <button
-              type="submit"
-              className="self-start rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
-            >
+            <Button type="submit" variant="secondary" size="sm" className="self-start">
               Add section
-            </button>
+            </Button>
           </form>
         ) : (
-          <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-4 text-sm text-ink/50 dark:text-ink-dark/50">
             You&apos;ve reached the {MAX_SECTIONS_PER_COURSE}-section limit.
           </p>
         )}

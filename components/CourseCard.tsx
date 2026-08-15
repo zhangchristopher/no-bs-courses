@@ -15,10 +15,10 @@ export default function CourseCard({ course }: { course: CourseListItem }) {
   return (
     <Link
       href={`/courses/${course.slug}`}
-      className="group flex flex-col overflow-hidden rounded-md border border-zinc-200 bg-white transition hover:border-2 hover:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-50"
+      className="group flex flex-col border border-hairline bg-cream transition-colors hover:border-ink dark:border-hairline-dark dark:bg-cream-dark dark:hover:border-ink-dark"
     >
       {course.thumbnail_url ? (
-        <div className="relative h-36 w-full bg-zinc-100 dark:bg-zinc-800">
+        <div className="relative h-36 w-full bg-ink/5 dark:bg-ink-dark/10">
           <Image
             src={course.thumbnail_url}
             alt={course.title}
@@ -31,39 +31,39 @@ export default function CourseCard({ course }: { course: CourseListItem }) {
         // No real thumbnail from the provider — a bold typographic tile
         // beats either a blank box or a random stock photo that isn't
         // actually the course.
-        <div className="flex h-36 w-full items-center justify-center bg-zinc-900 p-4 dark:bg-black">
-          <p className="line-clamp-3 text-center font-headline text-lg font-black uppercase leading-tight tracking-tight text-white">
+        <div className="flex h-36 w-full items-center justify-center bg-ink p-4 dark:bg-ink-dark">
+          <p className="line-clamp-3 text-center font-headline text-lg font-black uppercase leading-tight tracking-tight text-cream dark:text-cream-dark">
             {course.title}
           </p>
         </div>
       )}
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <h3 className="font-semibold text-zinc-900 group-hover:underline dark:text-zinc-50">
+        <h3 className="font-semibold text-ink group-hover:underline dark:text-ink-dark">
           {course.title}
         </h3>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">{course.provider_name}</p>
+        <p className="text-sm text-ink/55 dark:text-ink-dark/55">{course.provider_name}</p>
         <TierBadge course={course} />
         <StarRating score={course.overall_score} reviewCount={course.total_reviews} />
         {course.description && (
-          <p className="line-clamp-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="line-clamp-2 text-sm text-ink/60 dark:text-ink-dark/60">
             {course.description}
           </p>
         )}
-        <div className="mt-auto flex items-center justify-between pt-2 text-sm">
+        <div className="mt-auto flex items-center justify-between pt-2 text-sm tabular-nums">
           <span className="flex items-baseline gap-1.5">
-            <span className="font-medium text-zinc-900 dark:text-zinc-50">
+            <span className="font-medium text-ink dark:text-ink-dark">
               {course.price ? `$${course.price}` : "Price N/A"}
             </span>
             {course.compare_at_price &&
               course.price &&
               Number(course.compare_at_price) > Number(course.price) && (
-                <span className="text-xs text-zinc-400 line-through dark:text-zinc-500">
+                <span className="text-xs text-ink/40 line-through dark:text-ink-dark/40">
                   ${course.compare_at_price}
                 </span>
               )}
           </span>
           {course.duration_hours && (
-            <span className="text-zinc-500 dark:text-zinc-400">{course.duration_hours}h</span>
+            <span className="text-ink/55 dark:text-ink-dark/55">{course.duration_hours}h</span>
           )}
         </div>
       </div>

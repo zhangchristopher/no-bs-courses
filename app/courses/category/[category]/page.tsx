@@ -52,15 +52,17 @@ export default async function CategoryPage({
         items={[{ label: "Home", href: "/" }, { label: "Courses", href: "/courses" }, { label: match.category }]}
       />
 
-      <h1 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+      <h1 className="mt-3 text-3xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
         Best {match.category} Courses
       </h1>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+      <p className="mt-2 text-ink/60 dark:text-ink-dark/60">
         {match.count} course{match.count === 1 ? "" : "s"} in {match.category}.
       </p>
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        <span className="text-sm text-zinc-500 dark:text-zinc-400">Sort by:</span>
+        <span className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+          Sort by
+        </span>
         {COURSE_SORT_OPTIONS.map((opt) => {
           const href =
             opt.value === "featured"
@@ -73,8 +75,8 @@ export default async function CategoryPage({
               href={href}
               className={
                 active
-                  ? "rounded-md bg-zinc-900 px-3 py-1 text-xs font-medium text-white dark:bg-zinc-50 dark:text-zinc-900"
-                  : "rounded-md border border-zinc-300 px-3 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                  ? "bg-ink px-3 py-1 text-[11px] font-semibold uppercase tracking-eyebrow text-cream dark:bg-ink-dark dark:text-cream-dark"
+                  : "border border-hairline px-3 py-1 text-[11px] font-semibold uppercase tracking-eyebrow text-ink/70 hover:border-ink dark:border-hairline-dark dark:text-ink-dark/70 dark:hover:border-ink-dark"
               }
             >
               {opt.label}
