@@ -7,6 +7,10 @@ import sql from "@/lib/db";
 import { categorySlug } from "@/lib/courses";
 import { recalculateCourseScores } from "@/lib/scores";
 import { checkAndFlagReviewVelocity } from "@/lib/reviewFlags";
+import { isSelfReview } from "@/lib/reviews";
+import { isLikelyBot } from "@/lib/botCheck";
+import { checkRateLimit } from "@/lib/rateLimit";
+import { getClientIp } from "@/lib/clientIp";
 
 export async function submitReviewAction(formData: FormData) {
   const session = await auth();
@@ -14,8 +18,24 @@ export async function submitReviewAction(formData: FormData) {
     redirect("/signin");
   }
 
-  const courseId = String(formData.get("course_id") ?? "");
   const slug = String(formData.get("slug") ?? "");
+
+  if (isLikelyBot(formData)) {
+    redirect(`/courses/${slug}`);
+  }
+
+  const ip = await getClientIp();
+  const [byUser, byIp] = await Promise.all([
+    checkRateLimit({ key: `review:user:${session.user.id}`, limit: 10, windowSeconds: 3600 }),
+    checkRateLimit({ key: `review:ip:${ip}`, limit: 20, windowSeconds: 3600 }),
+  ]);
+  if (!byUser.allowed || !byIp.allowed) {
+    redirect(
+      `/courses/${slug}?error=${encodeURIComponent("Too many reviews submitted. Try again later.")}`
+    );
+  }
+
+  const courseId = String(formData.get("course_id") ?? "");
   const category = String(formData.get("category") ?? "");
   const rating = Number(formData.get("rating"));
   const reviewText = String(formData.get("review_text") ?? "").trim();
@@ -25,6 +45,12 @@ export async function submitReviewAction(formData: FormData) {
   }
 
   const reviewerId = session.user.id;
+
+  if (await isSelfReview(courseId, reviewerId)) {
+    redirect(
+      `/courses/${slug}?error=${encodeURIComponent("You can't review a course you submitted or own.")}`
+    );
+  }
 
   const [existing] = await sql<{ id: string; edit_locked: boolean; edit_deadline: string }[]>`
     SELECT id, edit_locked, edit_deadline
@@ -83,6 +109,22 @@ export async function submitPurchaseVerificationAction(formData: FormData) {
 
   const reviewId = String(formData.get("review_id") ?? "");
   const slug = String(formData.get("slug") ?? "");
+
+  if (isLikelyBot(formData)) {
+    redirect(`/courses/${slug}`);
+  }
+
+  const ip = await getClientIp();
+  const [byUser, byIp] = await Promise.all([
+    checkRateLimit({ key: `purchase-verify:user:${session.user.id}`, limit: 10, windowSeconds: 3600 }),
+    checkRateLimit({ key: `purchase-verify:ip:${ip}`, limit: 20, windowSeconds: 3600 }),
+  ]);
+  if (!byUser.allowed || !byIp.allowed) {
+    redirect(
+      `/courses/${slug}?error=${encodeURIComponent("Too many attempts. Try again later.")}`
+    );
+  }
+
   const evidence = String(formData.get("purchase_evidence") ?? "").trim();
 
   if (!evidence) {

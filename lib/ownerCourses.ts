@@ -115,6 +115,7 @@ export async function createCourse(params: {
   title: string;
   providerName: string;
   platformUrl: string;
+  platform: string | null;
   category: string | null;
   description: string | null;
   syllabus: string | null;
@@ -129,12 +130,12 @@ export async function createCourse(params: {
 
   const [course] = await sql<{ id: string; slug: string }[]>`
     INSERT INTO courses (
-      slug, title, provider_name, platform_url, category,
+      slug, title, provider_name, platform_url, platform, category,
       listing_status, added_by_user_id, added_by_owner_id
     )
     VALUES (
-      ${slug}, ${params.title}, ${params.providerName}, ${params.platformUrl}, ${params.category},
-      'pending', ${params.addedByUserId}, ${params.addedByOwnerId}
+      ${slug}, ${params.title}, ${params.providerName}, ${params.platformUrl}, ${params.platform},
+      ${params.category}, 'pending', ${params.addedByUserId}, ${params.addedByOwnerId}
     )
     RETURNING id, slug
   `;

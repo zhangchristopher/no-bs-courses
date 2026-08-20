@@ -10,28 +10,21 @@ import TrackedSection from "@/components/TrackedSection";
 import { RegisteredBusinessBadge, VerifiedCourseBadge } from "@/components/CourseBadges";
 import { Button } from "@/components/ui/Button";
 import { StatusBanner } from "@/components/ui/StatusBanner";
-import { Card } from "@/components/ui/Card";
 import { ArrowIcon, PlayIcon } from "@/components/icons";
 import { categorySlug, getCourseBySlug } from "@/lib/courses";
 import { getCourseModerationStatus } from "@/lib/verifications";
-import { getReviewsForCourse, getUserReviewForCourse } from "@/lib/reviews";
+import { getReviewsForCourse, getUserReviewForCourse, isSelfReview } from "@/lib/reviews";
 import { getOwnedCourseCount } from "@/lib/ownerCourses";
 import { getOwnerBusinessInfo } from "@/lib/business";
-import { checkCourseAccess } from "@/lib/paywall";
 import { getCourseSections, sectionTypeLabel } from "@/lib/courseSections";
 import { logCoursePageView } from "@/lib/pageViews";
 import { auth } from "@/auth";
 import { ownerAuth } from "@/owner-auth";
 import { getAdminSession } from "@/lib/admin";
 import { claimCourseAction } from "./claim-actions";
-import {
-  spendBonusCreditAction,
-  startCourseUnlockCheckoutAction,
-  startCustomerPlanCheckoutAction,
-} from "@/app/account/actions";
 
 type Params = Promise<{ slug: string }>;
-type SearchParams = Promise<{ error?: string; submitted?: string; unlocked?: string }>;
+type SearchParams = Promise<{ error?: string; submitted?: string }>;
 
 function truncate(text: string, maxLength: number) {
   if (text.length <= maxLength) return text;
@@ -44,22 +37,6 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   if (!course) {
     return { title: "Course not found" };
-  }
-
-  const session = await auth();
-  const ownerSession = await ownerAuth();
-  const access = await checkCourseAccess(
-    course.id,
-    course.price,
-    session?.user?.id ?? null,
-    ownerSession?.user?.id ?? null
-  );
-
-  if (!access.unlocked) {
-    return {
-      title: course.title,
-      description: `Pricing, description, and reviews for ${course.title} are available to signed-in members.`,
-    };
   }
 
   return {
@@ -78,7 +55,7 @@ export default async function CourseDetailPage({
   searchParams: SearchParams;
 }) {
   const { slug } = await params;
-  const { error, submitted, unlocked: unlockedParam } = await searchParams;
+  const { error, submitted } = await searchParams;
   const course = await getCourseBySlug(slug);
   const session = await auth();
   const ownerSession = await ownerAuth();
@@ -114,27 +91,18 @@ export default async function CourseDetailPage({
     notFound();
   }
 
-  const access = await checkCourseAccess(
-    course.id,
-    course.price,
-    session?.user?.id ?? null,
-    ownerSession?.user?.id ?? null
-  );
-  const unlocked = access.unlocked;
+  const requestHeaders = await headers();
+  await logCoursePageView({
+    courseId: course.id,
+    userId: session?.user?.id ?? null,
+    referrer: requestHeaders.get("referer"),
+  });
 
-  if (unlocked) {
-    const requestHeaders = await headers();
-    await logCoursePageView({
-      courseId: course.id,
-      userId: session?.user?.id ?? null,
-      referrer: requestHeaders.get("referer"),
-    });
-  }
-
-  const reviews = unlocked ? await getReviewsForCourse(course.id) : [];
-  const myReview =
-    unlocked && session?.user?.id ? await getUserReviewForCourse(course.id, session.user.id) : null;
-  const sections = unlocked ? await getCourseSections(course.id) : [];
+  const reviews = await getReviewsForCourse(course.id);
+  const myReview = session?.user?.id
+    ? await getUserReviewForCourse(course.id, session.user.id)
+    : null;
+  const sections = await getCourseSections(course.id);
 
   const isVerifiedCourse = course.affiliate_link_status === "verified";
   const isRegisteredBusiness =
@@ -143,6 +111,7 @@ export default async function CourseDetailPage({
   const isOwnerOfThisCourse = Boolean(
     ownerSession?.user?.id && course.verified_owner_id === ownerSession.user.id && isVerifiedCourse
   );
+  const selfReview = session?.user?.id ? await isSelfReview(course.id, session.user.id) : false;
 
   let claimEligibility: { canClaim: boolean; reason?: "business_required" | "cap_reached" } | null =
     null;
@@ -172,7 +141,7 @@ export default async function CourseDetailPage({
         ]}
       />
 
-      {unlocked && course.thumbnail_url && (
+      {course.thumbnail_url && (
         <div className="relative mt-6 h-56 w-full overflow-hidden bg-ink/5 sm:h-72 dark:bg-ink-dark/10">
           <Image
             src={course.thumbnail_url}
@@ -265,10 +234,8 @@ export default async function CourseDetailPage({
         {course.title}
       </h1>
 
-      {access.unlocked ? (
-        <>
-          <div className="mt-2">
-            <StarRating score={course.overall_score} reviewCount={course.total_reviews} />
+      <div className="mt-2">
+        <StarRating score={course.overall_score} reviewCount={course.total_reviews} />
           </div>
           <p className="mt-1 text-ink/60 dark:text-ink-dark/60">by {course.provider_name}</p>
 
@@ -277,14 +244,18 @@ export default async function CourseDetailPage({
             <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
 
-          <div className="mt-6 grid grid-cols-2 gap-4 border border-hairline p-4 sm:grid-cols-3 dark:border-hairline-dark">
+          <div className="mt-6 grid grid-cols-2 gap-4 border border-hairline p-4 sm:grid-cols-4 dark:border-hairline-dark">
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
                 Price
               </div>
               <div className="mt-1 flex items-baseline gap-2 tabular-nums">
                 <span className="font-medium text-ink dark:text-ink-dark">
-                  {course.price ? `$${course.price}` : "N/A"}
+                  {course.price == null
+                    ? "N/A"
+                    : Number(course.price) === 0
+                      ? "Free"
+                      : `$${course.price}`}
                 </span>
                 {course.compare_at_price &&
                   course.price &&
@@ -301,6 +272,14 @@ export default async function CourseDetailPage({
               </div>
               <div className="mt-1 font-medium tabular-nums text-ink dark:text-ink-dark">
                 {course.duration_hours ? `${course.duration_hours} hours` : "N/A"}
+              </div>
+            </div>
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+                Platform
+              </div>
+              <div className="mt-1 font-medium text-ink dark:text-ink-dark">
+                {course.platform || "Other"}
               </div>
             </div>
             <div className="col-span-2 sm:col-span-1">
@@ -369,13 +348,6 @@ export default async function CourseDetailPage({
             </TrackedSection>
           ))}
 
-          {unlockedParam && (
-            <StatusBanner tone="success">
-              Payment received — it can take a few seconds for Stripe to confirm. Refresh if this
-              still shows locked.
-            </StatusBanner>
-          )}
-
           <ReviewSection
             courseId={course.id}
             slug={course.slug}
@@ -386,48 +358,9 @@ export default async function CourseDetailPage({
             currentUserId={session?.user?.id ?? null}
             isSignedIn={Boolean(session?.user?.id)}
             isOwnerOfThisCourse={isOwnerOfThisCourse}
+            isSelfReview={selfReview}
             error={error}
           />
-        </>
-      ) : (
-        <Card className="mt-6 text-center">
-          <p className="text-sm text-ink/60 dark:text-ink-dark/60">
-            Pricing, description, syllabus, rating, and reviews for this course are locked.
-          </p>
-          {access.reason === "signin_required" ? (
-            <p className="mt-3 text-sm">
-              <Link href="/signin" className="underline">
-                Sign in
-              </Link>{" "}
-              to view — free accounts get 3 paid courses unlocked per month.
-            </p>
-          ) : (
-            <div className="mt-4 flex flex-col items-center gap-2">
-              {access.bonusCredits > 0 && (
-                <form action={spendBonusCreditAction}>
-                  <input type="hidden" name="course_id" value={course.id} />
-                  <input type="hidden" name="slug" value={course.slug} />
-                  <Button type="submit" variant="secondary" size="sm">
-                    Use 1 bonus credit ({access.bonusCredits} available)
-                  </Button>
-                </form>
-              )}
-              <form action={startCourseUnlockCheckoutAction}>
-                <input type="hidden" name="course_id" value={course.id} />
-                <input type="hidden" name="slug" value={course.slug} />
-                <Button type="submit" size="sm">
-                  Unlock this course — $0.99
-                </Button>
-              </form>
-              <form action={startCustomerPlanCheckoutAction}>
-                <button type="submit" className="text-sm underline">
-                  Or upgrade to unlimited — $5/mo
-                </button>
-              </form>
-            </div>
-          )}
-        </Card>
-      )}
     </main>
   );
 }

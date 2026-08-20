@@ -5,7 +5,7 @@ import ScrollToHash from "@/components/ScrollToHash";
 
 export const metadata: Metadata = { title: "Terms of Service" };
 
-const EFFECTIVE_DATE = "[EFFECTIVE DATE — fill in before launch]";
+const EFFECTIVE_DATE = "August 19, 2026";
 const CONTACT_EMAIL = "EMAIL_PLACEHOLDER";
 const OPERATING_NAME = "NoBSCourses";
 const JURISDICTION = "Florida, United States";

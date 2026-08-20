@@ -8,6 +8,7 @@ const ADMIN_NAV = [
   { href: "/admin/flags", label: "Flags" },
   { href: "/admin/purchase-verifications", label: "Purchases" },
   { href: "/admin/affiliate-links", label: "Affiliate Links" },
+  { href: "/admin/featured", label: "Featured" },
 ];
 
 // Owns the persistent nav/chrome only — not the authorization decision.

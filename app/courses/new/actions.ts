@@ -6,6 +6,7 @@ import { ownerAuth } from "@/owner-auth";
 import { createCourse } from "@/lib/ownerCourses";
 import { wordCount } from "@/lib/text";
 import { isLikelyBot } from "@/lib/botCheck";
+import { detectPlatformFromUrl, OTHER_PLATFORM } from "@/lib/platform";
 
 const FREE_DESCRIPTION_WORD_LIMIT = 500;
 
@@ -27,6 +28,10 @@ export async function submitNewCourseAction(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
   const providerName = String(formData.get("provider_name") ?? "").trim();
   const platformUrl = String(formData.get("platform_url") ?? "").trim();
+  const platformField = String(formData.get("platform") ?? "").trim();
+  const platform = platformField && platformField !== OTHER_PLATFORM
+    ? platformField
+    : detectPlatformFromUrl(platformUrl) ?? (platformField === OTHER_PLATFORM ? OTHER_PLATFORM : null);
   const category = String(formData.get("category") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const syllabus = String(formData.get("syllabus") ?? "").trim();
@@ -57,6 +62,7 @@ export async function submitNewCourseAction(formData: FormData) {
     title,
     providerName,
     platformUrl,
+    platform,
     category: category || null,
     description: description || null,
     syllabus: syllabus || null,

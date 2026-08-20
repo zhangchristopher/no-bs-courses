@@ -52,7 +52,11 @@ export default function CourseCard({ course }: { course: CourseListItem }) {
         <div className="mt-auto flex items-center justify-between pt-2 text-sm tabular-nums">
           <span className="flex items-baseline gap-1.5">
             <span className="font-medium text-ink dark:text-ink-dark">
-              {course.price ? `$${course.price}` : "Price N/A"}
+              {course.price == null
+                ? "Price N/A"
+                : Number(course.price) === 0
+                  ? "Free"
+                  : `$${course.price}`}
             </span>
             {course.compare_at_price &&
               course.price &&
@@ -62,9 +66,10 @@ export default function CourseCard({ course }: { course: CourseListItem }) {
                 </span>
               )}
           </span>
-          {course.duration_hours && (
-            <span className="text-ink/55 dark:text-ink-dark/55">{course.duration_hours}h</span>
-          )}
+          <span className="flex items-center gap-2 text-ink/55 dark:text-ink-dark/55">
+            {course.platform && <span>{course.platform}</span>}
+            {course.duration_hours && <span>{course.duration_hours}h</span>}
+          </span>
         </div>
       </div>
     </Link>

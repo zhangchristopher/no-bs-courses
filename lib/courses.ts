@@ -6,6 +6,7 @@ export type CourseListItem = {
   title: string;
   provider_name: string;
   category: string | null;
+  platform: string | null;
   verification_status: string;
   affiliate_link_status: string;
   owner_business_subscription_status: string | null;
@@ -57,6 +58,7 @@ export async function getCoursesByCategory(searchQuery?: string) {
           c.title,
           c.provider_name,
           c.category,
+          c.platform,
           c.verification_status,
           c.affiliate_link_status,
           o.business_subscription_status AS owner_business_subscription_status,
@@ -86,6 +88,7 @@ export async function getCoursesByCategory(searchQuery?: string) {
           c.title,
           c.provider_name,
           c.category,
+          c.platform,
           c.verification_status,
           c.affiliate_link_status,
           o.business_subscription_status AS owner_business_subscription_status,
@@ -123,6 +126,7 @@ export async function getCourseBySlug(slug: string) {
       c.provider_name,
       c.platform_url,
       c.category,
+      c.platform,
       c.verification_status,
       c.verified_owner_id,
       c.contract_signed_at,
@@ -284,8 +288,102 @@ export function sortCourseList(courses: CourseListItem[], sort: CourseSort): Cou
   }
 }
 
+export type AdminFeaturedRow = {
+  id: string;
+  slug: string;
+  title: string;
+  category: string | null;
+  is_site_featured: boolean;
+  is_category_featured: boolean;
+};
+
+// Lightweight listing for the admin "featured courses" picker — deliberately
+// its own query rather than reusing CourseListItem, so the two featured
+// flags don't have to be threaded through every other course listing in the
+// app that doesn't need them.
+export async function getCoursesForFeaturedAdmin(): Promise<AdminFeaturedRow[]> {
+  return sql<AdminFeaturedRow[]>`
+    SELECT id, slug, title, category, is_site_featured, is_category_featured
+    FROM courses
+    WHERE listing_status = 'published'
+    ORDER BY category NULLS LAST, title
+  `;
+}
+
+// Admin sets/clears the one sitewide featured course. Clearing the old pick
+// before setting the new one (in a transaction) is what lets the partial
+// unique index on is_site_featured stay satisfied at every step.
+export async function setSiteFeaturedCourse(courseId: string | null): Promise<void> {
+  await sql.begin(async (tx) => {
+    await tx`UPDATE courses SET is_site_featured = false WHERE is_site_featured`;
+    if (courseId) {
+      await tx`UPDATE courses SET is_site_featured = true WHERE id = ${courseId}`;
+    }
+  });
+}
+
+export async function setCategoryFeaturedCourse(
+  category: string,
+  courseId: string | null
+): Promise<void> {
+  await sql.begin(async (tx) => {
+    await tx`UPDATE courses SET is_category_featured = false WHERE category = ${category} AND is_category_featured`;
+    if (courseId) {
+      await tx`UPDATE courses SET is_category_featured = true WHERE id = ${courseId} AND category = ${category}`;
+    }
+  });
+}
+
 export async function getAllCourseSlugs(): Promise<{ slug: string }[]> {
   return sql<{ slug: string }[]>`
     SELECT slug FROM courses WHERE listing_status = 'published' ORDER BY slug
   `;
+}
+
+// For the Add Course category dropdown — every category already in use,
+// so the list grows on its own as new categories get created (via the
+// "Other" fallback) instead of needing a separate admin-managed list.
+export async function getCategoryNames(): Promise<string[]> {
+  const rows = await sql<{ category: string }[]>`
+    SELECT DISTINCT category FROM courses
+    WHERE category IS NOT NULL AND category != ''
+    ORDER BY category
+  `;
+  return rows.map((r) => r.category);
+}
+
+export async function getSiteFeaturedCourse(): Promise<CourseListItem | null> {
+  const rows = await sql<CourseListItem[]>`
+    SELECT
+      c.id, c.slug, c.title, c.provider_name, c.category, c.platform,
+      c.verification_status, c.affiliate_link_status,
+      o.business_subscription_status AS owner_business_subscription_status,
+      cof.price, cof.compare_at_price, cof.duration_hours, cof.thumbnail_url,
+      cof.description, cs.overall_score, cs.total_reviews
+    FROM courses c
+    LEFT JOIN course_owner_fields cof ON cof.course_id = c.id
+    LEFT JOIN course_scores cs ON cs.course_id = c.id
+    LEFT JOIN owners o ON o.id = c.verified_owner_id
+    WHERE c.is_site_featured AND c.listing_status = 'published'
+    LIMIT 1
+  `;
+  return rows[0] ?? null;
+}
+
+export async function getCategoryFeaturedCourse(category: string): Promise<CourseListItem | null> {
+  const rows = await sql<CourseListItem[]>`
+    SELECT
+      c.id, c.slug, c.title, c.provider_name, c.category, c.platform,
+      c.verification_status, c.affiliate_link_status,
+      o.business_subscription_status AS owner_business_subscription_status,
+      cof.price, cof.compare_at_price, cof.duration_hours, cof.thumbnail_url,
+      cof.description, cs.overall_score, cs.total_reviews
+    FROM courses c
+    LEFT JOIN course_owner_fields cof ON cof.course_id = c.id
+    LEFT JOIN course_scores cs ON cs.course_id = c.id
+    LEFT JOIN owners o ON o.id = c.verified_owner_id
+    WHERE c.is_category_featured AND c.category = ${category} AND c.listing_status = 'published'
+    LIMIT 1
+  `;
+  return rows[0] ?? null;
 }

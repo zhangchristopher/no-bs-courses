@@ -3,8 +3,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CourseCard from "@/components/CourseCard";
+import FeaturedCourseCard from "@/components/FeaturedCourseCard";
 import {
   getCategoryBySlug,
+  getCategoryFeaturedCourse,
   getCoursesForCategory,
   sortCourseList,
   isCourseSort,
@@ -45,6 +47,7 @@ export default async function CategoryPage({
   if (!match) notFound();
 
   const courses = sortCourseList(await getCoursesForCategory(match.category), sort);
+  const featuredCourse = await getCategoryFeaturedCourse(match.category);
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
@@ -59,7 +62,13 @@ export default async function CategoryPage({
         {match.count} course{match.count === 1 ? "" : "s"} in {match.category}.
       </p>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      {featuredCourse && (
+        <div className="mt-6">
+          <FeaturedCourseCard course={featuredCourse} />
+        </div>
+      )}
+
+      <div className="mt-8 flex flex-wrap items-center gap-2">
         <span className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
           Sort by
         </span>

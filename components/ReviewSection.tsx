@@ -1,5 +1,6 @@
 import { submitReviewAction, submitPurchaseVerificationAction } from "@/app/courses/[slug]/actions";
 import { submitOwnerResponseAction } from "@/app/courses/[slug]/owner-actions";
+import Honeypot from "@/components/Honeypot";
 import Stars from "@/components/Stars";
 import { Button } from "@/components/ui/Button";
 import { StatusBanner } from "@/components/ui/StatusBanner";
@@ -23,6 +24,7 @@ export default function ReviewSection({
   currentUserId,
   isSignedIn,
   isOwnerOfThisCourse,
+  isSelfReview,
   error,
 }: {
   courseId: string;
@@ -34,6 +36,7 @@ export default function ReviewSection({
   currentUserId: string | null;
   isSignedIn: boolean;
   isOwnerOfThisCourse: boolean;
+  isSelfReview: boolean;
   error?: string;
 }) {
   const editable = myReview
@@ -58,11 +61,18 @@ export default function ReviewSection({
           </p>
         )}
 
-        {isSignedIn && (!myReview || editable) && (
+        {isSignedIn && isSelfReview && !myReview && (
+          <p className="text-sm text-ink/60 dark:text-ink-dark/60">
+            You can&apos;t review a course you submitted or own.
+          </p>
+        )}
+
+        {isSignedIn && !isSelfReview && (!myReview || editable) && (
           <form
             action={submitReviewAction}
             className="flex flex-col gap-3 border border-hairline p-4 dark:border-hairline-dark"
           >
+            <Honeypot />
             <input type="hidden" name="course_id" value={courseId} />
             <input type="hidden" name="slug" value={slug} />
             <input type="hidden" name="category" value={category ?? ""} />
@@ -159,6 +169,7 @@ export default function ReviewSection({
                   action={submitPurchaseVerificationAction}
                   className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-start"
                 >
+                  <Honeypot />
                   <input type="hidden" name="review_id" value={review.id} />
                   <input type="hidden" name="slug" value={slug} />
                   <input
