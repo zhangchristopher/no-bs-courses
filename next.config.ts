@@ -3,7 +3,15 @@ import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [{ hostname: "picsum.photos" }],
+    remotePatterns: [
+      { hostname: "picsum.photos" },
+      // Course cover images pulled from each listing's real source page
+      // (og:image) during the Excel import — real course thumbnails, not
+      // stock/placeholder art.
+      { hostname: "assets.skool.com" },
+      { hostname: "storage.googleapis.com" },
+      { hostname: "precisionaiacademy.com" },
+    ],
   },
   // Single SENTRY_DSN env var (see .env.local) covers both server and
   // client — Sentry DSNs are meant to be public (they end up embedded in

@@ -143,3 +143,56 @@ html {
   background: var(--foreground);
   border: 2px solid var(--background);
 }
+
+/* Accessible CSS-only star rating for the review form. The radios render
+   in reverse (5,4,3,2,1) inside a row-reversed fieldset, so the general
+   sibling combinator (~) — which matches every element *after* a given one
+   in DOM order — naturally lights up every star at or below the
+   checked/hovered one, with no JS. Still a real native radio group
+   underneath: keyboard/arrow-key selection and screen readers work exactly
+   as they would for the plain radio list this replaced. */
+.star-rating {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 0.1em;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.star-rating input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.star-rating label {
+  cursor: pointer;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--color-ink);
+  opacity: 0.2;
+  transition: opacity 0.1s ease;
+}
+
+.star-rating input:focus-visible + label {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+  opacity: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .star-rating label {
+    color: var(--color-ink-dark);
+  }
+  .star-rating input:focus-visible + label {
+    outline-color: var(--color-ink-dark);
+  }
+}

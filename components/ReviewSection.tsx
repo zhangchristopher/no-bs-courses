@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { submitReviewAction, submitPurchaseVerificationAction } from "@/app/courses/[slug]/actions";
 import { submitOwnerResponseAction } from "@/app/courses/[slug]/owner-actions";
 import Honeypot from "@/components/Honeypot";
@@ -77,29 +78,26 @@ export default function ReviewSection({
             <input type="hidden" name="slug" value={slug} />
             <input type="hidden" name="category" value={category ?? ""} />
 
-            <div>
-              <span className="block text-[11px] font-semibold uppercase tracking-eyebrow text-ink dark:text-ink-dark">
+            <fieldset className="star-rating" aria-label="Your rating">
+              <legend className="mb-1.5 block text-[11px] font-semibold uppercase tracking-eyebrow text-ink dark:text-ink-dark">
                 Your rating
-              </span>
-              <div className="mt-1.5 flex gap-3">
-                {[1, 2, 3, 4, 5].map((n) => (
-                  <label
-                    key={n}
-                    className="flex items-center gap-1 text-sm tabular-nums text-ink/70 dark:text-ink-dark/70"
-                  >
-                    <input
-                      type="radio"
-                      name="rating"
-                      value={n}
-                      defaultChecked={myReview ? myReview.rating === n : n === 5}
-                      required
-                      className="accent-ink dark:accent-ink-dark"
-                    />
-                    {n}
+              </legend>
+              {[5, 4, 3, 2, 1].map((n) => (
+                <Fragment key={n}>
+                  <input
+                    type="radio"
+                    name="rating"
+                    id={`rating-${n}`}
+                    value={n}
+                    defaultChecked={myReview ? myReview.rating === n : n === 5}
+                    required
+                  />
+                  <label htmlFor={`rating-${n}`} aria-label={`${n} star${n === 1 ? "" : "s"}`}>
+                    ★
                   </label>
-                ))}
-              </div>
-            </div>
+                </Fragment>
+              ))}
+            </fieldset>
 
             <label className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink dark:text-ink-dark">
               Your review
