@@ -1,7 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  /* The page canvas sits a shade under pure white so the header, footer,
+     and cards (all still true white via --color-cream) read as surfaces
+     floating on the page rather than blending into it. Deliberately just
+     one step off white, not a visible "gray box" — #f4f4f4. */
+  --background: #f4f4f4;
   --foreground: #000000;
   color-scheme: light dark;
 }
