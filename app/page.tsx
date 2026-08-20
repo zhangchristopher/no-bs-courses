@@ -89,9 +89,11 @@ const FEATURES = [
 ];
 
 const CATEGORY_BLURBS: Record<string, string> = {
-  "Web Development": "From your first line of code to a job-ready portfolio.",
-  "Data Science": "Turn spreadsheets and guesswork into decisions backed by data.",
-  Design: "Learn to design interfaces people actually want to use.",
+  "AI Automation": "Build and sell AI automation systems, not just prompt-engineer for fun.",
+  "AI Business": "Turn AI tools into an actual offer, client base, or content engine.",
+  "Business Coaching": "Structured systems and coaching for running a real business.",
+  Ecommerce: "Dropshipping, product research, and store builds that actually convert.",
+  "Vibe Coding": "Build real software with AI, without a CS degree.",
 };
 
 export default async function Home() {
