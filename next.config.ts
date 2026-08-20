@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
       { hostname: "assets.skool.com" },
       { hostname: "storage.googleapis.com" },
       { hostname: "precisionaiacademy.com" },
+      { hostname: "cs50.harvard.edu" },
+      { hostname: "www.theodinproject.com" },
+      { hostname: "s3.amazonaws.com" },
+      { hostname: "137828.fs1.hubspotusercontent-na1.net" },
+      { hostname: "cdn.kastatic.org" },
     ],
   },
   // Single SENTRY_DSN env var (see .env.local) covers both server and
