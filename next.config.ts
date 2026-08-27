@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
       { hostname: "s3.amazonaws.com" },
       { hostname: "137828.fs1.hubspotusercontent-na1.net" },
       { hostname: "cdn.kastatic.org" },
+      { hostname: "whop.com" },
     ],
   },
   // Single SENTRY_DSN env var (see .env.local) covers both server and
