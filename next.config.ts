@@ -5,10 +5,13 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { hostname: "picsum.photos" },
-      // Course cover images pulled from each listing's real source page
-      // (og:image) during the Excel import — real course thumbnails, not
-      // stock/placeholder art.
-      { hostname: "assets.skool.com" },
+      // Course cover images pulled from each listing's own source page
+      // during research. Deliberately does NOT include assets.skool.com or
+      // whop.com — both platforms' Terms of Service explicitly prohibit
+      // automated tools collecting/compiling their content, which is what
+      // fetching their og:image amounts to. Those courses fall back to the
+      // typographic tile (see CourseCard) until an owner claims the listing
+      // and supplies their own image, or a licensed source exists.
       { hostname: "storage.googleapis.com" },
       { hostname: "precisionaiacademy.com" },
       { hostname: "cs50.harvard.edu" },
@@ -16,7 +19,6 @@ const nextConfig: NextConfig = {
       { hostname: "s3.amazonaws.com" },
       { hostname: "137828.fs1.hubspotusercontent-na1.net" },
       { hostname: "cdn.kastatic.org" },
-      { hostname: "whop.com" },
     ],
   },
   // Single SENTRY_DSN env var (see .env.local) covers both server and
