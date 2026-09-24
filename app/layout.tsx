@@ -52,7 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${archivo.variable} h-full scroll-smooth antialiased`}
+      className={`dark ${inter.variable} ${archivo.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <SiteHeader />

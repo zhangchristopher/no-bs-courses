@@ -14,9 +14,12 @@ import {
   Megaphone,
   HelpCircle,
 } from "lucide-react";
-import { categorySlug, getCategoryShowcases, getSiteFeaturedCourse } from "@/lib/courses";
+import { getCategoryShowcases, getSiteFeaturedCourse, getTopRatedCourses } from "@/lib/courses";
 import { ArrowIcon, ClaimIcon } from "@/components/icons";
 import FeaturedCourseCard from "@/components/FeaturedCourseCard";
+import BrowseRow from "@/components/BrowseRow";
+import CategoryTile from "@/components/CategoryTile";
+import CourseCard from "@/components/CourseCard";
 
 export const metadata: Metadata = {
   title: "The Right Course For You. No BS.",
@@ -88,17 +91,12 @@ const FEATURES = [
   },
 ];
 
-const CATEGORY_BLURBS: Record<string, string> = {
-  "AI Automation": "Build and sell AI automation systems, not just prompt-engineer for fun.",
-  "AI Business": "Turn AI tools into an actual offer, client base, or content engine.",
-  "Business Coaching": "Structured systems and coaching for running a real business.",
-  Ecommerce: "Dropshipping, product research, and store builds that actually convert.",
-  "Vibe Coding": "Build real software with AI, without a CS degree.",
-};
-
 export default async function Home() {
-  const categories = await getCategoryShowcases();
-  const featuredCourse = await getSiteFeaturedCourse();
+  const [categories, featuredCourse, topRated] = await Promise.all([
+    getCategoryShowcases(12),
+    getSiteFeaturedCourse(),
+    getTopRatedCourses(12),
+  ]);
 
   return (
     <main className="flex flex-1 flex-col">
@@ -278,59 +276,42 @@ export default async function Home() {
         </section>
       )}
 
-      {/* CATEGORY BROWSE */}
-      <section className="bg-ink/[0.03] py-20 sm:py-28 dark:bg-ink-dark/[0.04]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-black uppercase tracking-headline text-ink sm:text-5xl dark:text-ink-dark">
-            Find your next course
-          </h2>
-          <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden bg-hairline sm:grid-cols-3 dark:bg-hairline-dark">
-            {categories.map((c) => (
-              <Link
-                key={c.category}
-                href={`/courses/category/${categorySlug(c.category)}`}
-                className="group bg-cream transition hover:bg-ink/[0.03] dark:bg-cream-dark dark:hover:bg-ink-dark/[0.04]"
-              >
-                <div className="relative h-40 w-full overflow-hidden bg-ink/5 dark:bg-ink-dark/10">
-                  {c.thumbnail_url && (
-                    <Image
-                      src={c.thumbnail_url}
-                      alt={c.category}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 33vw"
-                      className="object-cover transition duration-300 group-hover:scale-105"
-                    />
-                  )}
-                </div>
-                <div className="p-6">
-                  <h3 className="font-semibold uppercase tracking-tight text-ink transition group-hover:opacity-60 dark:text-ink-dark">
-                    {c.category}
-                  </h3>
-                  <p className="mt-1 text-sm text-ink/50 dark:text-ink-dark/50">
-                    {CATEGORY_BLURBS[c.category] ?? "Compare courses side by side."}
-                  </p>
-                  <p className="mt-3 text-[11px] font-medium uppercase tracking-label tabular-nums text-ink/40 dark:text-ink-dark/40">
-                    {c.count} course{c.count === 1 ? "" : "s"}
-                  </p>
-                </div>
-              </Link>
+      {/* BROWSE ROWS — Netflix-style full-bleed carousels. */}
+      <div className="py-10 sm:py-16">
+        {/* TOP RATED — ordered purely by the review-computed score, so it's
+            the one row on the page nobody can buy their way into. Hidden
+            until at least one course has a review. */}
+        {topRated.length > 0 && (
+          <BrowseRow
+            eyebrow="By verified-review score"
+            title="Top rated"
+            href="/courses?sort=rating_desc"
+            hrefLabel="See all by rating"
+          >
+            {topRated.map((course) => (
+              <CourseCard key={course.id} course={course} />
             ))}
-          </div>
-        </div>
-      </section>
+          </BrowseRow>
+        )}
 
-      {/* FINAL CTA — follows site theme, with a low-opacity ambient texture
-          from the same grayscaled brand art */}
-      <section className="relative isolate overflow-hidden bg-cream py-20 dark:bg-cream-dark sm:py-28">
-        <Image
-          src="/homepage/cta-bg.png"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover opacity-20 grayscale"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-cream via-cream/60 to-cream dark:from-cream-dark dark:via-cream-dark/60 dark:to-cream-dark" />
-        <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        {/* CATEGORY BROWSE — the 12 biggest categories; the full list lives
+            on /courses/category. */}
+        {categories.length > 0 && (
+          <BrowseRow
+            title="Find your next course"
+            href="/courses/category"
+            hrefLabel="Browse all categories"
+          >
+            {categories.map((c) => (
+              <CategoryTile key={c.category} category={c} />
+            ))}
+          </BrowseRow>
+        )}
+      </div>
+
+      {/* FINAL CTA — plain black band, no background art */}
+      <section className="bg-black py-20 sm:py-28">
+        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-3xl font-black uppercase tracking-headline text-ink dark:text-ink-dark sm:text-5xl">
             Stop guessing. Start learning.
           </h2>

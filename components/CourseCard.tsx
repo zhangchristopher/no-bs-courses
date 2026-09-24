@@ -11,12 +11,25 @@ function TierBadge({ course }: { course: CourseListItem }) {
   return null;
 }
 
-export default function CourseCard({ course }: { course: CourseListItem }) {
+// `featured` marks the category's admin pick when it's shown inline in a
+// browse row — an editorial label, not a ranking, same as FeaturedCourseCard.
+export default function CourseCard({
+  course,
+  featured = false,
+}: {
+  course: CourseListItem;
+  featured?: boolean;
+}) {
   return (
     <Link
       href={`/courses/${course.slug}`}
-      className="group flex flex-col border border-hairline bg-cream transition-colors hover:border-ink dark:border-hairline-dark dark:bg-cream-dark dark:hover:border-ink-dark"
+      className="group relative flex flex-col border border-hairline bg-cream transition-colors hover:border-ink dark:border-hairline-dark dark:bg-cream-dark dark:hover:border-ink-dark"
     >
+      {featured && (
+        <span className="absolute left-0 top-0 z-10 bg-red-600 px-2 py-1 text-[10px] font-bold uppercase tracking-eyebrow text-white">
+          Featured
+        </span>
+      )}
       {course.thumbnail_url ? (
         <div className="relative h-36 w-full bg-ink/5 dark:bg-ink-dark/10">
           <Image
