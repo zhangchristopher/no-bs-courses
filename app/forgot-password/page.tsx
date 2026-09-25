@@ -16,7 +16,7 @@ export default async function ForgotPasswordPage({
 
   return (
     <AuthShell title="Forgot password">
-      <p className="text-sm text-ink/60 dark:text-ink-dark/60">
+      <p className="text-sm text-ink-dark/60">
         Enter the email on your account (learner or business) and we&apos;ll send a reset link.
       </p>
 

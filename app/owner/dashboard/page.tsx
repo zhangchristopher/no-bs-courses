@@ -29,7 +29,7 @@ export default async function OwnerDashboardPage({
   if (!session?.user?.id) {
     return (
       <AuthShell title="Sign in required" maxWidthClassName="max-w-2xl">
-        <p className="text-sm text-ink/60 dark:text-ink-dark/60">
+        <p className="text-sm text-ink-dark/60">
           Sign in with your course owner account to view your dashboard.
         </p>
         <Link href="/owner/signin" className="mt-4 inline-block underline">
@@ -53,7 +53,7 @@ export default async function OwnerDashboardPage({
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+        <h1 className="text-2xl font-black uppercase tracking-headline text-ink-dark">
           Your courses
         </h1>
         <Button href="/courses/new" variant="secondary" size="sm">
@@ -75,22 +75,22 @@ export default async function OwnerDashboardPage({
       {error && <StatusBanner tone="error">{error}</StatusBanner>}
 
       <Card className="mt-6">
-        <h2 className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+        <h2 className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/50">
           Registered Business
         </h2>
         {!business || business.business_verification_status === "none" ? (
-          <p className="mt-2 text-sm text-ink/60 dark:text-ink-dark/60">
+          <p className="mt-2 text-sm text-ink-dark/60">
             <Link href="/owner/business" className="underline">
               Submit your business paperwork
             </Link>{" "}
             to become eligible to claim courses.
           </p>
         ) : business.business_verification_status === "pending" ? (
-          <p className="mt-2 text-sm text-ink/70 dark:text-ink-dark/70">
+          <p className="mt-2 text-sm text-ink-dark/70">
             Your paperwork is awaiting admin review.
           </p>
         ) : business.business_verification_status === "rejected" ? (
-          <p className="mt-2 text-sm text-ink dark:text-ink-dark">
+          <p className="mt-2 text-sm text-ink-dark">
             Your paperwork was rejected.{" "}
             <Link href="/owner/business" className="underline">
               Resubmit
@@ -98,13 +98,13 @@ export default async function OwnerDashboardPage({
             .
           </p>
         ) : hasControl ? (
-          <p className="mt-2 flex items-center gap-2 text-sm text-ink dark:text-ink-dark">
+          <p className="mt-2 flex items-center gap-2 text-sm text-ink-dark">
             <CheckMarkIcon className="h-4 w-4 shrink-0" />
             Active — unlimited courses, editing control, and the Registered Business badge.
           </p>
         ) : (
           <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-ink/60 dark:text-ink-dark/60">
+            <p className="text-sm text-ink-dark/60">
               Business verified. You can claim one course for free. Subscribe for editing
               control, unlimited courses, and the badge.
             </p>
@@ -119,12 +119,12 @@ export default async function OwnerDashboardPage({
 
       {pendingListings.length > 0 && (
         <section className="mt-6">
-          <h2 className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+          <h2 className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/50">
             Pending listing review
           </h2>
           <div className="mt-2 flex flex-col gap-2">
             {pendingListings.map((listing) => (
-              <Card key={listing.course_id} tone="warning" className="text-sm text-ink/70 dark:text-ink-dark/70">
+              <Card key={listing.course_id} tone="warning" className="text-sm text-ink-dark/70">
                 {listing.title} — awaiting admin content review.
               </Card>
             ))}
@@ -134,13 +134,13 @@ export default async function OwnerDashboardPage({
 
       {pendingClaims.length > 0 && (
         <section className="mt-6">
-          <h2 className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+          <h2 className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/50">
             Pending claim review
           </h2>
           <div className="mt-2 flex flex-col gap-2">
             {pendingClaims.map((claim) => (
               <Link key={claim.course_id} href={`/courses/${claim.slug}`}>
-                <Card tone="warning" className="text-sm text-ink/70 hover:underline dark:text-ink-dark/70">
+                <Card tone="warning" className="text-sm text-ink-dark/70 hover:underline">
                   {claim.title} — awaiting admin claim review.
                 </Card>
               </Link>
@@ -151,13 +151,13 @@ export default async function OwnerDashboardPage({
 
       {rejectedClaims.length > 0 && (
         <section className="mt-6">
-          <h2 className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+          <h2 className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/50">
             Rejected claims
           </h2>
           <div className="mt-2 flex flex-col gap-2">
             {rejectedClaims.map((claim) => (
               <Link key={claim.course_id} href={`/courses/${claim.slug}`}>
-                <Card tone="danger" className="text-sm text-ink hover:underline dark:text-ink-dark">
+                <Card tone="danger" className="text-sm text-ink-dark hover:underline">
                   {claim.title} — {claim.claim_rejection_reason} (click to appeal)
                 </Card>
               </Link>
@@ -167,11 +167,11 @@ export default async function OwnerDashboardPage({
       )}
 
       <section className="mt-8">
-        <h2 className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+        <h2 className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/50">
           Owned courses
         </h2>
         {courses.length === 0 ? (
-          <p className="mt-2 text-sm text-ink/50 dark:text-ink-dark/50">
+          <p className="mt-2 text-sm text-ink-dark/50">
             You don&apos;t own any courses yet.{" "}
             <Link href="/courses" className="underline">
               Browse courses
@@ -187,9 +187,9 @@ export default async function OwnerDashboardPage({
               return (
                 <Card key={course.id} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <div className="font-medium text-ink dark:text-ink-dark">{course.title}</div>
-                    <div className="text-sm text-ink/55 dark:text-ink-dark/55">{course.provider_name}</div>
-                    <div className="mt-1 text-xs tabular-nums text-ink/55 dark:text-ink-dark/55">
+                    <div className="font-medium text-ink-dark">{course.title}</div>
+                    <div className="text-sm text-ink-dark/55">{course.provider_name}</div>
+                    <div className="mt-1 text-xs tabular-nums text-ink-dark/55">
                       {isVerifiedCourse ? (
                         <>
                           {clicks} click{clicks === 1 ? "" : "s"} in the last 30 days ·{" "}
@@ -214,14 +214,14 @@ export default async function OwnerDashboardPage({
                         Edit listing
                       </Button>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-ink/70 dark:text-ink-dark/70">
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-ink-dark/70">
                         <LockIcon className="h-3.5 w-3.5" /> No control — subscribe to edit
                       </span>
                     )}
                     {hasControl && (
                       <Link
                         href={`/owner/courses/${course.slug}/verify`}
-                        className="inline-flex items-center gap-1 text-xs text-ink/55 underline dark:text-ink-dark/55"
+                        className="inline-flex items-center gap-1 text-xs text-ink-dark/55 underline"
                       >
                         {course.affiliate_link_status === "verified" ? (
                           <>

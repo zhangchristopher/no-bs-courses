@@ -8,11 +8,11 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="border-b border-hairline bg-cream dark:border-hairline-dark dark:bg-cream-dark">
+      <header className="border-b border-hairline-dark bg-cream-dark">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           <Link
             href="/owner/dashboard"
-            className="text-xs font-bold uppercase tracking-eyebrow text-ink dark:text-ink-dark"
+            className="text-xs font-bold uppercase tracking-eyebrow text-ink-dark"
           >
             Course Owner Portal
           </Link>
@@ -21,7 +21,7 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
               <>
                 <Link
                   href="/owner/profile"
-                  className="text-ink/60 hover:text-ink dark:text-ink-dark/60 dark:hover:text-ink-dark"
+                  className="text-ink-dark/60 hover:text-ink-dark"
                 >
                   {session.user.name || session.user.email}
                 </Link>
@@ -33,7 +33,7 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
                 >
                   <button
                     type="submit"
-                    className="text-ink/60 hover:text-ink dark:text-ink-dark/60 dark:hover:text-ink-dark"
+                    className="text-ink-dark/60 hover:text-ink-dark"
                   >
                     Sign out
                   </button>
@@ -43,13 +43,13 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
               <>
                 <Link
                   href="/owner/signin"
-                  className="text-ink/60 hover:text-ink dark:text-ink-dark/60 dark:hover:text-ink-dark"
+                  className="text-ink-dark/60 hover:text-ink-dark"
                 >
                   Sign in
                 </Link>
                 <Link
                   href="/owner/signup"
-                  className="text-ink/60 hover:text-ink dark:text-ink-dark/60 dark:hover:text-ink-dark"
+                  className="text-ink-dark/60 hover:text-ink-dark"
                 >
                   Sign up
                 </Link>

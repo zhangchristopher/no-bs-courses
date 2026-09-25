@@ -27,18 +27,18 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <ScrollToHash />
-      <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+      <h1 className="text-3xl font-bold tracking-tight text-zinc-50">
         Privacy Policy
       </h1>
-      <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+      <p className="mt-2 text-sm text-zinc-400">
         Effective {EFFECTIVE_DATE} · Last updated {EFFECTIVE_DATE}
       </p>
 
       <LegalTOC items={TOC} />
 
-      <div className="mt-10 flex flex-col gap-10 text-zinc-700 dark:text-zinc-300">
+      <div className="mt-10 flex flex-col gap-10 text-zinc-300">
         <section id="overview">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             1. Overview
           </h2>
           <p className="mt-3">
@@ -52,7 +52,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section id="information-we-collect">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             2. Information We Collect
           </h2>
           <p className="mt-3">
@@ -97,7 +97,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section id="how-we-use-information">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             3. How We Use Your Information
           </h2>
           <ul className="mt-3 list-disc space-y-2 pl-6">
@@ -125,7 +125,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section id="cookies-tracking">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             4. Cookies & Tracking
           </h2>
           <p className="mt-3">
@@ -141,7 +141,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section id="how-we-share-information">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             5. How We Share Information
           </h2>
           <p className="mt-3">
@@ -169,7 +169,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section id="data-retention">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             6. Data Retention
           </h2>
           <p className="mt-3">
@@ -181,7 +181,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section id="your-rights">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             7. Your Rights & Choices
           </h2>
           <ul className="mt-3 list-disc space-y-2 pl-6">
@@ -201,7 +201,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section id="childrens-privacy">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             8. Children&apos;s Privacy
           </h2>
           <p className="mt-3">
@@ -211,7 +211,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section id="changes">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             9. Changes to This Policy
           </h2>
           <p className="mt-3">
@@ -221,7 +221,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section id="contact">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             10. Contact Us
           </h2>
           <p className="mt-3">

@@ -14,15 +14,15 @@ export default function AccountTypeToggle({
   ];
 
   return (
-    <div className="mt-6 inline-flex border border-hairline p-1 dark:border-hairline-dark">
+    <div className="mt-6 inline-flex border border-hairline-dark p-1">
       {tabs.map((tab) => (
         <Link
           key={tab.key}
           href={tab.href}
           className={
             tab.key === active
-              ? "bg-ink px-4 py-1.5 text-xs font-bold uppercase tracking-eyebrow text-cream dark:bg-ink-dark dark:text-cream-dark"
-              : "px-4 py-1.5 text-xs font-bold uppercase tracking-eyebrow text-ink/60 hover:text-ink dark:text-ink-dark/60 dark:hover:text-ink-dark"
+              ? "bg-ink-dark px-4 py-1.5 text-xs font-bold uppercase tracking-eyebrow text-cream-dark"
+              : "px-4 py-1.5 text-xs font-bold uppercase tracking-eyebrow text-ink-dark/60 hover:text-ink-dark"
           }
         >
           {tab.label}

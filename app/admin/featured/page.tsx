@@ -13,10 +13,10 @@ export default async function AdminFeaturedPage() {
   if (!session.authorized) {
     return (
       <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-        <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+        <h1 className="text-2xl font-black uppercase tracking-headline text-ink-dark">
           Not authorized
         </h1>
-        <p className="mt-2 text-ink/60 dark:text-ink-dark/60">
+        <p className="mt-2 text-ink-dark/60">
           {session.reason === "signed-out"
             ? "Sign in with the admin account to manage featured courses."
             : "Your account does not have access to this page."}
@@ -41,23 +41,23 @@ export default async function AdminFeaturedPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+      <h1 className="text-2xl font-black uppercase tracking-headline text-ink-dark">
         Featured Courses
       </h1>
-      <p className="mt-2 text-sm text-ink/60 dark:text-ink-dark/60">
+      <p className="mt-2 text-sm text-ink-dark/60">
         A manual pick, not an automatic ranking — one course shows on the homepage, and one per
         category on that category&apos;s page. Ratings never factor into this.
       </p>
 
-      <section className="mt-8 border border-hairline p-5 dark:border-hairline-dark">
-        <h2 className="text-xs font-bold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+      <section className="mt-8 border border-hairline-dark p-5">
+        <h2 className="text-xs font-bold uppercase tracking-eyebrow text-ink-dark/50">
           Homepage
         </h2>
         <form action={setSiteFeaturedAction} className="mt-3 flex flex-wrap items-center gap-3">
           <select
             name="course_id"
             defaultValue={siteFeatured?.id ?? ""}
-            className="min-w-[16rem] flex-1 border border-hairline bg-transparent px-3 py-2 text-sm text-ink focus:border-ink focus:outline-none dark:border-hairline-dark dark:bg-cream-dark dark:text-ink-dark dark:focus:border-ink-dark"
+            className="min-w-[16rem] flex-1 border border-hairline-dark bg-cream-dark px-3 py-2 text-sm text-ink-dark focus:border-ink-dark focus:outline-none"
           >
             <option value="">— None —</option>
             {categories.map(([category, list]) => (
@@ -80,8 +80,8 @@ export default async function AdminFeaturedPage() {
         {categories.map(([category, list]) => {
           const current = list.find((c) => c.is_category_featured) ?? null;
           return (
-            <section key={category} className="border border-hairline p-5 dark:border-hairline-dark">
-              <h2 className="text-xs font-bold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+            <section key={category} className="border border-hairline-dark p-5">
+              <h2 className="text-xs font-bold uppercase tracking-eyebrow text-ink-dark/50">
                 {category}
               </h2>
               <form action={setCategoryFeaturedAction} className="mt-3 flex flex-wrap items-center gap-3">
@@ -89,7 +89,7 @@ export default async function AdminFeaturedPage() {
                 <select
                   name="course_id"
                   defaultValue={current?.id ?? ""}
-                  className="min-w-[16rem] flex-1 border border-hairline bg-transparent px-3 py-2 text-sm text-ink focus:border-ink focus:outline-none dark:border-hairline-dark dark:bg-cream-dark dark:text-ink-dark dark:focus:border-ink-dark"
+                  className="min-w-[16rem] flex-1 border border-hairline-dark bg-cream-dark px-3 py-2 text-sm text-ink-dark focus:border-ink-dark focus:outline-none"
                 >
                   <option value="">— None —</option>
                   {list.map((course) => (

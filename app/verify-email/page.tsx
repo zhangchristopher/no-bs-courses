@@ -21,7 +21,7 @@ export default async function VerifyEmailPage({
   if (status === "success") {
     return (
       <AuthShell title="Email verified" align="center">
-        <p className="text-sm text-ink/60 dark:text-ink-dark/60">
+        <p className="text-sm text-ink-dark/60">
           Your {type === "owner" ? "business" : "learner"} account email is confirmed.
         </p>
         <Button href={type === "owner" ? "/owner/dashboard" : "/courses"} className="mt-6">
@@ -34,7 +34,7 @@ export default async function VerifyEmailPage({
   if (status === "error") {
     return (
       <AuthShell title="Couldn't verify email" align="center">
-        <p className="text-sm text-ink/60 dark:text-ink-dark/60">
+        <p className="text-sm text-ink-dark/60">
           {ERROR_MESSAGES[reason ?? ""] ?? "Something went wrong verifying this link."}
         </p>
       </AuthShell>
@@ -44,7 +44,7 @@ export default async function VerifyEmailPage({
   if (!token) {
     return (
       <AuthShell title="Missing verification link" align="center">
-        <p className="text-sm text-ink/60 dark:text-ink-dark/60">
+        <p className="text-sm text-ink-dark/60">
           Open the verification link from your email to continue.
         </p>
       </AuthShell>
@@ -53,7 +53,7 @@ export default async function VerifyEmailPage({
 
   return (
     <AuthShell title="Confirm your email address" align="center">
-      <p className="text-sm text-ink/60 dark:text-ink-dark/60">
+      <p className="text-sm text-ink-dark/60">
         Click below to finish verifying your No BS Courses account email.
       </p>
       <form action={confirmEmailVerificationAction} className="mt-6">

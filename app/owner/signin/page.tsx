@@ -30,12 +30,12 @@ export default async function OwnerSignInPage({
       </form>
 
       <p className="mt-3 text-sm">
-        <Link href="/forgot-password" className="underline text-ink/60 dark:text-ink-dark/60">
+        <Link href="/forgot-password" className="underline text-ink-dark/60">
           Forgot password?
         </Link>
       </p>
 
-      <p className="mt-4 text-sm text-ink/60 dark:text-ink-dark/60">
+      <p className="mt-4 text-sm text-ink-dark/60">
         Don&apos;t have an owner account?{" "}
         <Link
           href={

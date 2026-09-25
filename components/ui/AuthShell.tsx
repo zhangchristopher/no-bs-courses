@@ -16,8 +16,8 @@ export function AuthShell({
 }) {
   return (
     <main className={`mx-auto ${maxWidthClassName} px-4 py-16 sm:px-6`}>
-      <div className={`border border-black/10 p-8 dark:border-cream/15 ${align === "center" ? "text-center" : ""}`}>
-        <h1 className="mb-6 text-2xl font-black uppercase tracking-tight text-black dark:text-cream">{title}</h1>
+      <div className={`border border-cream/15 p-8 ${align === "center" ? "text-center" : ""}`}>
+        <h1 className="mb-6 text-2xl font-black uppercase tracking-tight text-cream">{title}</h1>
         {children}
       </div>
     </main>

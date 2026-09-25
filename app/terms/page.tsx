@@ -31,18 +31,18 @@ export default function TermsPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <ScrollToHash />
-      <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+      <h1 className="text-3xl font-bold tracking-tight text-zinc-50">
         Terms of Service
       </h1>
-      <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+      <p className="mt-2 text-sm text-zinc-400">
         Effective {EFFECTIVE_DATE} · Last updated {EFFECTIVE_DATE}
       </p>
 
       <LegalTOC items={TOC} />
 
-      <div className="mt-10 flex flex-col gap-10 text-zinc-700 dark:text-zinc-300">
+      <div className="mt-10 flex flex-col gap-10 text-zinc-300">
         <section id="acceptance">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             1. Acceptance of Terms
           </h2>
           <p className="mt-3">
@@ -54,7 +54,7 @@ export default function TermsPage() {
         </section>
 
         <section id="accounts">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             2. Accounts
           </h2>
           <p className="mt-3">
@@ -80,7 +80,7 @@ export default function TermsPage() {
         </section>
 
         <section id="reviews-content">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             3. Reviews & User Content
           </h2>
           <ul className="mt-3 list-disc space-y-2 pl-6">
@@ -125,7 +125,7 @@ export default function TermsPage() {
         </section>
 
         <section id="course-listings">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             4. Course Listings & Verification
           </h2>
           <p className="mt-3">
@@ -145,7 +145,7 @@ export default function TermsPage() {
         </section>
 
         <section id="affiliate-links">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             5. Affiliate Links & Compensation
           </h2>
           <p className="mt-3">
@@ -159,7 +159,7 @@ export default function TermsPage() {
         </section>
 
         <section id="payments-refunds">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             6. Payments, Subscriptions & Refunds
           </h2>
           <p className="mt-3">
@@ -196,7 +196,7 @@ export default function TermsPage() {
         </section>
 
         <section id="prohibited-conduct">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             7. Prohibited Conduct
           </h2>
           <ul className="mt-3 list-disc space-y-2 pl-6">
@@ -211,7 +211,7 @@ export default function TermsPage() {
         </section>
 
         <section id="content-removal">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             8. Content Removal & Enforcement
           </h2>
           <p className="mt-3">
@@ -225,7 +225,7 @@ export default function TermsPage() {
         </section>
 
         <section id="termination">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             9. Termination
           </h2>
           <ul className="mt-3 list-disc space-y-2 pl-6">
@@ -251,7 +251,7 @@ export default function TermsPage() {
         </section>
 
         <section id="disclaimers">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             10. Disclaimer of Warranties
           </h2>
           <p className="mt-3">
@@ -266,7 +266,7 @@ export default function TermsPage() {
         </section>
 
         <section id="liability">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             11. Limitation of Liability
           </h2>
           <p className="mt-3">
@@ -282,7 +282,7 @@ export default function TermsPage() {
         </section>
 
         <section id="governing-law">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             12. Governing Law
           </h2>
           <p className="mt-3">
@@ -293,7 +293,7 @@ export default function TermsPage() {
         </section>
 
         <section id="changes">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             13. Changes to These Terms
           </h2>
           <p className="mt-3">
@@ -304,7 +304,7 @@ export default function TermsPage() {
         </section>
 
         <section id="contact">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             14. Contact Us
           </h2>
           <p className="mt-3">

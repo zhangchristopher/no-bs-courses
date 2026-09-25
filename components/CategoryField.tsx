@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const OTHER_VALUE = "__other__";
 const FIELD_CLASSES =
-  "mt-1 w-full border border-hairline bg-transparent px-3 py-2 text-sm text-ink placeholder:text-ink/40 focus:border-ink focus:outline-none dark:border-hairline-dark dark:text-ink-dark dark:placeholder:text-ink-dark/40 dark:focus:border-ink-dark";
+  "mt-1 w-full border border-hairline-dark bg-transparent px-3 py-2 text-sm text-ink-dark placeholder:text-ink-dark/40 focus:border-ink-dark focus:outline-none";
 
 // Existing categories only get updated by redeploy in most stacks — this
 // dropdown instead reflects whatever's actually in the courses table right
@@ -16,7 +16,7 @@ export default function CategoryField({ categories }: { categories: string[] }) 
 
   return (
     <div>
-      <label className="text-sm font-medium text-ink dark:text-ink-dark">
+      <label className="text-sm font-medium text-ink-dark">
         Category
         <select
           name={isOther ? undefined : "category"}

@@ -1,9 +1,12 @@
 @import "tailwindcss";
 
-/* Dark is the only theme. The root layout puts .dark on <html>, and this
-   rebinds Tailwind's dark: variant to that class instead of the OS
-   prefers-color-scheme media query, so every dark:* utility applies for
-   every visitor regardless of their system setting. */
+/* Dark is the only theme. Components use the dark palette directly
+   (bg-cream-dark, text-ink-dark, border-hairline-dark, ...) — there are no
+   light-mode classes left to override. The root layout still puts .dark on
+   <html> and this still binds Tailwind's dark: variant to it, so a stray
+   dark:* utility can't silently start following the OS color-scheme
+   setting again; it just always applies. Don't write new dark:* classes,
+   though — use the dark-palette class on its own. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Deliberately near-black, not an inverted-light-mode grey — a "no BS"

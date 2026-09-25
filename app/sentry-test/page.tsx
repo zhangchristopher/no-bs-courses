@@ -9,15 +9,15 @@ export const metadata: Metadata = { title: "Sentry Test" };
 export default function SentryTestPage() {
   return (
     <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-      <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">Sentry Test</h1>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+      <h1 className="text-2xl font-semibold text-zinc-50">Sentry Test</h1>
+      <p className="mt-2 text-sm text-zinc-400">
         Each of these deliberately throws, to confirm the corresponding Sentry capture path is
         wired correctly. Delete this route before launch.
       </p>
 
       <div className="mt-8 flex flex-col gap-6">
         <section>
-          <h2 className="text-sm font-medium uppercase text-zinc-500 dark:text-zinc-400">
+          <h2 className="text-sm font-medium uppercase text-zinc-400">
             Client-side
           </h2>
           <div className="mt-2">
@@ -26,13 +26,13 @@ export default function SentryTestPage() {
         </section>
 
         <section>
-          <h2 className="text-sm font-medium uppercase text-zinc-500 dark:text-zinc-400">
+          <h2 className="text-sm font-medium uppercase text-zinc-400">
             Server action
           </h2>
           <form action={throwTestServerActionError} className="mt-2">
             <button
               type="submit"
-              className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
+              className="rounded-md border border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-50 hover:bg-zinc-900"
             >
               Throw in server action
             </button>
@@ -40,10 +40,10 @@ export default function SentryTestPage() {
         </section>
 
         <section>
-          <h2 className="text-sm font-medium uppercase text-zinc-500 dark:text-zinc-400">
+          <h2 className="text-sm font-medium uppercase text-zinc-400">
             Route handler
           </h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-2 text-sm text-zinc-400">
             Visit{" "}
             <a href="/api/sentry-test" className="underline">
               /api/sentry-test

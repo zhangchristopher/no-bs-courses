@@ -18,7 +18,7 @@ export default async function AddCourseFab() {
   return (
     <Link
       href={href}
-      className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 border border-ink bg-ink px-5 py-3 text-xs font-bold uppercase tracking-eyebrow text-cream transition-colors hover:bg-ink/80 dark:border-ink-dark dark:bg-ink-dark dark:text-cream-dark dark:hover:bg-ink-dark/80"
+      className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 border border-ink-dark bg-ink-dark px-5 py-3 text-xs font-bold uppercase tracking-eyebrow text-cream-dark transition-colors hover:bg-ink-dark/80"
     >
       <PlusIcon className="h-4 w-4" />
       Add a course

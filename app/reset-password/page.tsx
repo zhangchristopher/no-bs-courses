@@ -24,7 +24,7 @@ export default async function ResetPasswordPage({
   if (status === "error") {
     return (
       <AuthShell title="Couldn't reset password" align="center">
-        <p className="text-sm text-ink/60 dark:text-ink-dark/60">
+        <p className="text-sm text-ink-dark/60">
           {ERROR_MESSAGES[reason ?? ""] ?? "Something went wrong with this link."}
         </p>
         <Link href="/forgot-password" className="mt-4 inline-block underline text-sm">
@@ -37,7 +37,7 @@ export default async function ResetPasswordPage({
   if (!token) {
     return (
       <AuthShell title="Missing reset link" align="center">
-        <p className="text-sm text-ink/60 dark:text-ink-dark/60">
+        <p className="text-sm text-ink-dark/60">
           Open the reset link from your email, or{" "}
           <Link href="/forgot-password" className="underline">
             request a new one

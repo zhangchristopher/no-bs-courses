@@ -34,10 +34,10 @@ export default async function OwnerBusinessPage({
 
   return (
     <main className="mx-auto max-w-xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+      <h1 className="text-2xl font-black uppercase tracking-headline text-ink-dark">
         Registered Business
       </h1>
-      <p className="mt-2 text-sm text-ink/60 dark:text-ink-dark/60">
+      <p className="mt-2 text-sm text-ink-dark/60">
         Submitting your business paperwork is free. Once an admin approves it, you can claim
         course listings. Claiming more than one course, editing your listings, and the
         &ldquo;Registered Business&rdquo; badge require an active $99 + $50/mo subscription
@@ -48,7 +48,7 @@ export default async function OwnerBusinessPage({
       {error && <StatusBanner tone="error">{error}</StatusBanner>}
 
       {business?.business_verification_status === "verified" ? (
-        <Card className="mt-6 flex items-center gap-2 text-sm text-ink dark:text-ink-dark">
+        <Card className="mt-6 flex items-center gap-2 text-sm text-ink-dark">
           <CheckMarkIcon className="h-4 w-4 shrink-0" />
           <span>
             Business verified — {business.business_name}. Visit your{" "}
@@ -59,11 +59,11 @@ export default async function OwnerBusinessPage({
           </span>
         </Card>
       ) : business?.business_verification_status === "pending" ? (
-        <Card tone="warning" className="mt-6 text-sm text-ink/70 dark:text-ink-dark/70">
+        <Card tone="warning" className="mt-6 text-sm text-ink-dark/70">
           Your paperwork for {business.business_name} is awaiting admin review.
         </Card>
       ) : (
-        <form action={submitBusinessInfoAction} className="mt-6 flex flex-col gap-4 border border-hairline p-4 dark:border-hairline-dark">
+        <form action={submitBusinessInfoAction} className="mt-6 flex flex-col gap-4 border border-hairline-dark p-4">
           {business?.business_verification_status === "rejected" && (
             <StatusBanner tone="error">
               Your previous submission was rejected

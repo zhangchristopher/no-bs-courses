@@ -2,10 +2,9 @@
 // for anywhere a small square mark is useful (next to the wordmark, an
 // empty-state illustration, a loading indicator). Same asset as the
 // favicon (app/icon.png), just served from public/ so it can be reused
-// inline. It's black-on-transparent, so it reads on light backgrounds; on a
-// dark surface, pair it with a light background behind it (it isn't
-// theme-swapped like the full Logo, since most uses of a small mark like
-// this are against a fixed surface, not the page background directly).
+// inline. It's black-on-transparent, so it only reads on a light surface —
+// the site is dark-only, so always give it a light background behind it
+// rather than placing it straight on the page ground.
 export default function BSMark({
   size = 32,
   className,

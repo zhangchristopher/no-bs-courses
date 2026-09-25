@@ -19,7 +19,7 @@ export default async function OwnerSignUpPage({
 
   return (
     <AuthShell title="Create a business account">
-      <p className="text-sm text-ink/60 dark:text-ink-dark/60">
+      <p className="text-sm text-ink-dark/60">
         For course providers who want to claim and manage their listings. This is separate
         from a personal learner account.
       </p>
@@ -48,19 +48,19 @@ export default async function OwnerSignUpPage({
           placeholder="At least 8 characters"
         />
         <div className="flex flex-col gap-2">
-          <label className="flex items-center gap-2 text-sm text-ink/70 dark:text-ink-dark/70">
-            <input type="checkbox" name="email_marketing_opt_in" className="accent-ink dark:accent-ink-dark" />
+          <label className="flex items-center gap-2 text-sm text-ink-dark/70">
+            <input type="checkbox" name="email_marketing_opt_in" className="accent-ink-dark" />
             Send me owner tips and platform updates by email
           </label>
-          <label className="flex items-center gap-2 text-sm text-ink/70 dark:text-ink-dark/70">
-            <input type="checkbox" name="sms_marketing_opt_in" className="accent-ink dark:accent-ink-dark" />
+          <label className="flex items-center gap-2 text-sm text-ink-dark/70">
+            <input type="checkbox" name="sms_marketing_opt_in" className="accent-ink-dark" />
             Send me text updates
           </label>
         </div>
         <Button type="submit" className="w-full">
           Sign up
         </Button>
-        <p className="text-xs text-ink/50 dark:text-ink-dark/50">
+        <p className="text-xs text-ink-dark/50">
           By signing up, you agree to our{" "}
           <Link href="/terms" className="underline">
             Terms
@@ -73,7 +73,7 @@ export default async function OwnerSignUpPage({
         </p>
       </form>
 
-      <p className="mt-4 text-sm text-ink/60 dark:text-ink-dark/60">
+      <p className="mt-4 text-sm text-ink-dark/60">
         Already have a business account?{" "}
         <Link
           href={

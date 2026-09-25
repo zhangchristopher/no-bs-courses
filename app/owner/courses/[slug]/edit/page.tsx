@@ -62,12 +62,12 @@ export default async function EditOwnerCoursePage({
     <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
       <Link
         href="/owner/dashboard"
-        className="inline-flex items-center gap-1.5 text-sm text-ink/55 hover:underline dark:text-ink-dark/55"
+        className="inline-flex items-center gap-1.5 text-sm text-ink-dark/55 hover:underline"
       >
         <ArrowIcon direction="left" className="h-3.5 w-3.5" /> Back to dashboard
       </Link>
 
-      <h1 className="mt-3 text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+      <h1 className="mt-3 text-2xl font-black uppercase tracking-headline text-ink-dark">
         Edit &ldquo;{course.title}&rdquo;
       </h1>
 
@@ -114,16 +114,16 @@ export default async function EditOwnerCoursePage({
         </Button>
       </form>
 
-      <section className="mt-10 border-t border-hairline pt-6 dark:border-hairline-dark">
-        <h2 className="text-lg font-black uppercase tracking-tight text-ink dark:text-ink-dark">
+      <section className="mt-10 border-t border-hairline-dark pt-6">
+        <h2 className="text-lg font-black uppercase tracking-tight text-ink-dark">
           Extra sections ({sections.length}/{MAX_SECTIONS_PER_COURSE})
         </h2>
-        <p className="mt-1 text-sm text-ink/60 dark:text-ink-dark/60">
+        <p className="mt-1 text-sm text-ink-dark/60">
           Add up to {MAX_SECTIONS_PER_COURSE} extra sections to your listing, one of each type.
         </p>
 
         <Card tone={course.affiliate_link_status === "verified" ? "default" : "warning"} className="mt-4">
-          <p className="flex items-center gap-1.5 text-sm font-semibold text-ink dark:text-ink-dark">
+          <p className="flex items-center gap-1.5 text-sm font-semibold text-ink-dark">
             {course.affiliate_link_status === "verified" && <CheckMarkIcon className="h-4 w-4 shrink-0" />}
             {course.affiliate_link_status === "verified"
               ? "Affiliate Link"
@@ -133,7 +133,7 @@ export default async function EditOwnerCoursePage({
                   ? "Affiliate Link (rejected)"
                   : "Affiliate Link"}
           </p>
-          <p className="mt-1 text-sm text-ink/70 dark:text-ink-dark/70">
+          <p className="mt-1 text-sm text-ink-dark/70">
             {course.affiliate_link_status === "verified"
               ? "Your affiliate link is verified and live. Update it or review the Verified Course agreement anytime — resubmitting requires re-approval."
               : course.affiliate_link_status === "pending"
@@ -144,7 +144,7 @@ export default async function EditOwnerCoursePage({
           </p>
           <Link
             href={`/owner/courses/${course.slug}/verify`}
-            className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-ink underline dark:text-ink-dark"
+            className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-ink-dark underline"
           >
             {course.affiliate_link_status === "verified"
               ? "Manage affiliate link"
@@ -158,7 +158,7 @@ export default async function EditOwnerCoursePage({
         </Card>
 
         <Card className="mt-4">
-          <h3 className="text-sm font-semibold uppercase tracking-eyebrow text-ink dark:text-ink-dark">
+          <h3 className="text-sm font-semibold uppercase tracking-eyebrow text-ink-dark">
             Affiliate discount
           </h3>
           {course.affiliate_link_status === "verified" ? (
@@ -179,7 +179,7 @@ export default async function EditOwnerCoursePage({
               </Button>
             </form>
           ) : (
-            <p className="mt-2 flex items-center gap-1.5 text-sm text-ink/55 dark:text-ink-dark/55">
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-ink-dark/55">
               <LockIcon className="h-3.5 w-3.5 shrink-0" /> Discounts are a Verified Course perk —
               available once your affiliate link is verified.
             </p>
@@ -190,18 +190,18 @@ export default async function EditOwnerCoursePage({
           {sections.map((section) => (
             <Card key={section.id}>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold uppercase tracking-eyebrow text-ink dark:text-ink-dark">
+                <span className="text-sm font-semibold uppercase tracking-eyebrow text-ink-dark">
                   {sectionTypeLabel(section.section_type)}
                 </span>
                 <form action={deleteCourseSectionAction}>
                   <input type="hidden" name="section_id" value={section.id} />
                   <input type="hidden" name="slug" value={course.slug} />
-                  <button type="submit" className="text-xs text-ink/60 hover:underline dark:text-ink-dark/60">
+                  <button type="submit" className="text-xs text-ink-dark/60 hover:underline">
                     Remove
                   </button>
                 </form>
               </div>
-              <p className="mt-2 whitespace-pre-line text-sm text-ink/75 dark:text-ink-dark/75">
+              <p className="mt-2 whitespace-pre-line text-sm text-ink-dark/75">
                 {section.content}
               </p>
               {section.image_url && (
@@ -227,16 +227,16 @@ export default async function EditOwnerCoursePage({
         </div>
 
         {canAddSection ? (
-          <form action={addCourseSectionAction} className="mt-4 flex flex-col gap-3 border border-hairline p-4 dark:border-hairline-dark">
+          <form action={addCourseSectionAction} className="mt-4 flex flex-col gap-3 border border-hairline-dark p-4">
             <input type="hidden" name="course_id" value={course.id} />
             <input type="hidden" name="slug" value={course.slug} />
 
-            <label className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink dark:text-ink-dark">
+            <label className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark">
               Section type
               <select
                 name="section_type"
                 required
-                className="mt-2 w-full border border-hairline bg-transparent px-3 py-2 text-sm normal-case tracking-normal text-ink focus:border-ink focus:outline-none dark:border-hairline-dark dark:bg-cream-dark dark:text-ink-dark dark:focus:border-ink-dark"
+                className="mt-2 w-full border border-hairline-dark bg-cream-dark px-3 py-2 text-sm normal-case tracking-normal text-ink-dark focus:border-ink-dark focus:outline-none"
               >
                 {availableTypes.map((t) => (
                   <option key={t.value} value={t.value}>
@@ -258,7 +258,7 @@ export default async function EditOwnerCoursePage({
             </Button>
           </form>
         ) : (
-          <p className="mt-4 text-sm text-ink/50 dark:text-ink-dark/50">
+          <p className="mt-4 text-sm text-ink-dark/50">
             You&apos;ve reached the {MAX_SECTIONS_PER_COURSE}-section limit.
           </p>
         )}
