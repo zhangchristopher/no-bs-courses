@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ownerAuth } from "@/owner-auth";
 import { getOwnedCourseForContract } from "@/lib/ownerCourses";
+import { LEGAL_ENTITY_NAME, SITE_NAME } from "@/lib/site";
 import { signContractAction } from "./actions";
 import { AuthShell } from "@/components/ui/AuthShell";
 import { FormField } from "@/components/ui/FormField";
@@ -86,10 +87,12 @@ export default async function VerifyCoursePage({
         <ol className="mt-2 list-decimal space-y-1 pl-5">
           <li>Provide accurate, non-misleading information about this course.</li>
           <li>
-            Grant this platform the right to redirect visitors to your official course page via
-            the tracked affiliate link you provide below.
+            Grant {LEGAL_ENTITY_NAME}, operator of {SITE_NAME}, the right to redirect visitors
+            to your official course page via the tracked affiliate link you provide below.
           </li>
-          <li>Honor the affiliate commission terms communicated separately by this platform.</li>
+          <li>
+            Honor the affiliate commission terms communicated separately by {LEGAL_ENTITY_NAME}.
+          </li>
         </ol>
       </div>
 

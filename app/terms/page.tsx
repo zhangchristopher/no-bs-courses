@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { SITE_NAME } from "@/lib/site";
+import { LEGAL_ENTITY_NAME, SITE_NAME } from "@/lib/site";
 import LegalTOC from "@/components/LegalTOC";
 import ScrollToHash from "@/components/ScrollToHash";
 
 export const metadata: Metadata = { title: "Terms of Service" };
 
 const EFFECTIVE_DATE = "August 19, 2026";
+const LAST_UPDATED = "September 28, 2026";
 const CONTACT_EMAIL = "EMAIL_PLACEHOLDER";
-const OPERATING_NAME = "NoBSCourses";
 const JURISDICTION = "Florida, United States";
 
 const TOC = [
@@ -35,7 +35,7 @@ export default function TermsPage() {
         Terms of Service
       </h1>
       <p className="mt-2 text-sm text-zinc-400">
-        Effective {EFFECTIVE_DATE} · Last updated {EFFECTIVE_DATE}
+        Effective {EFFECTIVE_DATE} · Last updated {LAST_UPDATED}
       </p>
 
       <LegalTOC items={TOC} />
@@ -47,9 +47,8 @@ export default function TermsPage() {
           </h2>
           <p className="mt-3">
             By using {SITE_NAME}, you&apos;re agreeing to these terms. {SITE_NAME} is
-            operated under the name {OPERATING_NAME} by an individual as a sole
-            proprietorship — no separate company has been formed for this business yet. If
-            you don&apos;t agree to these terms, don&apos;t use the site.
+            operated by {LEGAL_ENTITY_NAME} (&ldquo;we,&rdquo; &ldquo;us&rdquo;). If you
+            don&apos;t agree to these terms, don&apos;t use the site.
           </p>
         </section>
 
@@ -270,14 +269,11 @@ export default function TermsPage() {
             11. Limitation of Liability
           </h2>
           <p className="mt-3">
-            To the maximum extent permitted by law, {OPERATING_NAME} and the individual
-            operating it are not liable for indirect, incidental, special, or consequential
-            damages arising from your use of the site. Our total liability for any claim is
-            limited to the amount you paid us in the 12 months before the claim arose.
-            Because {OPERATING_NAME} is currently a sole proprietorship rather than an LLC or
-            corporation, this limitation is especially important — read it carefully, and
-            note this is a standard startup default, not a substitute for a lawyer&apos;s
-            review.
+            To the maximum extent permitted by law, {LEGAL_ENTITY_NAME} and its members,
+            managers, and employees are not liable for indirect, incidental, special, or
+            consequential damages arising from your use of the site. Our total liability for
+            any claim is limited to the amount you paid us in the 12 months before the claim
+            arose.
           </p>
         </section>
 
@@ -312,7 +308,7 @@ export default function TermsPage() {
             <a href={`mailto:${CONTACT_EMAIL}`} className="underline">
               {CONTACT_EMAIL}
             </a>
-            . {OPERATING_NAME}, {JURISDICTION}.
+            . {LEGAL_ENTITY_NAME}, {JURISDICTION}.
           </p>
         </section>
       </div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-import { SITE_NAME } from "@/lib/site";
+import { LEGAL_ENTITY_NAME } from "@/lib/site";
 import Logo from "@/components/Logo";
 
 const FOOTER_LINKS = [
@@ -31,7 +31,7 @@ export default async function SiteFooter() {
         <Logo className="mt-12 block w-full" imgClassName="block h-auto w-full" />
 
         <p className="mt-8 text-[12px] uppercase tracking-eyebrow text-ink-dark/40">
-          &copy; {new Date().getFullYear()} {SITE_NAME}
+          &copy; {new Date().getFullYear()} {LEGAL_ENTITY_NAME}
         </p>
       </div>
     </footer>

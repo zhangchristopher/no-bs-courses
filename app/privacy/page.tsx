@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { SITE_NAME } from "@/lib/site";
+import { LEGAL_ENTITY_NAME, SITE_NAME } from "@/lib/site";
 import LegalTOC from "@/components/LegalTOC";
 import ScrollToHash from "@/components/ScrollToHash";
 
 export const metadata: Metadata = { title: "Privacy Policy" };
 
 const EFFECTIVE_DATE = "August 19, 2026";
+const LAST_UPDATED = "September 28, 2026";
 const CONTACT_EMAIL = "EMAIL_PLACEHOLDER";
-const OPERATING_NAME = "NoBSCourses";
 const JURISDICTION = "Florida, United States";
 
 const TOC = [
@@ -31,7 +31,7 @@ export default function PrivacyPolicyPage() {
         Privacy Policy
       </h1>
       <p className="mt-2 text-sm text-zinc-400">
-        Effective {EFFECTIVE_DATE} · Last updated {EFFECTIVE_DATE}
+        Effective {EFFECTIVE_DATE} · Last updated {LAST_UPDATED}
       </p>
 
       <LegalTOC items={TOC} />
@@ -42,12 +42,10 @@ export default function PrivacyPolicyPage() {
             1. Overview
           </h2>
           <p className="mt-3">
-            This describes what {SITE_NAME} (operating name &ldquo;{OPERATING_NAME}
-            ,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;) collects, why, and what you can do
-            about it. {OPERATING_NAME} is currently operated by an individual as a sole
-            proprietorship — no separate company (like an LLC) has been formed for this
-            business yet. We&apos;ve tried to write this the way we write everything else
-            here — plainly, and without saying more than what&apos;s actually true.
+            This describes what {SITE_NAME}, operated by {LEGAL_ENTITY_NAME} (&ldquo;we,&rdquo;
+            &ldquo;us&rdquo;), collects, why, and what you can do about it. We&apos;ve tried
+            to write this the way we write everything else here — plainly, and without
+            saying more than what&apos;s actually true.
           </p>
         </section>
 
@@ -229,7 +227,7 @@ export default function PrivacyPolicyPage() {
             <a href={`mailto:${CONTACT_EMAIL}`} className="underline">
               {CONTACT_EMAIL}
             </a>
-            . {OPERATING_NAME}, {JURISDICTION}.
+            . {LEGAL_ENTITY_NAME}, {JURISDICTION}.
           </p>
         </section>
       </div>
