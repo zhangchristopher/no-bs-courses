@@ -1,13 +1,22 @@
 @import "tailwindcss";
 
+/* Dark is the only theme. Components use the dark palette directly
+   (bg-cream-dark, text-ink-dark, border-hairline-dark, ...) — there are no
+   light-mode classes left to override. The root layout still puts .dark on
+   <html> and this still binds Tailwind's dark: variant to it, so a stray
+   dark:* utility can't silently start following the OS color-scheme
+   setting again; it just always applies. Don't write new dark:* classes,
+   though — use the dark-palette class on its own. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Deliberately near-black, not an inverted-light-mode grey — a "no BS"
+   brand should look like it meant to be dark. #141414 is the same fill as
+   --color-cream-dark, so page, header, footer, and cards all sit on one
+   ground. */
 :root {
-  /* The page canvas sits a shade under pure white so the header, footer,
-     and cards (all still true white via --color-cream) read as surfaces
-     floating on the page rather than blending into it. Deliberately just
-     one step off white, not a visible "gray box" — #f4f4f4. */
-  --background: #f4f4f4;
-  --foreground: #000000;
-  color-scheme: light dark;
+  --background: #141414;
+  --foreground: #ffffff;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -58,19 +67,6 @@
   --color-red-800: #950000;
   --color-red-900: #7a0000;
   --color-red-950: #440000;
-}
-
-/* Dark mode follows the OS/browser preference (no manual toggle). Deliberately
-   near-black, not an inverted-light-mode grey — a "no BS" brand should look
-   like it meant to be dark, not like a light theme with the values flipped.
-   The pairing inverts cleanly: #141414 is the same dark fill the editorial
-   mockup already uses for its category tiles, and cream becomes the "ink" —
-   no new colors introduced, just the two roles swapped. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #141414;
-    --foreground: #ffffff;
-  }
 }
 
 body {
@@ -172,13 +168,13 @@ html {
   cursor: pointer;
   font-size: 1.75rem;
   line-height: 1;
-  color: var(--color-ink);
+  color: var(--color-ink-dark);
   opacity: 0.2;
   transition: opacity 0.1s ease;
 }
 
 .star-rating input:focus-visible + label {
-  outline: 2px solid var(--color-ink);
+  outline: 2px solid var(--color-ink-dark);
   outline-offset: 2px;
 }
 
@@ -188,11 +184,30 @@ html {
   opacity: 1;
 }
 
-@media (prefers-color-scheme: dark) {
-  .star-rating label {
-    color: var(--color-ink-dark);
+/* Netflix-style full-bleed rows: the scroller spans the whole viewport, but
+   its first card lines up with the max-w-7xl content column above it
+   (same px-4 / sm:px-6 / lg:px-8 gutters). Padding percentages resolve
+   against the row's own width, so this doesn't trip over the scrollbar the
+   way 100vw would. */
+.bleed-row {
+  --gutter: 1rem;
+  padding-inline: max(var(--gutter), calc((100% - 80rem) / 2 + var(--gutter)));
+  scroll-padding-inline: max(var(--gutter), calc((100% - 80rem) / 2 + var(--gutter)));
+  scrollbar-width: none;
+}
+
+.bleed-row::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .bleed-row {
+    --gutter: 1.5rem;
   }
-  .star-rating input:focus-visible + label {
-    outline-color: var(--color-ink-dark);
+}
+
+@media (min-width: 64rem) {
+  .bleed-row {
+    --gutter: 2rem;
   }
 }

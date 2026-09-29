@@ -76,10 +76,10 @@ export default async function CourseDetailPage({
       if (isSubmitter || adminSession.authorized) {
         return (
           <main className="mx-auto max-w-sm px-4 py-16 sm:px-6 text-center">
-            <h1 className="text-2xl font-black uppercase tracking-tight text-ink dark:text-ink-dark">
+            <h1 className="text-2xl font-black uppercase tracking-tight text-ink-dark">
               &ldquo;{moderation.title}&rdquo;
             </h1>
-            <p className="mt-3 text-sm text-ink/60 dark:text-ink-dark/60">
+            <p className="mt-3 text-sm text-ink-dark/60">
               {moderation.listing_status === "rejected"
                 ? "This submission was rejected by an admin and isn't public."
                 : "This course is pending admin review and isn't public yet."}
@@ -142,7 +142,7 @@ export default async function CourseDetailPage({
       />
 
       {course.thumbnail_url && (
-        <div className="relative mt-6 h-56 w-full overflow-hidden bg-ink/5 sm:h-72 dark:bg-ink-dark/10">
+        <div className="relative mt-6 h-56 w-full overflow-hidden bg-ink-dark/10 sm:h-72">
           <Image
             src={course.thumbnail_url}
             alt={course.title}
@@ -155,11 +155,11 @@ export default async function CourseDetailPage({
       )}
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
-        <span className="border border-hairline px-3 py-1 text-[11px] font-semibold uppercase tracking-eyebrow text-ink/70 dark:border-hairline-dark dark:text-ink-dark/70">
+        <span className="border border-hairline-dark px-3 py-1 text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/70">
           {course.category ?? "Uncategorized"}
         </span>
         {course.verification_status !== "verified" && (
-          <span className="border border-dashed border-ink/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-eyebrow text-ink/70 dark:border-ink-dark/40 dark:text-ink-dark/70">
+          <span className="border border-dashed border-ink-dark/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/70">
             {course.verification_status}
           </span>
         )}
@@ -190,7 +190,7 @@ export default async function CourseDetailPage({
         )}
 
       {course.verification_status === "unclaimed" && (
-        <div className="mt-4 text-sm text-ink/60 dark:text-ink-dark/60">
+        <div className="mt-4 text-sm text-ink-dark/60">
           {!ownerSession?.user?.id ? (
             <>
               Are you the creator of this course?{" "}
@@ -230,27 +230,27 @@ export default async function CourseDetailPage({
         </div>
       )}
 
-      <h1 className="mt-3 text-3xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+      <h1 className="mt-3 text-3xl font-black uppercase tracking-headline text-ink-dark">
         {course.title}
       </h1>
 
       <div className="mt-2">
         <StarRating score={course.overall_score} reviewCount={course.total_reviews} />
           </div>
-          <p className="mt-1 text-ink/60 dark:text-ink-dark/60">by {course.provider_name}</p>
+          <p className="mt-1 text-ink-dark/60">by {course.provider_name}</p>
 
           <Button href={`/go/${course.slug}`} target="_blank" rel="noopener noreferrer" className="group mt-4">
             Go to course
             <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
 
-          <div className="mt-6 grid grid-cols-2 gap-4 border border-hairline p-4 sm:grid-cols-4 dark:border-hairline-dark">
+          <div className="mt-6 grid grid-cols-2 gap-4 border border-hairline-dark p-4 sm:grid-cols-4">
             <div>
-              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/50">
                 Price
               </div>
               <div className="mt-1 flex items-baseline gap-2 tabular-nums">
-                <span className="font-medium text-ink dark:text-ink-dark">
+                <span className="font-medium text-ink-dark">
                   {course.price == null
                     ? "N/A"
                     : Number(course.price) === 0
@@ -260,33 +260,33 @@ export default async function CourseDetailPage({
                 {course.compare_at_price &&
                   course.price &&
                   Number(course.compare_at_price) > Number(course.price) && (
-                    <span className="text-sm text-ink/40 line-through dark:text-ink-dark/40">
+                    <span className="text-sm text-ink-dark/40 line-through">
                       ${course.compare_at_price}
                     </span>
                   )}
               </div>
             </div>
             <div>
-              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/50">
                 Duration
               </div>
-              <div className="mt-1 font-medium tabular-nums text-ink dark:text-ink-dark">
+              <div className="mt-1 font-medium tabular-nums text-ink-dark">
                 {course.duration_hours ? `${course.duration_hours} hours` : "N/A"}
               </div>
             </div>
             <div>
-              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/50">
                 Platform
               </div>
-              <div className="mt-1 font-medium text-ink dark:text-ink-dark">
+              <div className="mt-1 font-medium text-ink-dark">
                 {course.platform || "Other"}
               </div>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+              <div className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/50">
                 Prerequisites
               </div>
-              <div className="mt-1 font-medium text-ink dark:text-ink-dark">
+              <div className="mt-1 font-medium text-ink-dark">
                 {course.prerequisites || "None listed"}
               </div>
             </div>
@@ -294,10 +294,10 @@ export default async function CourseDetailPage({
 
           {course.description && (
             <section className="mt-8">
-              <h2 className="text-lg font-black uppercase tracking-tight text-ink dark:text-ink-dark">
+              <h2 className="text-lg font-black uppercase tracking-tight text-ink-dark">
                 Description
               </h2>
-              <p className="mt-2 whitespace-pre-line text-ink/75 dark:text-ink-dark/75">
+              <p className="mt-2 whitespace-pre-line text-ink-dark/75">
                 {course.description}
               </p>
             </section>
@@ -305,10 +305,10 @@ export default async function CourseDetailPage({
 
           {course.syllabus && (
             <section className="mt-8">
-              <h2 className="text-lg font-black uppercase tracking-tight text-ink dark:text-ink-dark">
+              <h2 className="text-lg font-black uppercase tracking-tight text-ink-dark">
                 Syllabus
               </h2>
-              <p className="mt-2 whitespace-pre-line text-ink/75 dark:text-ink-dark/75">
+              <p className="mt-2 whitespace-pre-line text-ink-dark/75">
                 {course.syllabus}
               </p>
             </section>
@@ -321,10 +321,10 @@ export default async function CourseDetailPage({
               sectionId={section.id}
               className="mt-8"
             >
-              <h2 className="text-lg font-black uppercase tracking-tight text-ink dark:text-ink-dark">
+              <h2 className="text-lg font-black uppercase tracking-tight text-ink-dark">
                 {sectionTypeLabel(section.section_type)}
               </h2>
-              <p className="mt-2 whitespace-pre-line text-ink/75 dark:text-ink-dark/75">
+              <p className="mt-2 whitespace-pre-line text-ink-dark/75">
                 {section.content}
               </p>
               {section.image_url && (

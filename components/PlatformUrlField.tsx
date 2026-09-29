@@ -4,7 +4,7 @@ import { useState } from "react";
 import { detectPlatformFromUrl, KNOWN_PLATFORMS, OTHER_PLATFORM } from "@/lib/platform";
 
 const FIELD_CLASSES =
-  "mt-1 w-full border border-hairline bg-transparent px-3 py-2 text-sm text-ink placeholder:text-ink/40 focus:border-ink focus:outline-none dark:border-hairline-dark dark:text-ink-dark dark:placeholder:text-ink-dark/40 dark:focus:border-ink-dark";
+  "mt-1 w-full border border-hairline-dark bg-transparent px-3 py-2 text-sm text-ink-dark placeholder:text-ink-dark/40 focus:border-ink-dark focus:outline-none";
 
 // Detects the platform from the URL as it's typed, but only until the
 // person touches the platform dropdown themselves — a manual override
@@ -15,7 +15,7 @@ export default function PlatformUrlField() {
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-[2fr_1fr]">
-      <label className="text-sm font-medium text-ink dark:text-ink-dark">
+      <label className="text-sm font-medium text-ink-dark">
         Platform URL
         <input
           name="platform_url"
@@ -30,7 +30,7 @@ export default function PlatformUrlField() {
           className={FIELD_CLASSES}
         />
       </label>
-      <label className="text-sm font-medium text-ink dark:text-ink-dark">
+      <label className="text-sm font-medium text-ink-dark">
         Platform
         <select
           name="platform"

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ownerAuth } from "@/owner-auth";
 import { getOwnedCourseForContract } from "@/lib/ownerCourses";
+import { LEGAL_ENTITY_NAME, SITE_NAME } from "@/lib/site";
 import { signContractAction } from "./actions";
 import { AuthShell } from "@/components/ui/AuthShell";
 import { FormField } from "@/components/ui/FormField";
@@ -44,15 +45,15 @@ export default async function VerifyCoursePage({
     <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
       <Link
         href="/owner/dashboard"
-        className="inline-flex items-center gap-1.5 text-sm text-ink/55 hover:underline dark:text-ink-dark/55"
+        className="inline-flex items-center gap-1.5 text-sm text-ink-dark/55 hover:underline"
       >
         <ArrowIcon direction="left" className="h-3.5 w-3.5" /> Back to dashboard
       </Link>
 
-      <h1 className="mt-3 text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+      <h1 className="mt-3 text-2xl font-black uppercase tracking-headline text-ink-dark">
         Verified Course agreement — &ldquo;{course.title}&rdquo;
       </h1>
-      <p className="mt-2 text-sm text-ink/60 dark:text-ink-dark/60">
+      <p className="mt-2 text-sm text-ink-dark/60">
         Submitting this goes to an admin for review — the &ldquo;Verified Course&rdquo; badge,
         click analytics, and the ability to respond to reviews only activate once your affiliate
         link is approved. It replaces the plain course-site link everywhere visitors click
@@ -74,8 +75,8 @@ export default async function VerifyCoursePage({
       )}
       {error && <StatusBanner tone="error">{error}</StatusBanner>}
 
-      <div className="mt-6 max-h-64 overflow-y-auto border border-hairline bg-ink/[0.02] p-4 text-sm text-ink/75 dark:border-hairline-dark dark:bg-ink-dark/[0.03] dark:text-ink-dark/75">
-        <p className="text-xs font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+      <div className="mt-6 max-h-64 overflow-y-auto border border-hairline-dark bg-ink-dark/[0.03] p-4 text-sm text-ink-dark/75">
+        <p className="text-xs font-semibold uppercase tracking-eyebrow text-ink-dark/50">
           Sample terms — not legally binding. Replace with real reviewed legal terms before
           using this in production.
         </p>
@@ -86,10 +87,12 @@ export default async function VerifyCoursePage({
         <ol className="mt-2 list-decimal space-y-1 pl-5">
           <li>Provide accurate, non-misleading information about this course.</li>
           <li>
-            Grant this platform the right to redirect visitors to your official course page via
-            the tracked affiliate link you provide below.
+            Grant {LEGAL_ENTITY_NAME}, operator of {SITE_NAME}, the right to redirect visitors
+            to your official course page via the tracked affiliate link you provide below.
           </li>
-          <li>Honor the affiliate commission terms communicated separately by this platform.</li>
+          <li>
+            Honor the affiliate commission terms communicated separately by {LEGAL_ENTITY_NAME}.
+          </li>
         </ol>
       </div>
 
@@ -113,8 +116,8 @@ export default async function VerifyCoursePage({
           defaultValue={course.contract_signed_name ?? ""}
         />
 
-        <label className="flex items-center gap-2 text-sm text-ink/70 dark:text-ink-dark/70">
-          <input type="checkbox" name="agree" required className="accent-ink dark:accent-ink-dark" />
+        <label className="flex items-center gap-2 text-sm text-ink-dark/70">
+          <input type="checkbox" name="agree" required className="accent-ink-dark" />
           I have read and agree to the terms above.
         </label>
 
@@ -123,7 +126,7 @@ export default async function VerifyCoursePage({
         </Button>
 
         {course.contract_signed_at && (
-          <p className="text-xs text-ink/50 dark:text-ink-dark/50">
+          <p className="text-xs text-ink-dark/50">
             Originally signed {new Date(course.contract_signed_at).toLocaleDateString()}.
           </p>
         )}

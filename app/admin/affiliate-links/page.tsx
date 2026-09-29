@@ -25,10 +25,10 @@ export default async function AdminAffiliateLinksPage() {
   if (!session.authorized) {
     return (
       <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-        <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+        <h1 className="text-2xl font-black uppercase tracking-headline text-ink-dark">
           Not authorized
         </h1>
-        <p className="mt-2 text-ink/60 dark:text-ink-dark/60">
+        <p className="mt-2 text-ink-dark/60">
           {session.reason === "signed-out"
             ? "Sign in with the admin account to view affiliate link verifications."
             : "Your account does not have access to this page."}
@@ -44,10 +44,10 @@ export default async function AdminAffiliateLinksPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+      <h1 className="text-2xl font-black uppercase tracking-headline text-ink-dark">
         Affiliate Link Verifications
       </h1>
-      <p className="mt-2 text-sm tabular-nums text-ink/60 dark:text-ink-dark/60">
+      <p className="mt-2 text-sm tabular-nums text-ink-dark/60">
         {pending.length} pending submission{pending.length === 1 ? "" : "s"}. Approving activates
         the Verified Course badge, click analytics, review responses, and switches /go/ redirects
         to this affiliate link.
@@ -55,7 +55,7 @@ export default async function AdminAffiliateLinksPage() {
 
       <div className="mt-8 flex flex-col gap-6">
         {pending.length === 0 && (
-          <p className="text-sm text-ink/50 dark:text-ink-dark/50">No pending submissions.</p>
+          <p className="text-sm text-ink-dark/50">No pending submissions.</p>
         )}
         {pending.map((link) => (
           <Card key={link.course_id}>
@@ -63,44 +63,44 @@ export default async function AdminAffiliateLinksPage() {
               <Link
                 href={`/courses/${link.slug}`}
                 target="_blank"
-                className="font-medium text-ink hover:underline dark:text-ink-dark"
+                className="font-medium text-ink-dark hover:underline"
               >
                 {link.title}
               </Link>
-              <span className="text-xs tabular-nums text-ink/50 dark:text-ink-dark/50">
+              <span className="text-xs tabular-nums text-ink-dark/50">
                 Signed {formatDate(link.contract_signed_at)}
               </span>
             </div>
-            <p className="mt-1 text-sm text-ink/55 dark:text-ink-dark/55">
+            <p className="mt-1 text-sm text-ink-dark/55">
               Owner: {link.owner_name || "(no name)"} &lt;{link.owner_email}&gt;
             </p>
-            <p className="mt-1 text-sm text-ink/55 dark:text-ink-dark/55">
+            <p className="mt-1 text-sm text-ink-dark/55">
               Signed as: {link.contract_signed_name}
             </p>
 
-            <div className="mt-3 grid grid-cols-1 gap-2 border border-hairline p-3 text-sm dark:border-hairline-dark sm:grid-cols-2">
+            <div className="mt-3 grid grid-cols-1 gap-2 border border-hairline-dark p-3 text-sm sm:grid-cols-2">
               <div>
-                <div className="text-xs font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+                <div className="text-xs font-semibold uppercase tracking-eyebrow text-ink-dark/50">
                   Official platform URL
                 </div>
                 <a
                   href={link.platform_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="break-all text-ink/75 underline dark:text-ink-dark/75"
+                  className="break-all text-ink-dark/75 underline"
                 >
                   {link.platform_url}
                 </a>
               </div>
               <div>
-                <div className="text-xs font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+                <div className="text-xs font-semibold uppercase tracking-eyebrow text-ink-dark/50">
                   Submitted affiliate URL
                 </div>
                 <a
                   href={link.affiliate_url ?? "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="break-all text-ink/75 underline dark:text-ink-dark/75"
+                  className="break-all text-ink-dark/75 underline"
                 >
                   {link.affiliate_url}
                 </a>
@@ -120,7 +120,7 @@ export default async function AdminAffiliateLinksPage() {
                   type="text"
                   name="reason"
                   placeholder="Rejection reason (optional)"
-                  className="min-w-[12rem] flex-1 border border-hairline bg-transparent px-3 py-2 text-sm text-ink placeholder:text-ink/40 focus:border-ink focus:outline-none dark:border-hairline-dark dark:text-ink-dark dark:placeholder:text-ink-dark/40 dark:focus:border-ink-dark"
+                  className="min-w-[12rem] flex-1 border border-hairline-dark bg-transparent px-3 py-2 text-sm text-ink-dark placeholder:text-ink-dark/40 focus:border-ink-dark focus:outline-none"
                 />
                 <Button type="submit" variant="secondary" size="sm">
                   Reject

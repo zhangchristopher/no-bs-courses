@@ -25,10 +25,10 @@ export default async function AdminFlagsPage() {
   if (!session.authorized) {
     return (
       <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-        <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+        <h1 className="text-2xl font-black uppercase tracking-headline text-ink-dark">
           Not authorized
         </h1>
-        <p className="mt-2 text-ink/60 dark:text-ink-dark/60">
+        <p className="mt-2 text-ink-dark/60">
           {session.reason === "signed-out"
             ? "Sign in with the admin account to view flagged reviews."
             : "Your account does not have access to this page."}
@@ -47,10 +47,10 @@ export default async function AdminFlagsPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+      <h1 className="text-2xl font-black uppercase tracking-headline text-ink-dark">
         Review Flags
       </h1>
-      <p className="mt-2 text-sm tabular-nums text-ink/60 dark:text-ink-dark/60">
+      <p className="mt-2 text-sm tabular-nums text-ink-dark/60">
         {flags.length} unresolved flag{flags.length === 1 ? "" : "s"} — courses that received 5+
         reviews within a 24-hour window. Flags never hide reviews or block a course automatically;
         this is only a signal for you to look closer.
@@ -58,7 +58,7 @@ export default async function AdminFlagsPage() {
 
       <div className="mt-8 flex flex-col gap-6">
         {flags.length === 0 && (
-          <p className="text-sm text-ink/50 dark:text-ink-dark/50">No unresolved flags.</p>
+          <p className="text-sm text-ink-dark/50">No unresolved flags.</p>
         )}
         {flags.map((flag, i) => (
           <Card key={flag.id} tone="warning">
@@ -67,34 +67,34 @@ export default async function AdminFlagsPage() {
                 href={`/courses/${flag.course_slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-ink underline dark:text-ink-dark"
+                className="font-medium text-ink-dark underline"
               >
                 {flag.course_title}
               </Link>
-              <span className="text-xs tabular-nums text-ink/50 dark:text-ink-dark/50">
+              <span className="text-xs tabular-nums text-ink-dark/50">
                 Flagged {formatDate(flag.created_at)}
               </span>
             </div>
-            <p className="mt-1 text-sm text-ink/70 dark:text-ink-dark/70">
+            <p className="mt-1 text-sm text-ink-dark/70">
               {flag.flag_reason} ({formatDate(flag.window_start)} – {formatDate(flag.window_end)})
             </p>
 
-            <div className="mt-3 border border-hairline bg-cream p-3 dark:border-hairline-dark dark:bg-cream-dark">
-              <div className="text-xs font-semibold uppercase tracking-eyebrow text-ink/50 dark:text-ink-dark/50">
+            <div className="mt-3 border border-hairline-dark bg-cream-dark p-3">
+              <div className="text-xs font-semibold uppercase tracking-eyebrow text-ink-dark/50">
                 Recent reviews
               </div>
               <div className="mt-2 flex flex-col gap-2">
                 {recentReviewsByCourse[i].map((review) => (
                   <div
                     key={review.id}
-                    className="border-b border-hairline pb-2 text-sm last:border-0 last:pb-0 dark:border-hairline-dark"
+                    className="border-b border-hairline-dark pb-2 text-sm last:border-0 last:pb-0"
                   >
                     <Stars rating={review.rating} />{" "}
-                    <span className="text-ink/50 dark:text-ink-dark/50">
+                    <span className="text-ink-dark/50">
                       {review.reviewer_display_name ?? "Anonymous"} · {formatDate(review.created_at)}
                     </span>
                     {review.review_text && (
-                      <p className="mt-1 text-ink/75 dark:text-ink-dark/75">{review.review_text}</p>
+                      <p className="mt-1 text-ink-dark/75">{review.review_text}</p>
                     )}
                   </div>
                 ))}

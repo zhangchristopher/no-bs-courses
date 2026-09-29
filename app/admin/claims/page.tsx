@@ -14,10 +14,10 @@ export default async function AdminClaimsPage() {
   if (!session.authorized) {
     return (
       <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-        <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+        <h1 className="text-2xl font-black uppercase tracking-headline text-ink-dark">
           Not authorized
         </h1>
-        <p className="mt-2 text-ink/60 dark:text-ink-dark/60">
+        <p className="mt-2 text-ink-dark/60">
           {session.reason === "signed-out"
             ? "Sign in with the admin account to view course claims."
             : "Your account does not have access to this page."}
@@ -33,10 +33,10 @@ export default async function AdminClaimsPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-black uppercase tracking-headline text-ink dark:text-ink-dark">
+      <h1 className="text-2xl font-black uppercase tracking-headline text-ink-dark">
         Course Claims
       </h1>
-      <p className="mt-2 text-sm tabular-nums text-ink/60 dark:text-ink-dark/60">
+      <p className="mt-2 text-sm tabular-nums text-ink-dark/60">
         {pending.length} pending claim{pending.length === 1 ? "" : "s"}. Business paperwork is
         reviewed separately at{" "}
         <Link href="/admin/businesses" className="underline">
@@ -47,19 +47,19 @@ export default async function AdminClaimsPage() {
 
       <div className="mt-8 flex flex-col gap-6">
         {pending.length === 0 && (
-          <p className="text-sm text-ink/50 dark:text-ink-dark/50">No pending claims.</p>
+          <p className="text-sm text-ink-dark/50">No pending claims.</p>
         )}
         {pending.map((c) => (
           <Card key={c.course_id}>
-            <p className="font-medium text-ink dark:text-ink-dark">
+            <p className="font-medium text-ink-dark">
               <Link href={`/courses/${c.slug}`} className="underline">
                 {c.title}
               </Link>
             </p>
-            <p className="mt-1 text-sm text-ink/55 dark:text-ink-dark/55">
+            <p className="mt-1 text-sm text-ink-dark/55">
               Provider: {c.provider_name}
             </p>
-            <p className="mt-1 text-sm text-ink/55 dark:text-ink-dark/55">
+            <p className="mt-1 text-sm text-ink-dark/55">
               Claimed by: {c.owner_name || "(no name)"} &lt;{c.owner_email}&gt;
             </p>
 
@@ -76,7 +76,7 @@ export default async function AdminClaimsPage() {
                   type="text"
                   name="reason"
                   placeholder="Rejection reason (optional)"
-                  className="min-w-[12rem] flex-1 border border-hairline bg-transparent px-3 py-2 text-sm text-ink placeholder:text-ink/40 focus:border-ink focus:outline-none dark:border-hairline-dark dark:text-ink-dark dark:placeholder:text-ink-dark/40 dark:focus:border-ink-dark"
+                  className="min-w-[12rem] flex-1 border border-hairline-dark bg-transparent px-3 py-2 text-sm text-ink-dark placeholder:text-ink-dark/40 focus:border-ink-dark focus:outline-none"
                 />
                 <Button type="submit" variant="secondary" size="sm">
                   Reject

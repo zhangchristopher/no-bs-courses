@@ -15,11 +15,11 @@ const iconSizeClasses: Record<BadgeSize, string> = {
 // Just an icon + label — no pill/background container. The green shield /
 // red check are full-color brand marks (not monochrome-recolored to match
 // theme) — they're status indicators, not decorative icons, so they keep
-// their own color in both light and dark mode.
+// their own color rather than following the text color around them.
 export function RegisteredBusinessBadge({ size = "md" }: { size?: BadgeSize }) {
   return (
     <span
-      className={`inline-flex items-center font-medium uppercase tracking-eyebrow text-ink/55 dark:text-ink-dark/55 ${textSizeClasses[size]}`}
+      className={`inline-flex items-center font-medium uppercase tracking-eyebrow text-ink-dark/55 ${textSizeClasses[size]}`}
     >
       <Image
         src="/brand/badge-registered.png"
@@ -36,7 +36,7 @@ export function RegisteredBusinessBadge({ size = "md" }: { size?: BadgeSize }) {
 export function VerifiedCourseBadge({ size = "md" }: { size?: BadgeSize }) {
   return (
     <span
-      className={`inline-flex items-center font-medium uppercase tracking-eyebrow text-ink dark:text-ink-dark ${textSizeClasses[size]}`}
+      className={`inline-flex items-center font-medium uppercase tracking-eyebrow text-ink-dark ${textSizeClasses[size]}`}
     >
       <Image
         src="/brand/badge-verified.png"

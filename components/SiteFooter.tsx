@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-import { SITE_NAME } from "@/lib/site";
+import { LEGAL_ENTITY_NAME } from "@/lib/site";
+import Logo from "@/components/Logo";
+
+const FOOTER_LINKS = [
+  { href: "/courses", label: "Browse courses" },
+  { href: "/courses/category", label: "All categories" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
+];
 
 export default async function SiteFooter() {
   // Style-preview routes render their own footer.
@@ -8,19 +16,23 @@ export default async function SiteFooter() {
   if (pathname.startsWith("/style-preview")) return null;
 
   return (
-    <footer className="border-t border-hairline bg-cream py-8 dark:border-hairline-dark dark:bg-cream-dark">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 text-[13px] uppercase tracking-eyebrow text-ink/50 sm:px-6 lg:px-8 dark:text-ink-dark/50">
-        <span>
-          &copy; {new Date().getFullYear()} {SITE_NAME}
-        </span>
-        <nav className="flex items-center gap-6">
-          <Link href="/privacy" className="hover:text-ink dark:hover:text-ink-dark">
-            Privacy
-          </Link>
-          <Link href="/terms" className="hover:text-ink dark:hover:text-ink-dark">
-            Terms
-          </Link>
+    <footer className="border-t border-hairline-dark bg-cream-dark pt-10 pb-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <nav className="flex flex-wrap items-center gap-x-8 gap-y-3 text-[13px] uppercase tracking-eyebrow text-ink-dark/60">
+          {FOOTER_LINKS.map((link) => (
+            <Link key={link.href} href={link.href} className="hover:text-ink-dark">
+              {link.label}
+            </Link>
+          ))}
         </nav>
+
+        {/* The wordmark as a closing statement — spans the full content
+            column, the last thing on every page. */}
+        <Logo className="mt-12 block w-full" imgClassName="block h-auto w-full" />
+
+        <p className="mt-8 text-[12px] uppercase tracking-eyebrow text-ink-dark/40">
+          &copy; {new Date().getFullYear()} {LEGAL_ENTITY_NAME}
+        </p>
       </div>
     </footer>
   );

@@ -168,6 +168,14 @@ export async function getAllCategories(): Promise<CategorySummary[]> {
   return rows;
 }
 
+// Name + slug + count for the search bar's "browse by category" dropdown.
+// Slugs are computed here, server-side, so the client menu never has to
+// import this module (and with it, the database client).
+export async function getCategoryMenuItems(): Promise<{ name: string; slug: string; count: number }[]> {
+  const categories = await getAllCategories();
+  return categories.map((c) => ({ name: c.category, slug: categorySlug(c.category), count: c.count }));
+}
+
 export async function getCategoryBySlug(slug: string): Promise<CategorySummary | null> {
   const categories = await getAllCategories();
   return categories.find((c) => categorySlug(c.category) === slug) ?? null;
@@ -175,10 +183,12 @@ export async function getCategoryBySlug(slug: string): Promise<CategorySummary |
 
 export type CategoryShowcase = CategorySummary & { thumbnail_url: string | null };
 
-// One representative thumbnail per category, for the homepage's category
-// browse cards. DISTINCT ON picks the highest-rated course in each category
-// (falling back to most recent when nothing's been rated yet).
-export async function getCategoryShowcases(): Promise<CategoryShowcase[]> {
+// One representative thumbnail per category, for the category browse
+// tiles. DISTINCT ON picks the highest-rated course in each category
+// (falling back to most recent when nothing's been rated yet). Biggest
+// categories first, so a capped row (the homepage shows 12) keeps the ones
+// with the most to compare.
+export async function getCategoryShowcases(limit?: number): Promise<CategoryShowcase[]> {
   const rows = await sql<CategoryShowcase[]>`
     SELECT category, count, thumbnail_url FROM (
       SELECT DISTINCT ON (c.category)
@@ -191,10 +201,39 @@ export async function getCategoryShowcases(): Promise<CategoryShowcase[]> {
       WHERE c.category IS NOT NULL AND c.listing_status = 'published'
       ORDER BY c.category, cs.overall_score DESC NULLS LAST, c.created_at DESC
     ) t
-    ORDER BY category
+    ORDER BY count DESC, category
+    LIMIT ${limit ?? null}
   `;
 
   return rows;
+}
+
+// Highest-rated courses, straight from the review-computed score — nothing
+// an owner or admin sets feeds into this order. Unrated courses are left
+// out entirely rather than sorted to the bottom, and ties go to the course
+// with more reviews behind its number.
+export async function getTopRatedCourses(
+  limit = 12,
+  category?: string
+): Promise<CourseListItem[]> {
+  return sql<CourseListItem[]>`
+    SELECT
+      c.id, c.slug, c.title, c.provider_name, c.category, c.platform,
+      c.verification_status, c.affiliate_link_status,
+      o.business_subscription_status AS owner_business_subscription_status,
+      cof.price, cof.compare_at_price, cof.duration_hours, cof.thumbnail_url,
+      cof.description, cs.overall_score, cs.total_reviews
+    FROM courses c
+    JOIN course_scores cs ON cs.course_id = c.id
+    LEFT JOIN course_owner_fields cof ON cof.course_id = c.id
+    LEFT JOIN owners o ON o.id = c.verified_owner_id
+    WHERE c.listing_status = 'published'
+      AND cs.overall_score IS NOT NULL
+      AND cs.total_reviews > 0
+      ${category ? sql`AND c.category = ${category}` : sql``}
+    ORDER BY cs.overall_score DESC, cs.total_reviews DESC, c.title
+    LIMIT ${limit}
+  `;
 }
 
 export async function getCoursesForCategory(category: string): Promise<CourseListItem[]> {
@@ -205,6 +244,7 @@ export async function getCoursesForCategory(category: string): Promise<CourseLis
       c.title,
       c.provider_name,
       c.category,
+      c.platform,
       c.verification_status,
       c.affiliate_link_status,
       o.business_subscription_status AS owner_business_subscription_status,
@@ -386,4 +426,24 @@ export async function getCategoryFeaturedCourse(category: string): Promise<Cours
     LIMIT 1
   `;
   return rows[0] ?? null;
+}
+
+// Every category's admin-picked featured course in one query, keyed by
+// category — for the browse page, which shows one row per category and
+// would otherwise need a query per row.
+export async function getCategoryFeaturedCourses(): Promise<Map<string, CourseListItem>> {
+  const rows = await sql<CourseListItem[]>`
+    SELECT
+      c.id, c.slug, c.title, c.provider_name, c.category, c.platform,
+      c.verification_status, c.affiliate_link_status,
+      o.business_subscription_status AS owner_business_subscription_status,
+      cof.price, cof.compare_at_price, cof.duration_hours, cof.thumbnail_url,
+      cof.description, cs.overall_score, cs.total_reviews
+    FROM courses c
+    LEFT JOIN course_owner_fields cof ON cof.course_id = c.id
+    LEFT JOIN course_scores cs ON cs.course_id = c.id
+    LEFT JOIN owners o ON o.id = c.verified_owner_id
+    WHERE c.is_category_featured AND c.category IS NOT NULL AND c.listing_status = 'published'
+  `;
+  return new Map(rows.map((r) => [r.category!, r]));
 }

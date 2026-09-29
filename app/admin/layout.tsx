@@ -20,9 +20,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="border-b border-hairline bg-cream dark:border-hairline-dark dark:bg-cream-dark">
+      <header className="border-b border-hairline-dark bg-cream-dark">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
-          <Link href="/admin/verifications" className="text-xs font-bold uppercase tracking-eyebrow text-ink dark:text-ink-dark">
+          <Link href="/admin/verifications" className="text-xs font-bold uppercase tracking-eyebrow text-ink-dark">
             Admin
           </Link>
           {session.authorized && (
@@ -32,13 +32,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-ink/60 hover:text-ink dark:text-ink-dark/60 dark:hover:text-ink-dark"
+                    className="text-ink-dark/60 hover:text-ink-dark"
                   >
                     {item.label}
                   </Link>
                 ))}
               </nav>
-              <span className="text-[11px] uppercase tracking-eyebrow text-ink/40 dark:text-ink-dark/40">
+              <span className="text-[11px] uppercase tracking-eyebrow text-ink-dark/40">
                 {session.email}
               </span>
             </>

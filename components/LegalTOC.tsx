@@ -16,8 +16,8 @@ export default function LegalTOC({ items }: { items: { id: string; label: string
   };
 
   return (
-    <nav className="mt-8 rounded-md border border-zinc-200 p-5 dark:border-zinc-800" aria-label="Table of contents">
-      <p className="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-500">
+    <nav className="mt-8 rounded-md border border-zinc-800 p-5" aria-label="Table of contents">
+      <p className="text-xs font-bold uppercase tracking-widest text-red-500">
         On this page
       </p>
       <ol className="mt-3 grid grid-cols-1 gap-x-6 gap-y-1.5 sm:grid-cols-2">
@@ -26,7 +26,7 @@ export default function LegalTOC({ items }: { items: { id: string; label: string
             <a
               href={`#${item.id}`}
               onClick={(e) => handleClick(e, item.id)}
-              className="text-sm text-zinc-600 hover:text-red-600 hover:underline dark:text-zinc-400 dark:hover:text-red-500"
+              className="text-sm text-zinc-400 hover:text-red-500 hover:underline"
             >
               {i + 1}. {item.label}
             </a>

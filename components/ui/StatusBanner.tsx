@@ -9,10 +9,10 @@ type Tone = "success" | "error" | "warning" | "info";
 // visibly between success and error instead of collapsing into either.
 // Plain hairline = info. Valence comes from the icon shape, not a color.
 const TONE_CLASSES: Record<Tone, string> = {
-  success: "border border-black bg-black text-white dark:border-cream dark:bg-cream dark:text-black",
-  error: "border border-black bg-transparent text-black dark:border-cream dark:text-cream",
-  warning: "border border-dashed border-black/40 bg-transparent text-black dark:border-cream/40 dark:text-cream",
-  info: "border border-black/15 bg-transparent text-black/70 dark:border-cream/20 dark:text-cream/70",
+  success: "border border-cream bg-cream text-black",
+  error: "border border-cream bg-transparent text-cream",
+  warning: "border border-dashed border-cream/40 bg-transparent text-cream",
+  info: "border border-cream/20 bg-transparent text-cream/70",
 };
 
 function ToneIcon({ tone }: { tone: Tone }) {

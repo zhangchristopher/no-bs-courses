@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { SITE_NAME } from "@/lib/site";
+import { CONTACT_EMAIL, LEGAL_ENTITY_NAME, SITE_NAME } from "@/lib/site";
 import LegalTOC from "@/components/LegalTOC";
 import ScrollToHash from "@/components/ScrollToHash";
 
 export const metadata: Metadata = { title: "Terms of Service" };
 
 const EFFECTIVE_DATE = "August 19, 2026";
-const CONTACT_EMAIL = "EMAIL_PLACEHOLDER";
-const OPERATING_NAME = "NoBSCourses";
+const LAST_UPDATED = "September 28, 2026";
 const JURISDICTION = "Florida, United States";
 
 const TOC = [
@@ -31,30 +30,29 @@ export default function TermsPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <ScrollToHash />
-      <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+      <h1 className="text-3xl font-bold tracking-tight text-zinc-50">
         Terms of Service
       </h1>
-      <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-        Effective {EFFECTIVE_DATE} · Last updated {EFFECTIVE_DATE}
+      <p className="mt-2 text-sm text-zinc-400">
+        Effective {EFFECTIVE_DATE} · Last updated {LAST_UPDATED}
       </p>
 
       <LegalTOC items={TOC} />
 
-      <div className="mt-10 flex flex-col gap-10 text-zinc-700 dark:text-zinc-300">
+      <div className="mt-10 flex flex-col gap-10 text-zinc-300">
         <section id="acceptance">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             1. Acceptance of Terms
           </h2>
           <p className="mt-3">
             By using {SITE_NAME}, you&apos;re agreeing to these terms. {SITE_NAME} is
-            operated under the name {OPERATING_NAME} by an individual as a sole
-            proprietorship — no separate company has been formed for this business yet. If
-            you don&apos;t agree to these terms, don&apos;t use the site.
+            operated by {LEGAL_ENTITY_NAME} (&ldquo;we,&rdquo; &ldquo;us&rdquo;). If you
+            don&apos;t agree to these terms, don&apos;t use the site.
           </p>
         </section>
 
         <section id="accounts">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             2. Accounts
           </h2>
           <p className="mt-3">
@@ -80,7 +78,7 @@ export default function TermsPage() {
         </section>
 
         <section id="reviews-content">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             3. Reviews & User Content
           </h2>
           <ul className="mt-3 list-disc space-y-2 pl-6">
@@ -125,7 +123,7 @@ export default function TermsPage() {
         </section>
 
         <section id="course-listings">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             4. Course Listings & Verification
           </h2>
           <p className="mt-3">
@@ -145,7 +143,7 @@ export default function TermsPage() {
         </section>
 
         <section id="affiliate-links">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             5. Affiliate Links & Compensation
           </h2>
           <p className="mt-3">
@@ -159,7 +157,7 @@ export default function TermsPage() {
         </section>
 
         <section id="payments-refunds">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             6. Payments, Subscriptions & Refunds
           </h2>
           <p className="mt-3">
@@ -196,7 +194,7 @@ export default function TermsPage() {
         </section>
 
         <section id="prohibited-conduct">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             7. Prohibited Conduct
           </h2>
           <ul className="mt-3 list-disc space-y-2 pl-6">
@@ -211,7 +209,7 @@ export default function TermsPage() {
         </section>
 
         <section id="content-removal">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             8. Content Removal & Enforcement
           </h2>
           <p className="mt-3">
@@ -225,7 +223,7 @@ export default function TermsPage() {
         </section>
 
         <section id="termination">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             9. Termination
           </h2>
           <ul className="mt-3 list-disc space-y-2 pl-6">
@@ -251,7 +249,7 @@ export default function TermsPage() {
         </section>
 
         <section id="disclaimers">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             10. Disclaimer of Warranties
           </h2>
           <p className="mt-3">
@@ -266,23 +264,20 @@ export default function TermsPage() {
         </section>
 
         <section id="liability">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             11. Limitation of Liability
           </h2>
           <p className="mt-3">
-            To the maximum extent permitted by law, {OPERATING_NAME} and the individual
-            operating it are not liable for indirect, incidental, special, or consequential
-            damages arising from your use of the site. Our total liability for any claim is
-            limited to the amount you paid us in the 12 months before the claim arose.
-            Because {OPERATING_NAME} is currently a sole proprietorship rather than an LLC or
-            corporation, this limitation is especially important — read it carefully, and
-            note this is a standard startup default, not a substitute for a lawyer&apos;s
-            review.
+            To the maximum extent permitted by law, {LEGAL_ENTITY_NAME} and its members,
+            managers, and employees are not liable for indirect, incidental, special, or
+            consequential damages arising from your use of the site. Our total liability for
+            any claim is limited to the amount you paid us in the 12 months before the claim
+            arose.
           </p>
         </section>
 
         <section id="governing-law">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             12. Governing Law
           </h2>
           <p className="mt-3">
@@ -293,7 +288,7 @@ export default function TermsPage() {
         </section>
 
         <section id="changes">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             13. Changes to These Terms
           </h2>
           <p className="mt-3">
@@ -304,7 +299,7 @@ export default function TermsPage() {
         </section>
 
         <section id="contact">
-          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="scroll-mt-24 text-xl font-semibold text-zinc-50">
             14. Contact Us
           </h2>
           <p className="mt-3">
@@ -312,7 +307,7 @@ export default function TermsPage() {
             <a href={`mailto:${CONTACT_EMAIL}`} className="underline">
               {CONTACT_EMAIL}
             </a>
-            . {OPERATING_NAME}, {JURISDICTION}.
+            . {LEGAL_ENTITY_NAME}, {JURISDICTION}.
           </p>
         </section>
       </div>

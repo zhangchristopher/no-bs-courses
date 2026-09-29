@@ -9,11 +9,11 @@ type Size = "sm" | "md";
 // translated to monochrome: fill is the strongest/most-final state per
 // screen, outline is secondary or cautionary.
 const VARIANT_CLASSES: Record<Variant, string> = {
-  primary: "bg-black text-white hover:bg-black/80 dark:bg-cream dark:text-black dark:hover:bg-cream/80",
+  primary: "bg-cream text-black hover:bg-cream/80",
   secondary:
-    "border border-black bg-transparent text-black hover:bg-black hover:text-white dark:border-cream dark:text-cream dark:hover:bg-cream dark:hover:text-black",
+    "border border-cream bg-transparent text-cream hover:bg-cream hover:text-black",
   danger:
-    "border border-black bg-transparent text-black hover:bg-black hover:text-white dark:border-cream dark:text-cream dark:hover:bg-cream dark:hover:text-black",
+    "border border-cream bg-transparent text-cream hover:bg-cream hover:text-black",
 };
 
 const SIZE_CLASSES: Record<Size, string> = {
