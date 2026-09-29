@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LEGAL_ENTITY_NAME, SITE_NAME } from "@/lib/site";
+import { CONTACT_EMAIL, LEGAL_ENTITY_NAME, SITE_NAME } from "@/lib/site";
 import LegalTOC from "@/components/LegalTOC";
 import ScrollToHash from "@/components/ScrollToHash";
 
@@ -7,7 +7,6 @@ export const metadata: Metadata = { title: "Terms of Service" };
 
 const EFFECTIVE_DATE = "August 19, 2026";
 const LAST_UPDATED = "September 28, 2026";
-const CONTACT_EMAIL = "EMAIL_PLACEHOLDER";
 const JURISDICTION = "Florida, United States";
 
 const TOC = [
