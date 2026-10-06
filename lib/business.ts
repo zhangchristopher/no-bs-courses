@@ -8,6 +8,10 @@ export type OwnerBusinessInfo = {
   business_verification_status: string;
   business_rejection_reason: string | null;
   business_subscription_status: string;
+  // True once any Registered Business checkout has completed for this
+  // owner, even if that subscription has since been cancelled. The intro
+  // rate in lib/pricing.ts is for a first subscription only.
+  has_subscribed_before: boolean;
 };
 
 export type PendingBusinessVerification = {
@@ -60,7 +64,8 @@ export async function getOwnerBusinessInfo(ownerId: string): Promise<OwnerBusine
   const rows = await sql<OwnerBusinessInfo[]>`
     SELECT
       business_name, business_registration_number, business_state, business_paperwork_url,
-      business_verification_status, business_rejection_reason, business_subscription_status
+      business_verification_status, business_rejection_reason, business_subscription_status,
+      stripe_subscription_id IS NOT NULL AS has_subscribed_before
     FROM owners
     WHERE id = ${ownerId}
     LIMIT 1
@@ -102,11 +107,11 @@ export async function rejectBusinessVerification(ownerId: string, reason: string
   return rows.length > 0;
 }
 
-// Owners who have ever paid the bundled Registered Business setup fee +
-// subscription — i.e. a Stripe checkout has completed for them. Used by the
-// admin panel to find who's eligible for a manual refund of the $99 setup
-// fee (refunds themselves happen in the Stripe dashboard; this just records
-// that it happened).
+// Owners who have ever started a Registered Business subscription — i.e. a
+// Stripe checkout has completed for them. Used by the admin panel to record
+// manual refunds of the setup fee, which only standard (post-launch) plans
+// charge; founding owners pay none. Refunds themselves happen in the Stripe
+// dashboard; this just records that one happened.
 export async function getBusinessSubscribers(): Promise<BusinessSubscriber[]> {
   return sql<BusinessSubscriber[]>`
     SELECT

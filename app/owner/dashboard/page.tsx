@@ -9,7 +9,13 @@ import {
 } from "@/lib/ownerCourses";
 import { getOwnerBusinessInfo } from "@/lib/business";
 import { getClickCounts } from "@/lib/affiliateClicks";
-import { startBusinessSubscriptionCheckoutAction } from "./actions";
+import {
+  BILLING_INTERVALS,
+  INTERVAL_LABEL,
+  annualValueNote,
+  currentOwnerTier,
+  planSummary,
+} from "@/lib/pricing";
 import { AuthShell } from "@/components/ui/AuthShell";
 import { StatusBanner } from "@/components/ui/StatusBanner";
 import { Card } from "@/components/ui/Card";
@@ -49,6 +55,8 @@ export default async function OwnerDashboardPage({
 
   const clickCounts = await getClickCounts(courses.map((c) => c.id));
   const hasControl = business?.business_subscription_status === "active";
+  const tier = currentOwnerTier();
+  const introEligible = !business?.has_subscribed_before;
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
@@ -103,16 +111,43 @@ export default async function OwnerDashboardPage({
             Active — unlimited courses, editing control, and the Registered Business badge.
           </p>
         ) : (
-          <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-2">
             <p className="text-sm text-ink-dark/60">
               Business verified. You can claim one course for free. Subscribe for editing
               control, unlimited courses, and the badge.
+              {tier === "founding" &&
+                " Founding owners pay no setup fee, and the rate stays locked in for as long as you stay subscribed."}
             </p>
-            <form action={startBusinessSubscriptionCheckoutAction}>
-              <Button type="submit" size="sm" className="shrink-0">
-                Subscribe — $99 + $50/mo
-              </Button>
-            </form>
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {BILLING_INTERVALS.map((interval) => (
+                <div
+                  key={interval}
+                  className="flex flex-col gap-3 border border-hairline-dark p-4"
+                >
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-eyebrow text-ink-dark/50">
+                      {INTERVAL_LABEL[interval]}
+                    </p>
+                    <p className="mt-1 font-semibold text-ink-dark">
+                      {planSummary(tier, interval, { introEligible })}
+                    </p>
+                    {interval === "annual" && (
+                      <p className="mt-1 text-xs text-ink-dark/50">
+                        {annualValueNote(tier, { introEligible })}
+                      </p>
+                    )}
+                  </div>
+                  <Button
+                    href={`/owner/dashboard/checkout?plan=${interval}`}
+                    size="sm"
+                    variant={interval === "annual" ? "primary" : "secondary"}
+                    className="mt-auto self-start"
+                  >
+                    Choose {INTERVAL_LABEL[interval].toLowerCase()}
+                  </Button>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </Card>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { AuthShell } from "@/components/ui/AuthShell";
 import { Card } from "@/components/ui/Card";
 
@@ -32,6 +32,21 @@ export default async function AccountPage() {
           required.
         </p>
       </Card>
+
+      <form
+        className="mt-6"
+        action={async () => {
+          "use server";
+          await signOut({ redirectTo: "/" });
+        }}
+      >
+        <button
+          type="submit"
+          className="text-[13px] uppercase tracking-eyebrow text-ink-dark/60 underline hover:text-ink-dark"
+        >
+          Sign out
+        </button>
+      </form>
     </main>
   );
 }

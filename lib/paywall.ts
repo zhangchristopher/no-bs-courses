@@ -5,12 +5,15 @@ export type UnlockState =
   | { unlocked: false; reason: "signin_required" }
   | { unlocked: false; reason: "limit_reached"; bonusCredits: number };
 
+// NOT CURRENTLY LIVE: no page calls this, and learners are free — there is
+// no paid learner plan or per-course unlock on sale. Kept for reference.
+//
 // Free courses (no price, or price 0) are never gated. Paid courses require
-// a signed-in account: active $5/mo plan unlocks everything; otherwise the
-// first 3 distinct courses per calendar month unlock automatically and stay
-// unlocked permanently; a reviewer's own verified-purchase review on this
-// course auto-unlocks it too. Past that, the caller can offer a bonus
-// credit, a $0.99 one-time unlock, or the $5/mo upgrade.
+// a signed-in account: an active learner plan unlocks everything; otherwise
+// the first 3 distinct courses per calendar month unlock automatically and
+// stay unlocked permanently; a reviewer's own verified-purchase review on
+// this course auto-unlocks it too. Past that, the caller can offer a bonus
+// credit, a one-time paid unlock, or the plan upgrade.
 //
 // A course's own owner is always unlocked for that course specifically —
 // checked here (not left to the caller) so this bypass can never be

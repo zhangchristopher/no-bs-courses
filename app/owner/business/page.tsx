@@ -9,6 +9,7 @@ import { StatusBanner } from "@/components/ui/StatusBanner";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { CheckMarkIcon } from "@/components/icons";
+import { currentOwnerTier, pricingSentence } from "@/lib/pricing";
 
 export const metadata: Metadata = { title: "Registered Business" };
 
@@ -40,8 +41,10 @@ export default async function OwnerBusinessPage({
       <p className="mt-2 text-sm text-ink-dark/60">
         Submitting your business paperwork is free. Once an admin approves it, you can claim
         course listings. Claiming more than one course, editing your listings, and the
-        &ldquo;Registered Business&rdquo; badge require an active $99 + $50/mo subscription
-        (started from your dashboard once approved).
+        &ldquo;Registered Business&rdquo; badge require an active Registered Business
+        subscription, started from your dashboard once approved
+        {currentOwnerTier() === "founding" ? " (founding owners: " : " ("}
+        {pricingSentence()}).
       </p>
 
       {submitted && <StatusBanner tone="success">Submitted for review.</StatusBanner>}

@@ -1,6 +1,20 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
+// Stripe's publishable key, for the embedded checkout form. Accepts the
+// standard NEXT_PUBLIC_ name or PUBLIC_STRIPE_PUBLISHABLE_KEY (the name it
+// was first added under in Vercel). Whatever is here gets compiled into
+// browser code, so refuse to build with anything but a publishable (pk_)
+// key — a secret key pasted here by mistake would otherwise be public.
+const stripePublishableKey =
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || process.env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
+if (stripePublishableKey && !stripePublishableKey.startsWith("pk_")) {
+  throw new Error(
+    "The Stripe publishable key env var must hold a publishable key starting with pk_. " +
+      "It looks like a different key was used — never put a secret (sk_/rk_) key in a public variable."
+  );
+}
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -27,6 +41,7 @@ const nextConfig: NextConfig = {
   // avoids needing to keep two copies of the same value in sync.
   env: {
     NEXT_PUBLIC_SENTRY_DSN: process.env.SENTRY_DSN,
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: stripePublishableKey,
   },
 };
 

@@ -43,7 +43,7 @@ The core business model: courses can be **added by anyone**, but ownership and i
 |---|---|---|
 | **Unclaimed / Free listing** | Anyone (learner or owner account) submits a course via `/courses/new` | Listed publicly once an admin approves the content (`listing_status: pending → published`). No ownership implied. |
 | **Verified Creator (claimed)** | Owner completes free business-paperwork submission (LLC/EIN, admin-approved) | Can claim the listing (`verification_status: verified`), capped at 1 claimed course unless subscribed |
-| **Registered Business** | Active $99-now + $50/mo Stripe subscription (bundled into one Checkout session) | Editing control over the listing, claiming more than one course, "Registered Business" badge |
+| **Registered Business** | Active Stripe subscription, monthly or annual — prices in `lib/pricing.ts` (founding owners: no setup fee and an intro rate; standard post-launch plans add a one-time setup fee to the same Checkout session) | Editing control over the listing, claiming more than one course, "Registered Business" badge |
 | **Verified Course** | Requires an active Registered Business subscription first. Owner signs a click-wrap contract and submits an affiliate link, which an **admin must separately approve** before it activates | "Verified Course" badge, `/go/[slug]` redirects through the real affiliate link instead of the plain platform URL, ability to respond to reviews on that course, full click/conversion analytics for that course |
 
 Key files: `lib/ownerCourses.ts` (claiming, course CRUD, contract signing — all with the owning-check baked into the SQL `WHERE`), `lib/business.ts` (paperwork submission/admin review), `app/owner/business/`, `app/owner/courses/[slug]/verify/` (contract + affiliate link submission), `app/admin/businesses/`, `app/admin/affiliate-links/`, `app/admin/verifications/` (content moderation for new listings).
@@ -52,16 +52,23 @@ Cancelling the Registered Business subscription removes the badge and editing ri
 
 ## 6. Payments (Stripe)
 
-- One Checkout session type bundles a one-time $99 setup fee with a recurring $50/mo subscription in a single `mode: "subscription"` session (Stripe supports mixing one-time and recurring line items this way).
-- Separate Checkout flows for: the customer $5/mo unlimited plan, and $0.99 one-time single-course unlocks.
+- **Pricing lives in `lib/pricing.ts`** — the only place amounts are defined. Every page that shows a price (dashboard, checkout, business page, claim-limit error, Terms, admin) builds its text from it. `FOUNDING_OFFER_OPEN` switches new owners from founding to standard pricing at launch.
+- **Stripe objects** are derived from it in `lib/stripeCatalog.ts` and created by `npm run stripe:setup-pricing` (`scripts/setupStripePricing.ts`; add `-- --check` to verify without changing anything). Run it against test mode and live mode after any pricing change. Prices are found by lookup key and coupons by ID, so no price IDs live in env vars.
+- **Founding intro offer**: the subscription is on the post-intro price (e.g. $25/mo or $240/yr) with a coupon for the difference during the intro (repeating 12 months for monthly, once for annual). Checkout shows the real recurring rate next to today's charge, and the subscription keeps that price after the coupon ends — the locked-in founding rate. The coupon is only applied to an owner's first subscription (`owners.stripe_subscription_id` is null).
+- **Standard plans** add the one-time setup fee price as a second line item in the same `mode: "subscription"` session (Stripe supports mixing one-time and recurring line items this way).
+- Before creating a session, `lib/ownerCheckout.ts` checks that Stripe's prices and coupon match `lib/pricing.ts` exactly and refuses checkout (logged to Sentry) if they don't, so shown and charged prices can't drift apart.
+- The Registered Business checkout is **embedded** on the site (`ui_mode: "embedded_page"`) rather than redirecting to checkout.stripe.com: the dashboard's Monthly/Annual buttons open `/owner/dashboard/checkout?plan=monthly|annual`, where `components/EmbeddedStripeCheckout.tsx` mounts Stripe's Embedded Checkout and asks the `createBusinessCheckoutSessionAction` server action for a client secret. Stripe then sends the owner to `/owner/dashboard/checkout/return`, which reads the session's status and redirects to the dashboard with `?business=success` / `?business=cancelled` (or back to the form if payment is still open). Activation still happens only in the webhook.
+- Embedded Checkout needs the publishable key (`pk_...`, same Stripe account and mode as `STRIPE_SECRET_KEY`) at build time, as `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` or `PUBLIC_STRIPE_PUBLISHABLE_KEY` (`next.config.ts` maps the latter, and fails the build if the value isn't a `pk_` key so a secret key can never end up in browser code). Without it the checkout page shows a "payments aren't configured" message instead of the form.
+- Learners are free. Dormant code for a paid learner plan and one-time course unlocks still exists (`app/account/actions.ts`, `lib/paywall.ts`, the `customer_plan` / `course_unlock` webhook branches), but nothing in the UI uses it and no pricing is offered; it is not part of `lib/pricing.ts`.
 - `app/api/webhooks/stripe/route.ts` dispatches on `session.metadata.kind` (`business_subscription` / `customer_plan` / `course_unlock`) rather than session mode alone, since two kinds share `mode: "subscription"`.
 - All Stripe keys are placeholder test values (`sk_test_REPLACE_ME`) — payments fail gracefully in this environment by design, since real keys were never provided.
 
 ## 7. Customer paywall
 
-- `lib/paywall.ts` — `checkCourseAccess()`: free courses are always fully visible; paid courses are locked unless the visitor has an active $5/mo subscription, has already unlocked that specific course (3 free unlocks/month, a $0.99 one-time unlock, a spent bonus credit, or their own verified-purchase review auto-unlocking it).
+- **Not currently live** — no page calls `checkCourseAccess()`, and learners are free. Kept for reference:
+- `lib/paywall.ts` — `checkCourseAccess()`: free courses are always fully visible; paid courses are locked unless the visitor has an active learner subscription, has already unlocked that specific course (3 free unlocks/month, a one-time paid unlock, a spent bonus credit, or their own verified-purchase review auto-unlocking it).
 - Critically, locking happens **server-side in the JSX itself** — when locked, the real description/syllabus/price/reviews are never sent to the client at all (not CSS-hidden), and `generateMetadata` also returns a generic description so the real content doesn't leak via `<meta>` tags either (a gap I found and fixed via direct testing, not a user report).
-- `/account` — the first user-facing account page: shows current plan, unlocks used this month, bonus credits, and the upgrade/unlock purchase actions.
+- `/account` now tells learners every listing is free to read; it no longer shows a plan, unlock counts, or purchase actions.
 
 ## 8. Analytics (owner-facing)
 
