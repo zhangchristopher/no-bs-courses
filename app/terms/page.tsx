@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import { CONTACT_EMAIL, LEGAL_ENTITY_NAME, SITE_NAME } from "@/lib/site";
+import { OWNER_PRICING, formatUsd, planSummary } from "@/lib/pricing";
+
+// Prices below come from lib/pricing.ts, so they always match the
+// dashboard and checkout.
+const SETUP_FEE = formatUsd(OWNER_PRICING.standard.setupFeeCents);
 import LegalTOC from "@/components/LegalTOC";
 import ScrollToHash from "@/components/ScrollToHash";
 
 export const metadata: Metadata = { title: "Terms of Service" };
 
 const EFFECTIVE_DATE = "August 19, 2026";
-const LAST_UPDATED = "September 28, 2026";
+const LAST_UPDATED = "October 6, 2026";
 const JURISDICTION = "Florida, United States";
 
 const TOC = [
@@ -161,27 +166,34 @@ export default function TermsPage() {
             6. Payments, Subscriptions & Refunds
           </h2>
           <p className="mt-3">
-            Payments are processed by Stripe, and all fees are listed in USD. The $5/month
-            customer plan renews automatically each month until you cancel; the first
-            month is non-refundable, and cancelling stops future charges without refunding
-            what you&apos;ve already paid. The Registered Business tier is a one-time $99
-            setup fee plus a $50/month subscription that renews automatically until
-            cancelled — cancelling removes the Registered Business badge and editing access
-            but does not revoke ownership of courses already claimed. One-time course
-            unlocks ($0.99) and bonus unlock credits are non-refundable once the content
-            has been unlocked.
+            Payments are processed by Stripe, and all fees are listed in USD. Learner accounts
+            are free. The Registered Business tier is a subscription, billed monthly or
+            annually, that renews automatically until cancelled — cancelling removes the
+            Registered Business badge and editing access but does not revoke ownership of
+            courses already claimed.
           </p>
           <p className="mt-3">
-            The $99 setup fee follows its own rules. If we reject your claim submission,
-            we&apos;ll refund the $99 in full — unless you choose to appeal and resubmit
-            instead, in which case the fee carries over to the resubmission rather than
-            being refunded and charged again. If a verified listing is later revoked for
-            fraud, abuse, or a policy violation (posting incentivized or fake reviews, for
-            example), the $99 fee and any remaining subscription period are forfeited, with
-            no refund. And if you cancel voluntarily after a successful verification, you
-            can request a full refund of the $99 within 14 days of the original payment;
-            after that window, the fee is non-refundable, though you can still cancel the
-            $50/month subscription going forward — that just isn&apos;t retroactive.
+            Founding owners — owners who subscribe before {SITE_NAME} launches — pay no setup
+            fee. Monthly is {planSummary("founding", "monthly")}; annual is{" "}
+            {planSummary("founding", "annual")}. The introductory rate applies to an
+            owner&apos;s first subscription only. After it, the founding rate stays locked in
+            for as long as that subscription stays active; if you cancel and later
+            resubscribe, the pricing current at that time applies. After launch, new owners
+            pay {planSummary("standard", "monthly")}, or {planSummary("standard", "annual")}.
+            Annual plans are billed up front for each year.
+          </p>
+          <p className="mt-3">
+            The {SETUP_FEE} setup fee (charged on standard plans only) follows its own rules.
+            If we reject your claim submission, we&apos;ll refund the setup fee in full —
+            unless you choose to appeal and resubmit instead, in which case the fee carries
+            over to the resubmission rather than being refunded and charged again. If a
+            verified listing is later revoked for fraud, abuse, or a policy violation (posting
+            incentivized or fake reviews, for example), the setup fee and any remaining
+            subscription period are forfeited, with no refund. And if you cancel voluntarily
+            after a successful verification, you can request a full refund of the setup fee
+            within 14 days of the original payment; after that window, the fee is
+            non-refundable, though you can still cancel the subscription going forward —
+            that just isn&apos;t retroactive.
           </p>
           <p className="mt-3">
             Except where stated above or required by law, fees are non-refundable. Refunds

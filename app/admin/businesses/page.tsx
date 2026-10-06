@@ -5,6 +5,7 @@ import { getPendingBusinessVerifications, getBusinessSubscribers } from "@/lib/b
 import { approveBusinessAction, rejectBusinessAction, markSetupFeeRefundedAction } from "./actions";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { OWNER_PRICING, formatUsd } from "@/lib/pricing";
 
 export const metadata: Metadata = { title: "Business Verifications" };
 
@@ -99,9 +100,11 @@ export default async function AdminBusinessesPage() {
         Registered Business Subscribers
       </h2>
       <p className="mt-2 text-sm text-ink-dark/60">
-        Owners who&apos;ve paid the $99 setup fee + $50/mo subscription. Refunds are issued
-        manually in the Stripe dashboard — use the button below only after you&apos;ve actually
-        issued the refund there, to record it.
+        Owners who&apos;ve started a Registered Business subscription. Only standard
+        (post-launch) plans charge the {formatUsd(OWNER_PRICING.standard.setupFeeCents)} setup
+        fee; founding owners paid none, so there&apos;s nothing to refund for them. Refunds are
+        issued manually in the Stripe dashboard — use the button below only after you&apos;ve
+        actually issued the refund there, to record it.
       </p>
 
       <div className="mt-4 flex flex-col gap-4">

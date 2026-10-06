@@ -1,4 +1,5 @@
 import sql from "@/lib/db";
+import { pricingSentence } from "@/lib/pricing";
 
 export type OwnerCourseSummary = {
   id: string;
@@ -312,7 +313,7 @@ export async function claimCourse(ownerId: string, courseId: string): Promise<Cl
     if (count >= 1) {
       return {
         ok: false,
-        error: "Subscribe to Registered Business ($99 + $50/mo) to claim more than one course.",
+        error: `Subscribe to Registered Business (${pricingSentence()}) to claim more than one course.`,
       };
     }
   }

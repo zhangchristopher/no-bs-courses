@@ -1,29 +1,51 @@
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
 import { ownerAuth } from "@/owner-auth";
 import sql from "@/lib/db";
 import stripe from "@/lib/stripe";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { currentOwnerTier, isBillingInterval, type BillingInterval } from "@/lib/pricing";
+import { buildOwnerCheckoutItems, PricingConfigError } from "@/lib/ownerCheckout";
 import type { CheckoutSessionResult } from "@/components/EmbeddedStripeCheckout";
 
-// One Checkout Session bills the $99 setup fee immediately and starts the
-// $50/mo subscription in the same step (Stripe supports mixing a one-time
-// and a recurring line item in a single subscription-mode session).
+// Starts a Registered Business subscription in Stripe's embedded Checkout
+// for the chosen billing interval. Prices come from lib/pricing.ts via
+// buildOwnerCheckoutItems, which checks Stripe holds matching prices and
+// coupons first. Founding owners get no setup fee and an intro coupon on
+// their first subscription; standard owners get the setup fee as a
+// one-time line item in the same session.
 //
-// Embedded mode: the payment form renders inside our own
-// /owner/dashboard/checkout page, and Stripe sends the owner to return_url
-// when it finishes. Activation itself still happens in the
-// checkout.session.completed webhook — the return page only reads status.
-export async function createBusinessCheckoutSessionAction(): Promise<CheckoutSessionResult> {
+// The payment form renders inside our own /owner/dashboard/checkout page,
+// and Stripe sends the owner to return_url when it finishes. Activation
+// itself still happens in the checkout.session.completed webhook — the
+// return page only reads status.
+//
+// Called with the interval bound in by the checkout page; it's still
+// validated here since a client can call a server action directly.
+export async function createBusinessCheckoutSessionAction(
+  interval: BillingInterval
+): Promise<CheckoutSessionResult> {
+  if (!isBillingInterval(interval)) {
+    return { error: "Choose a monthly or annual plan." };
+  }
+
   const session = await ownerAuth();
   if (!session?.user?.id) {
     return { error: "Sign in with your course owner account to subscribe." };
   }
 
   const [owner] = await sql<
-    { business_verification_status: string; business_subscription_status: string }[]
+    {
+      email: string;
+      business_verification_status: string;
+      business_subscription_status: string;
+      stripe_customer_id: string | null;
+      stripe_subscription_id: string | null;
+    }[]
   >`
-    SELECT business_verification_status, business_subscription_status
+    SELECT email, business_verification_status, business_subscription_status,
+      stripe_customer_id, stripe_subscription_id
     FROM owners
     WHERE id = ${session.user.id}
   `;
@@ -35,23 +57,34 @@ export async function createBusinessCheckoutSessionAction(): Promise<CheckoutSes
     return { error: "Registered Business is already active." };
   }
 
-  const setupFeePriceId = process.env.STRIPE_BUSINESS_SETUP_FEE_PRICE_ID;
-  const subscriptionPriceId = process.env.STRIPE_BUSINESS_SUBSCRIPTION_PRICE_ID;
-  if (!setupFeePriceId || !subscriptionPriceId) {
-    return { error: "Registered Business payments aren't configured yet. No charge was made." };
-  }
+  const tier = currentOwnerTier();
+  // The intro rate is for an owner's first subscription only, so
+  // cancelling and resubscribing doesn't restart the $1 period.
+  const introEligible = !owner.stripe_subscription_id;
+  const metadata = {
+    kind: "business_subscription",
+    owner_id: session.user.id,
+    pricing_tier: tier,
+    billing_interval: interval,
+  };
 
   try {
+    const items = await buildOwnerCheckoutItems(tier, interval, { introEligible });
+
     const checkoutSession = await stripe.checkout.sessions.create({
       ui_mode: "embedded_page",
       mode: "subscription",
       payment_method_types: ["card"],
-      line_items: [
-        { price: subscriptionPriceId, quantity: 1 },
-        { price: setupFeePriceId, quantity: 1 },
-      ],
+      line_items: items.line_items,
+      ...(items.discounts.length > 0 ? { discounts: items.discounts } : {}),
+      // Reuse the owner's Stripe customer if they've paid before.
+      ...(owner.stripe_customer_id
+        ? { customer: owner.stripe_customer_id }
+        : { customer_email: owner.email }),
       return_url: `${SITE_URL}/owner/dashboard/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
-      metadata: { kind: "business_subscription", owner_id: session.user.id },
+      metadata,
+      // Also on the subscription, so it's visible in Stripe for support.
+      subscription_data: { metadata },
       // Match the site's dark palette so the embedded form doesn't sit on
       // the page as a white box.
       branding_settings: {
@@ -68,7 +101,16 @@ export async function createBusinessCheckoutSessionAction(): Promise<CheckoutSes
     }
 
     return { clientSecret: checkoutSession.client_secret };
-  } catch {
-    return { error: "Couldn't start checkout. Check your Stripe configuration. No charge was made." };
+  } catch (err) {
+    // Owners get a plain message; the detail (e.g. which Stripe price is
+    // missing) goes to Sentry and the server log for whoever runs Stripe.
+    Sentry.captureException(err, { tags: { area: "owner_checkout", pricing_tier: tier, interval } });
+    console.error("Owner checkout failed:", err instanceof Error ? err.message : err);
+    return {
+      error:
+        err instanceof PricingConfigError
+          ? "Checkout isn't available right now — our pricing setup needs attention. No charge was made."
+          : "Couldn't start checkout. Please try again. No charge was made.",
+    };
   }
 }
