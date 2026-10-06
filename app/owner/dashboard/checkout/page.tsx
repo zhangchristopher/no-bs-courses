@@ -49,7 +49,7 @@ export default async function BusinessCheckoutPage({
   const otherPlan = plan === "monthly" ? "annual" : "monthly";
 
   return (
-    <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+    <main className="mx-auto w-full max-w-xl px-4 py-10 sm:px-6">
       <Link
         href="/owner/dashboard"
         className="inline-flex items-center gap-1.5 text-sm text-ink-dark/55 hover:underline"
