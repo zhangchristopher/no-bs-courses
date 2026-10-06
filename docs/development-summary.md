@@ -53,7 +53,9 @@ Cancelling the Registered Business subscription removes the badge and editing ri
 ## 6. Payments (Stripe)
 
 - One Checkout session type bundles a one-time $99 setup fee with a recurring $50/mo subscription in a single `mode: "subscription"` session (Stripe supports mixing one-time and recurring line items this way).
-- Separate Checkout flows for: the customer $5/mo unlimited plan, and $0.99 one-time single-course unlocks.
+- The Registered Business checkout is **embedded** on the site (`ui_mode: "embedded_page"`) rather than redirecting to checkout.stripe.com: the dashboard's Subscribe button opens `/owner/dashboard/checkout`, where `components/EmbeddedStripeCheckout.tsx` mounts Stripe's Embedded Checkout and asks the `createBusinessCheckoutSessionAction` server action for a client secret. Stripe then sends the owner to `/owner/dashboard/checkout/return`, which reads the session's status and redirects to the dashboard with `?business=success` / `?business=cancelled` (or back to the form if payment is still open). Activation still happens only in the webhook.
+- Embedded Checkout needs `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (the `pk_...` key from the same Stripe account and mode as `STRIPE_SECRET_KEY`) in the environment at build time. Without it the checkout page shows a "payments aren't configured" message instead of the form.
+- Separate Checkout flows for: the customer $5/mo unlimited plan, and $0.99 one-time single-course unlocks (`app/account/actions.ts`). These still use the hosted, redirect-style Checkout and have no button wired up anywhere in the UI yet; give them the same embedded treatment when they are.
 - `app/api/webhooks/stripe/route.ts` dispatches on `session.metadata.kind` (`business_subscription` / `customer_plan` / `course_unlock`) rather than session mode alone, since two kinds share `mode: "subscription"`.
 - All Stripe keys are placeholder test values (`sk_test_REPLACE_ME`) — payments fail gracefully in this environment by design, since real keys were never provided.
 

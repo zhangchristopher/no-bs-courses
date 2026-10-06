@@ -9,7 +9,6 @@ import {
 } from "@/lib/ownerCourses";
 import { getOwnerBusinessInfo } from "@/lib/business";
 import { getClickCounts } from "@/lib/affiliateClicks";
-import { startBusinessSubscriptionCheckoutAction } from "./actions";
 import { AuthShell } from "@/components/ui/AuthShell";
 import { StatusBanner } from "@/components/ui/StatusBanner";
 import { Card } from "@/components/ui/Card";
@@ -108,11 +107,9 @@ export default async function OwnerDashboardPage({
               Business verified. You can claim one course for free. Subscribe for editing
               control, unlimited courses, and the badge.
             </p>
-            <form action={startBusinessSubscriptionCheckoutAction}>
-              <Button type="submit" size="sm" className="shrink-0">
-                Subscribe — $99 + $50/mo
-              </Button>
-            </form>
+            <Button href="/owner/dashboard/checkout" size="sm" className="shrink-0">
+              Subscribe — $99 + $50/mo
+            </Button>
           </div>
         )}
       </Card>
