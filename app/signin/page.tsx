@@ -5,6 +5,7 @@ import { AuthShell } from "@/components/ui/AuthShell";
 import { FormField } from "@/components/ui/FormField";
 import { StatusBanner } from "@/components/ui/StatusBanner";
 import { Button } from "@/components/ui/Button";
+import AccountTypeToggle from "@/components/AccountTypeToggle";
 
 export const metadata: Metadata = { title: "Sign In" };
 
@@ -17,6 +18,7 @@ export default async function SignInPage({
 
   return (
     <AuthShell title="Sign in">
+      <AccountTypeToggle active="personal" mode="signin" callbackUrl={callbackUrl} />
       {reset && <StatusBanner tone="success">Password reset. Sign in with your new password.</StatusBanner>}
       {error && <StatusBanner tone="error">{error}</StatusBanner>}
 
