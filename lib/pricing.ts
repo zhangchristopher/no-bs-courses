@@ -1,4 +1,4 @@
-// Single source of truth for Registered Business pricing.
+// Single source of truth for owner-plan pricing.
 //
 // Every user-facing price on the site (dashboard, checkout page, business
 // page, claim-limit error, Terms, admin page) is built from these numbers,
@@ -56,6 +56,18 @@ export const BILLING_INTERVALS: BillingInterval[] = ["monthly", "annual"];
 
 export function isBillingInterval(value: unknown): value is BillingInterval {
   return value === "monthly" || value === "annual";
+}
+
+// Customer-facing names. Two different things, kept apart on purpose:
+//   - "Verified Business" is the FREE factual status an admin grants after
+//     reviewing a business's paperwork. Payment never affects it.
+//   - "Founding Owner" is the PAID subscription: listing-management tools only.
+// Internal identifiers (DB columns, statuses, Stripe lookup keys, routes) keep
+// their older names so nothing breaks; only what people read is renamed.
+export const VERIFIED_BUSINESS_LABEL = "Verified Business";
+
+export function ownerPlanName(tier: PricingTier = currentOwnerTier()): string {
+  return tier === "founding" ? "Founding Owner" : "Owner Plan";
 }
 
 export function currentOwnerTier(): PricingTier {

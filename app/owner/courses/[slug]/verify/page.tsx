@@ -37,7 +37,7 @@ export default async function VerifyCoursePage({
     );
   }
 
-  // Only returns a row when owned AND Registered Business is active.
+  // Only returns a row when owned AND an owner plan is active.
   const course = await getOwnedCourseForContract(slug, session.user.id);
   if (!course) notFound();
 

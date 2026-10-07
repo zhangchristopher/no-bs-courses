@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getPendingInvitationsForOwner } from "@/lib/claimInvitations";
 import type { Metadata } from "next";
 import { ownerAuth } from "@/owner-auth";
 import {
@@ -14,6 +15,7 @@ import {
   INTERVAL_LABEL,
   annualValueNote,
   currentOwnerTier,
+  ownerPlanName,
   planSummary,
 } from "@/lib/pricing";
 import { AuthShell } from "@/components/ui/AuthShell";
@@ -54,6 +56,7 @@ export default async function OwnerDashboardPage({
   ]);
 
   const clickCounts = await getClickCounts(courses.map((c) => c.id));
+  const invitations = await getPendingInvitationsForOwner(session.user.id);
   const hasControl = business?.business_subscription_status === "active";
   const tier = currentOwnerTier();
   const introEligible = !business?.has_subscribed_before;
@@ -72,7 +75,7 @@ export default async function OwnerDashboardPage({
       {businessParam === "success" && (
         <StatusBanner tone="success">
           Payment received. It can take a few seconds for Stripe to confirm — refresh this page
-          if Registered Business still shows inactive.
+          if your plan still shows inactive.
         </StatusBanner>
       )}
       {businessParam === "cancelled" && (
@@ -81,10 +84,19 @@ export default async function OwnerDashboardPage({
         </StatusBanner>
       )}
       {error && <StatusBanner tone="error">{error}</StatusBanner>}
+      {invitations.map((i) => (
+        <StatusBanner key={i.code} tone="info">
+          You were invited to claim &ldquo;{i.title}&rdquo;.{" "}
+          <Link href={`/claim/${i.code}`} className="underline">
+            Continue claiming it
+          </Link>
+          .
+        </StatusBanner>
+      ))}
 
       <Card className="mt-6">
         <h2 className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-dark/50">
-          Registered Business
+          Verified Business
         </h2>
         {!business || business.business_verification_status === "none" ? (
           <p className="mt-2 text-sm text-ink-dark/60">
@@ -108,15 +120,17 @@ export default async function OwnerDashboardPage({
         ) : hasControl ? (
           <p className="mt-2 flex items-center gap-2 text-sm text-ink-dark">
             <CheckMarkIcon className="h-4 w-4 shrink-0" />
-            Active — unlimited courses, editing control, and the Registered Business badge.
+            Verified Business, and your plan is active: unlimited course claims and listing editing.
           </p>
         ) : (
           <div className="mt-2">
             <p className="text-sm text-ink-dark/60">
-              Business verified. You can claim one course for free. Subscribe for editing
-              control, unlimited courses, and the badge.
+              Verified Business, free. You can claim your first course listing for free, and
+              it carries the Verified Business badge. The optional {ownerPlanName(tier)} plan
+              adds listing-management tools: editing the listing, claiming more courses, and
+              replying to reviews. It never changes ratings, rankings, or verification.
               {tier === "founding" &&
-                " Founding owners pay no setup fee, and the rate stays locked in for as long as you stay subscribed."}
+                " Founding Owners pay no setup fee, and the rate stays locked in for as long as you stay subscribed."}
             </p>
             <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {BILLING_INTERVALS.map((interval) => (

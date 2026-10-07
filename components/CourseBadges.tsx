@@ -28,7 +28,7 @@ export function RegisteredBusinessBadge({ size = "md" }: { size?: BadgeSize }) {
         height={20}
         className={`${iconSizeClasses[size]} shrink-0 object-contain`}
       />
-      Registered Business
+      Verified Business
     </span>
   );
 }

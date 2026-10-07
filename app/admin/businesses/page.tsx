@@ -97,10 +97,10 @@ export default async function AdminBusinessesPage() {
       </div>
 
       <h2 className="mt-12 text-xl font-black uppercase tracking-tight text-ink-dark">
-        Registered Business Subscribers
+        Owner plan subscribers
       </h2>
       <p className="mt-2 text-sm text-ink-dark/60">
-        Owners who&apos;ve started a Registered Business subscription. Only standard
+        Owners who&apos;ve started an owner-plan subscription. Only standard
         (post-launch) plans charge the {formatUsd(OWNER_PRICING.standard.setupFeeCents)} setup
         fee; founding owners paid none, so there&apos;s nothing to refund for them. Refunds are
         issued manually in the Stripe dashboard — use the button below only after you&apos;ve

@@ -1,5 +1,5 @@
 import sql from "@/lib/db";
-import { pricingSentence } from "@/lib/pricing";
+import { ownerPlanName, pricingSentence } from "@/lib/pricing";
 
 export type OwnerCourseSummary = {
   id: string;
@@ -201,7 +201,7 @@ export async function getOwnerRejectedClaims(ownerId: string): Promise<OwnerReje
   `;
 }
 
-// Editing requires ownership AND the owner's Registered Business subscription
+// Editing requires ownership AND the owner's paid plan (Founding Owner)
 // being active (owner-level, not a per-course flag). Admin-approved paperwork
 // alone ("business_verification_status='verified'") grants ownership but not
 // editing control. Also requires the claim itself to be admin-approved
@@ -313,7 +313,7 @@ export async function claimCourse(ownerId: string, courseId: string): Promise<Cl
     if (count >= 1) {
       return {
         ok: false,
-        error: `Subscribe to Registered Business (${pricingSentence()}) to claim more than one course.`,
+        error: `Your first course listing is free. Subscribe to ${ownerPlanName()} (${pricingSentence()}) to claim more than one course.`,
       };
     }
   }
@@ -398,7 +398,7 @@ export async function rejectClaim(courseId: string, reason: string): Promise<boo
   return true;
 }
 
-// Verified Course requires an active Registered Business subscription first,
+// Verified Course requires an active paid plan (Founding Owner) first,
 // and the claim itself to already be admin-approved — not just pending.
 export async function getOwnedCourseForContract(
   slug: string,

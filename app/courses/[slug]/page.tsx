@@ -8,6 +8,7 @@ import StarRating from "@/components/StarRating";
 import ReviewSection from "@/components/ReviewSection";
 import TrackedSection from "@/components/TrackedSection";
 import { RegisteredBusinessBadge, VerifiedCourseBadge } from "@/components/CourseBadges";
+import { ownerPlanName } from "@/lib/pricing";
 import { Button } from "@/components/ui/Button";
 import { StatusBanner } from "@/components/ui/StatusBanner";
 import { ArrowIcon, PlayIcon } from "@/components/icons";
@@ -105,9 +106,11 @@ export default async function CourseDetailPage({
   const sections = await getCourseSections(course.id);
 
   const isVerifiedCourse = course.affiliate_link_status === "verified";
+  // Earned by approved business paperwork on an approved claim. A subscription
+  // never decides whether this badge shows.
   const isRegisteredBusiness =
-    course.owner_business_verification_status === "verified" &&
-    course.owner_business_subscription_status === "active";
+    course.verification_status === "verified" &&
+    course.owner_business_verification_status === "verified";
   const isOwnerOfThisCourse = Boolean(
     ownerSession?.user?.id && course.verified_owner_id === ownerSession.user.id && isVerifiedCourse
   );
@@ -211,7 +214,7 @@ export default async function CourseDetailPage({
             <>
               Are you the creator?{" "}
               <Link href="/owner/dashboard" className="underline">
-                Subscribe to Registered Business
+                Subscribe to {ownerPlanName()}
               </Link>{" "}
               to claim more than one course.
             </>

@@ -66,7 +66,7 @@ export default function PrivacyPolicyPage() {
             <li>
               <strong>Business accounts additionally:</strong> a business or legal name,
               business registration number, state of registration, and a link to supporting
-              paperwork, submitted only if you apply for Registered Business status.
+              paperwork, submitted only if you apply for Verified Business status.
             </li>
             <li>
               <strong>Marketing preferences:</strong> whether you opted in to email or SMS

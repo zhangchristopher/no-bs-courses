@@ -9,9 +9,9 @@ import { StatusBanner } from "@/components/ui/StatusBanner";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { CheckMarkIcon } from "@/components/icons";
-import { currentOwnerTier, pricingSentence } from "@/lib/pricing";
+import { currentOwnerTier, ownerPlanName, pricingSentence } from "@/lib/pricing";
 
-export const metadata: Metadata = { title: "Registered Business" };
+export const metadata: Metadata = { title: "Business verification" };
 
 export default async function OwnerBusinessPage({
   searchParams,
@@ -36,13 +36,15 @@ export default async function OwnerBusinessPage({
   return (
     <main className="mx-auto max-w-xl px-4 py-10 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-black uppercase tracking-headline text-ink-dark">
-        Registered Business
+        Business verification
       </h1>
       <p className="mt-2 text-sm text-ink-dark/60">
-        Submitting your business paperwork is free. Once an admin approves it, you can claim
-        course listings. Claiming more than one course, editing your listings, and the
-        &ldquo;Registered Business&rdquo; badge require an active Registered Business
-        subscription, started from your dashboard once approved
+        Submitting your business paperwork is free, and so is the &ldquo;Verified
+        Business&rdquo; badge once an admin approves it. You can then claim your first
+        course listing for free. The {ownerPlanName()} plan is optional and only adds
+        listing-management tools: editing your listing, claiming more than one course, and
+        replying to reviews. It never affects ratings, rankings, or verification. It starts
+        from your dashboard once approved
         {currentOwnerTier() === "founding" ? " (founding owners: " : " ("}
         {pricingSentence()}).
       </p>

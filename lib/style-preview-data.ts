@@ -88,7 +88,7 @@ export const ALL_COURSES: PreviewCourse[] = CATEGORIES.flatMap((c) => c.courses)
 
 export const FOOTER_COLUMNS = [
   { head: "Product", links: ["Browse Courses", "Categories", "How Verification Works", "Add a Course"] },
-  { head: "For Owners", links: ["Claim a Listing", "Registered Business", "Verified Course"] },
+  { head: "For Owners", links: ["Claim a Listing", "Verified Business", "Verified Course"] },
   { head: "Support", links: ["Help Center", "Report a Listing", "Contact"] },
   { head: "Legal", links: ["Privacy Policy", "Terms of Service"] },
 ];
