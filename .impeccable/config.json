@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-10-06T22:40:24.637Z",
+        "reason": "Inter is the site's existing body font (app/layout.tsx next/font Inter, globals.css --font-sans); the Stripe Appearance restates it so the payment fields match the rest of the site, which the user asked for"
+      }
+    ]
+  }
+}
