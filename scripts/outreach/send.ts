@@ -13,6 +13,7 @@ import { randomBytes } from "node:crypto";
 import nodemailer from "nodemailer";
 import { sql, SITE_TOKEN, hashToken, argValue, hasFlag, isSuppressed, recordEvent, type OutreachRow } from "./lib";
 import { OFFER } from "./offer";
+import { renderEmailText, postalAddress, postalAddressProblem, mailboxConfirmed } from "./footer";
 
 // The public site, not NEXT_PUBLIC_SITE_URL, which is localhost in dev.
 const SITE_URL = (process.env.OUTREACH_SITE_URL ?? "").replace(/\/$/, "");
@@ -28,20 +29,8 @@ const DAILY_CAP = Number(process.env.OUTREACH_DAILY_CAP ?? 10);
 const MIN_GAP_MS = 45_000;
 const MAX_GAP_MS = 120_000;
 
-// The postal address has exactly one source: OUTREACH_POSTAL_ADDRESS.
-function footer(unsubscribeUrl: string): string {
-  return [
-    "",
-    OFFER.signature.name,
-    OFFER.signature.title,
-    SITE_URL,
-    "",
-    "--",
-    "You're getting this because your course is listed on No BS Courses.",
-    `Don't want to hear from us again? ${unsubscribeUrl}`,
-    process.env.OUTREACH_POSTAL_ADDRESS ?? "[postal address]",
-  ].join("\n");
-}
+// The footer (signature, unsubscribe line, postal address) is built in
+// footer.ts, the single source for the postal address.
 
 function isSet(name: string): boolean {
   const value = process.env[name];
@@ -52,7 +41,10 @@ function requireSendConfig(): string[] {
   const problems: string[] = [];
   if (!OFFER.confirmed) problems.push("OFFER.confirmed is false in scripts/outreach/offer.ts");
   // CAN-SPAM requires a valid physical postal address in every commercial email.
-  if (!isSet("OUTREACH_POSTAL_ADDRESS")) problems.push("OUTREACH_POSTAL_ADDRESS is not set");
+  const addressProblem = postalAddressProblem(postalAddress());
+  if (addressProblem) problems.push(addressProblem);
+  // The public mailbox must be confirmed active by a person before any live send.
+  if (!mailboxConfirmed()) problems.push("OUTREACH_MAILBOX_CONFIRMED is not true: the public mailbox has not been confirmed active");
   for (const name of ["OUTREACH_SMTP_USER", "OUTREACH_SMTP_PASS", "OUTREACH_FROM", "OUTREACH_SITE_URL"]) {
     if (!isSet(name)) problems.push(`${name} is not set`);
   }
@@ -147,7 +139,7 @@ async function main() {
     if (!transport) {
       console.log(
         `\n=== [dry run] To: ${row.contact_email} (${row.creator_name}, ${row.contact_confidence}; found at ${row.contact_source_url})` +
-          `\nSubject: ${row.email_subject}\n\n${withSite(row.email_body!)}\n${footer(`${SITE_URL || SITE_TOKEN}/unsubscribe?t=...`)}\n`
+          `\nSubject: ${row.email_subject}\n\n${renderEmailText(withSite(row.email_body!), `${SITE_URL || SITE_TOKEN}/unsubscribe?t=...`, SITE_URL)}\n`
       );
       continue;
     }
@@ -168,7 +160,7 @@ async function main() {
         from,
         to: row.contact_email!,
         subject: row.email_subject!,
-        text: `${withSite(row.email_body!)}\n${footer(unsubscribeUrl)}`,
+        text: renderEmailText(withSite(row.email_body!), unsubscribeUrl, SITE_URL),
         headers: {
           // RFC 8058 one-click: the https URL takes a POST with no page.
           "List-Unsubscribe": `<${oneClickUrl}>, <mailto:${process.env.OUTREACH_SMTP_USER}?subject=unsubscribe>`,

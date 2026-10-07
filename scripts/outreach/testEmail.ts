@@ -8,6 +8,7 @@
 // creator contact or on the suppression list: this can never reach a prospect.
 import nodemailer from "nodemailer";
 import { sql } from "./lib";
+import { renderEmailText } from "./footer";
 
 async function main() {
   const to = (process.argv[2] ?? "").trim().toLowerCase();
@@ -34,14 +35,12 @@ async function main() {
     from: process.env.OUTREACH_FROM,
     to,
     subject: `INTERNAL AUTH TEST ${stamp}`,
-    text: [
-      "Internal authentication test from the No BS Courses outreach setup.",
-      "Not outreach. No prospect received this.",
-      "",
-      "Christopher Zhang",
-      "Founder, No BS Courses",
-      site,
-    ].join("\n"),
+    // Same footer as real outreach, so the postal address can be checked here.
+    text: renderEmailText(
+      "Internal authentication test from the No BS Courses outreach setup.\nNot outreach. No prospect received this.",
+      `${site}/unsubscribe?t=internal-test`,
+      site
+    ),
     headers: {
       "List-Unsubscribe": `<${site}/unsubscribe/one-click?t=internal-test>, <mailto:${user}?subject=unsubscribe>`,
       "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",

@@ -6,6 +6,7 @@
 import dns from "node:dns/promises";
 import { sql } from "./lib";
 import { OFFER } from "./offer";
+import { postalAddress, postalAddressProblem, mailboxConfirmed } from "./footer";
 
 type Result = "PASS" | "FAIL" | "WARN" | "UNVERIFIED";
 const lines: string[] = [];
@@ -38,7 +39,13 @@ async function main() {
     report(isSet(name) ? "PASS" : "FAIL", `${name} is set`);
   }
   report(OFFER.confirmed ? "PASS" : "WARN", "OFFER.confirmed", OFFER.confirmed ? "true" : "false, so sending is blocked (intended until a human approves the pilot)");
-  report("WARN", "Postal address privacy", "OUTREACH_POSTAL_ADDRESS appears in every email; confirm it is an address you are willing to publish to every recipient");
+  const addressProblem = postalAddressProblem(postalAddress());
+  report(addressProblem ? "FAIL" : "PASS", "Postal address is a valid footer address (value not shown)", addressProblem ?? "");
+  report(
+    mailboxConfirmed() ? "PASS" : "FAIL",
+    "Public mailbox confirmed active (OUTREACH_MAILBOX_CONFIRMED)",
+    mailboxConfirmed() ? "" : "not true: live sending is blocked until you confirm the mailbox service is fully activated"
+  );
 
   // From-domain alignment
   if (fromDomain && smtpDomain) {

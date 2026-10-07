@@ -6,8 +6,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { sql, findRow, isSuppressed, coursesFor } from "./lib";
 import { lintDraft } from "./drafts";
+import { renderEmailText, postalAddress, postalAddressProblem, mailboxConfirmed } from "./footer";
 
 const SEND_SRC = fs.readFileSync(path.join(__dirname, "send.ts"), "utf8");
+const FOOTER_SRC = fs.readFileSync(path.join(__dirname, "footer.ts"), "utf8");
 const site = (process.env.OUTREACH_SITE_URL ?? "").replace(/\/$/, "");
 
 async function main() {
@@ -17,12 +19,12 @@ async function main() {
 
   // Properties of the send pipeline itself (the same for every recipient).
   const pipeline: [boolean, string][] = [
-    [/Don't want to hear from us again\? \$\{unsubscribeUrl\}/.test(SEND_SRC), "visible unsubscribe URL is appended"],
+    [/Don't want to hear from us again\? \$\{unsubscribeUrl\}/.test(FOOTER_SRC) && /renderEmailText\(/.test(SEND_SRC), "visible unsubscribe URL is appended to every sent email"],
     [/"List-Unsubscribe": `<\$\{oneClickUrl\}>/.test(SEND_SRC), "List-Unsubscribe header is set"],
     [/"List-Unsubscribe-Post": "List-Unsubscribe=One-Click"/.test(SEND_SRC), "one-click List-Unsubscribe-Post header is set"],
     [/blockedState\(row\)/.test(SEND_SRC) && /isSuppressed\(row\.contact_email\)/.test(SEND_SRC), "suppression is rechecked immediately before each send"],
     [/status = 'approved_for_outreach'/.test(SEND_SRC), "only approved rows are sent"],
-    [Boolean(process.env.OUTREACH_POSTAL_ADDRESS) && !(process.env.OUTREACH_POSTAL_ADDRESS ?? "").includes("REPLACE_ME"), "postal address configured (value not shown)"],
+    [postalAddressProblem(postalAddress()) === null, "postal address configured and valid (single source: OUTREACH_POSTAL_ADDRESS)"],
   ];
   console.log("Pipeline");
   for (const [ok, what] of pipeline) { console.log(`  ${ok ? "PASS" : "FAIL"}  ${what}`); if (!ok) blocked++; }
@@ -65,9 +67,25 @@ async function main() {
     const lint = lintDraft(row.email_subject ?? "", row.email_body ?? "");
     ok(lint === null, lint ? `draft rules: ${lint}` : "draft passes every content rule (free first claim, integrity line, prices from lib/pricing.ts, no urgency, no endorsement)");
     ok(!/\b(i saw|i noticed|loved your|your recent)\b/i.test(row.email_body ?? ""), "no unsupported personalization");
+    // The exact text that would be sent, including the footer.
+    let rendered = "";
+    try {
+      rendered = renderEmailText((row.email_body ?? "").replaceAll("{{site}}", site), `${site}/unsubscribe?t=preview`, site);
+    } catch {
+      /* reported below */
+    }
+    const addr = postalAddress();
+    ok(Boolean(rendered) && Boolean(addr) && rendered.includes(addr), "rendered email contains the postal-address footer");
+    ok(rendered.includes("/unsubscribe?t="), "rendered email contains the visible unsubscribe link");
     if (problems.length) blocked++;
   }
-  console.log(`\n${blocked === 0 ? "GATE PASSED" : `GATE FAILED (${blocked} item(s)); do not approve or send`}`);
+  console.log(`\nCompliance: ${blocked === 0 ? "PASSED" : `FAILED (${blocked} item(s)); do not approve or send`}`);
+  // Separate from compliance: a human-confirmed condition for any live send.
+  console.log(
+    mailboxConfirmed()
+      ? "Live send: mailbox confirmed"
+      : "Live send: BLOCKED. OUTREACH_MAILBOX_CONFIRMED is not true (public mailbox not yet confirmed active)"
+  );
   if (blocked) process.exitCode = 1;
 }
 
