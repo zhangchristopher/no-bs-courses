@@ -6,7 +6,7 @@ import { RegisteredBusinessBadge, VerifiedCourseBadge } from "@/components/Cours
 
 function TierBadge({ course }: { course: CourseListItem }) {
   if (course.affiliate_link_status === "verified") return <VerifiedCourseBadge size="sm" />;
-  if (course.owner_business_subscription_status === "active")
+  if (course.verification_status === "verified" && course.owner_business_verification_status === "verified")
     return <RegisteredBusinessBadge size="sm" />;
   return null;
 }

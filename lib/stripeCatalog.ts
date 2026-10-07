@@ -22,7 +22,7 @@ export const STRIPE_PRODUCTS = {
   subscription: {
     id: "nobs_registered_business",
     name: "Registered Business",
-    description: "Editing control, unlimited course claims, and the Registered Business badge.",
+    description: "Listing editing, unlimited course claims, and review replies. Verification and badges are free and not part of this plan.",
   },
   setupFee: {
     id: "nobs_registered_business_setup_fee",

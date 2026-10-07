@@ -105,9 +105,11 @@ export default async function CourseDetailPage({
   const sections = await getCourseSections(course.id);
 
   const isVerifiedCourse = course.affiliate_link_status === "verified";
+  // Earned by approved business paperwork on an approved claim. A subscription
+  // never decides whether this badge shows.
   const isRegisteredBusiness =
-    course.owner_business_verification_status === "verified" &&
-    course.owner_business_subscription_status === "active";
+    course.verification_status === "verified" &&
+    course.owner_business_verification_status === "verified";
   const isOwnerOfThisCourse = Boolean(
     ownerSession?.user?.id && course.verified_owner_id === ownerSession.user.id && isVerifiedCourse
   );

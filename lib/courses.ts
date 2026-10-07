@@ -9,6 +9,7 @@ export type CourseListItem = {
   platform: string | null;
   verification_status: string;
   affiliate_link_status: string;
+  owner_business_verification_status: string | null;
   owner_business_subscription_status: string | null;
   price: string | null;
   compare_at_price: string | null;
@@ -27,8 +28,6 @@ export type CourseDetail = CourseListItem & {
   contract_signed_at: string | null;
   affiliate_url: string | null;
   affiliate_link_status: string;
-  owner_business_verification_status: string | null;
-  owner_business_subscription_status: string | null;
   claim_rejection_reason: string | null;
   claim_rejection_owner_id: string | null;
 };
@@ -61,6 +60,7 @@ export async function getCoursesByCategory(searchQuery?: string) {
           c.platform,
           c.verification_status,
           c.affiliate_link_status,
+          o.business_verification_status AS owner_business_verification_status,
           o.business_subscription_status AS owner_business_subscription_status,
           cof.price,
           cof.compare_at_price,
@@ -91,6 +91,7 @@ export async function getCoursesByCategory(searchQuery?: string) {
           c.platform,
           c.verification_status,
           c.affiliate_link_status,
+          o.business_verification_status AS owner_business_verification_status,
           o.business_subscription_status AS owner_business_subscription_status,
           cof.price,
           cof.compare_at_price,
@@ -220,6 +221,7 @@ export async function getTopRatedCourses(
     SELECT
       c.id, c.slug, c.title, c.provider_name, c.category, c.platform,
       c.verification_status, c.affiliate_link_status,
+      o.business_verification_status AS owner_business_verification_status,
       o.business_subscription_status AS owner_business_subscription_status,
       cof.price, cof.compare_at_price, cof.duration_hours, cof.thumbnail_url,
       cof.description, cs.overall_score, cs.total_reviews
@@ -247,6 +249,7 @@ export async function getCoursesForCategory(category: string): Promise<CourseLis
       c.platform,
       c.verification_status,
       c.affiliate_link_status,
+      o.business_verification_status AS owner_business_verification_status,
       o.business_subscription_status AS owner_business_subscription_status,
       cof.price,
       cof.compare_at_price,
@@ -278,14 +281,13 @@ export function isCourseSort(value: string | undefined): value is CourseSort {
   return COURSE_SORT_OPTIONS.some((opt) => opt.value === value);
 }
 
-// Verified Course (affiliate link admin-verified) outranks Registered Business
-// (active subscription), which outranks a plain Verified Creator claim —
-// mirrors the tier ladder used for badges on the course detail page.
+// Ranks only what we have independently verified about ownership: a claim an
+// admin approved, from an owner whose business paperwork an admin approved.
+// Paying (a subscription) or signing the affiliate agreement never moves a
+// listing up; neither is a ranking signal.
 function courseTierRank(course: CourseListItem): number {
-  if (course.affiliate_link_status === "verified") return 3;
-  if (course.owner_business_subscription_status === "active") return 2;
-  if (course.verification_status === "verified") return 1;
-  return 0;
+  if (course.verification_status !== "verified") return 0;
+  return course.owner_business_verification_status === "verified" ? 2 : 1;
 }
 
 function compareNullableAsc(a: number | null, b: number | null): number {
@@ -397,6 +399,7 @@ export async function getSiteFeaturedCourse(): Promise<CourseListItem | null> {
     SELECT
       c.id, c.slug, c.title, c.provider_name, c.category, c.platform,
       c.verification_status, c.affiliate_link_status,
+      o.business_verification_status AS owner_business_verification_status,
       o.business_subscription_status AS owner_business_subscription_status,
       cof.price, cof.compare_at_price, cof.duration_hours, cof.thumbnail_url,
       cof.description, cs.overall_score, cs.total_reviews
@@ -415,6 +418,7 @@ export async function getCategoryFeaturedCourse(category: string): Promise<Cours
     SELECT
       c.id, c.slug, c.title, c.provider_name, c.category, c.platform,
       c.verification_status, c.affiliate_link_status,
+      o.business_verification_status AS owner_business_verification_status,
       o.business_subscription_status AS owner_business_subscription_status,
       cof.price, cof.compare_at_price, cof.duration_hours, cof.thumbnail_url,
       cof.description, cs.overall_score, cs.total_reviews
@@ -436,6 +440,7 @@ export async function getCategoryFeaturedCourses(): Promise<Map<string, CourseLi
     SELECT
       c.id, c.slug, c.title, c.provider_name, c.category, c.platform,
       c.verification_status, c.affiliate_link_status,
+      o.business_verification_status AS owner_business_verification_status,
       o.business_subscription_status AS owner_business_subscription_status,
       cof.price, cof.compare_at_price, cof.duration_hours, cof.thumbnail_url,
       cof.description, cs.overall_score, cs.total_reviews

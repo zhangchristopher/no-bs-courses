@@ -17,7 +17,7 @@ A full account of what's been built, in the order it was built. CourseVerdict is
 - Course listing (`/courses`), category pages (`/courses/category/[category]`), and course detail pages (`/courses/[slug]`) are all Server Components — the entire site is server-rendered except one small client component (see below).
 - SEO: dynamic `generateMetadata` on every page (titles, descriptions built from real data), a generated `sitemap.xml`, and breadcrumb navigation (`components/Breadcrumbs.tsx`) with matching structured breadcrumb data.
 - **Search**: full-text-ish search across title, provider name, and category (`ILIKE` matching), available both from a dedicated search box on `/courses` and from a persistent search bar in the site header (added later — see §9).
-- **Sorting** (added mid-session): a `sort` query param with five options — Featured, Highest rated, Verified first, Price low→high, Price high→low — implemented in `lib/courses.ts` via `sortCourseList()`. Choosing anything but "Featured" flattens the category-grouped view into one ranked grid, since ranking by price/rating across categories only makes sense as a single ordered list. "Verified first" ranks by the same tier ladder as the badge system (Verified Course > Registered Business > plain claimed). The same sort control appears on both `/courses` and individual category pages.
+- **Sorting** (added mid-session): a `sort` query param with five options — Featured, Highest rated, Verified first, Price low→high, Price high→low — implemented in `lib/courses.ts` via `sortCourseList()`. Choosing anything but "Featured" flattens the category-grouped view into one ranked grid, since ranking by price/rating across categories only makes sense as a single ordered list. "Verified first" ranks only by independently verified ownership (claim approved by an admin and business paperwork approved by an admin); payment and the affiliate agreement are not ranking signals. The same sort control appears on both `/courses` and individual category pages.
 
 ## 3. Authentication — two separate identity systems
 
@@ -43,12 +43,12 @@ The core business model: courses can be **added by anyone**, but ownership and i
 |---|---|---|
 | **Unclaimed / Free listing** | Anyone (learner or owner account) submits a course via `/courses/new` | Listed publicly once an admin approves the content (`listing_status: pending → published`). No ownership implied. |
 | **Verified Creator (claimed)** | Owner completes free business-paperwork submission (LLC/EIN, admin-approved) | Can claim the listing (`verification_status: verified`), capped at 1 claimed course unless subscribed |
-| **Registered Business** | Active Stripe subscription, monthly or annual — prices in `lib/pricing.ts` (founding owners: no setup fee and an intro rate; standard post-launch plans add a one-time setup fee to the same Checkout session) | Editing control over the listing, claiming more than one course, "Registered Business" badge |
+| **Registered Business (paid plan)** | Optional Stripe subscription, monthly or annual — prices in `lib/pricing.ts` (founding owners: no setup fee and an intro rate; standard post-launch plans add a one-time setup fee to the same Checkout session) | Management tools only: editing control over the listing, claiming more than one course. Never verification, a badge, ratings, or ranking. The "Registered Business" badge itself is earned by approved (free) business paperwork. |
 | **Verified Course** | Requires an active Registered Business subscription first. Owner signs a click-wrap contract and submits an affiliate link, which an **admin must separately approve** before it activates | "Verified Course" badge, `/go/[slug]` redirects through the real affiliate link instead of the plain platform URL, ability to respond to reviews on that course, full click/conversion analytics for that course |
 
 Key files: `lib/ownerCourses.ts` (claiming, course CRUD, contract signing — all with the owning-check baked into the SQL `WHERE`), `lib/business.ts` (paperwork submission/admin review), `app/owner/business/`, `app/owner/courses/[slug]/verify/` (contract + affiliate link submission), `app/admin/businesses/`, `app/admin/affiliate-links/`, `app/admin/verifications/` (content moderation for new listings).
 
-Cancelling the Registered Business subscription removes the badge and editing rights but does **not** revoke ownership of courses already claimed — only blocks claiming *new* ones beyond the free cap.
+Cancelling the Registered Business subscription removes editing rights (the badge comes from verified paperwork, not the subscription) but does **not** revoke ownership of courses already claimed — only blocks claiming *new* ones beyond the free cap.
 
 ## 6. Payments (Stripe)
 

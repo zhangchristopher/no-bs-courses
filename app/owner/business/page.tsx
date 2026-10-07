@@ -39,10 +39,12 @@ export default async function OwnerBusinessPage({
         Registered Business
       </h1>
       <p className="mt-2 text-sm text-ink-dark/60">
-        Submitting your business paperwork is free. Once an admin approves it, you can claim
-        course listings. Claiming more than one course, editing your listings, and the
-        &ldquo;Registered Business&rdquo; badge require an active Registered Business
-        subscription, started from your dashboard once approved
+        Submitting your business paperwork is free, and so is the &ldquo;Registered
+        Business&rdquo; badge once an admin approves it. You can then claim a course listing
+        for free. A subscription is optional and only adds listing-management tools:
+        editing your listing, claiming more than one course, and replying to reviews. It
+        never affects ratings, rankings, or verification. It starts from your dashboard once
+        approved
         {currentOwnerTier() === "founding" ? " (founding owners: " : " ("}
         {pricingSentence()}).
       </p>

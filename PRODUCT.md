@@ -21,7 +21,7 @@ Reviews carry real weight because reviewers can submit purchase evidence for adm
 ## Operating Context
 
 - Learners browse courses by category, read reviews, and can add a course listing themselves (goes through admin content review before going public).
-- Course owners go through a tiered ladder: submit a free course listing → get business paperwork verified (free) → activate a bundled paid subscription (unlocks editing control and the ability to claim/manage more than one course) → sign a per-course contract to become "Verified" (unlocks the course's badge, affiliate-link redirect, and the ability to respond to reviews on that course).
+- Course owners go through a tiered ladder: submit a free course listing → get business paperwork verified (free, and earns the Registered Business badge) → optionally activate a paid subscription (a management layer: editing control, claiming/managing more than one course; it never buys verification, badges, ratings, or ranking) → sign a per-course contract to become "Verified" (unlocks the course's badge, affiliate-link redirect, and the ability to respond to reviews on that course).
 - Learners use the site free. (Code for a paid learner tier with monthly unlock caps exists in `lib/paywall.ts` but isn't offered or wired into any page.)
 - Registered Business pricing is defined in `lib/pricing.ts`: founding owners (pre-launch) pay no setup fee and get an intro rate, then a founding rate locked in while subscribed; standard post-launch plans add a setup fee. Monthly or annual billing.
 - Two parallel auth systems exist: one for learners, one for owners.

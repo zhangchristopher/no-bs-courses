@@ -108,13 +108,15 @@ export default async function OwnerDashboardPage({
         ) : hasControl ? (
           <p className="mt-2 flex items-center gap-2 text-sm text-ink-dark">
             <CheckMarkIcon className="h-4 w-4 shrink-0" />
-            Active — unlimited courses, editing control, and the Registered Business badge.
+            Active — unlimited courses and editing control.
           </p>
         ) : (
           <div className="mt-2">
             <p className="text-sm text-ink-dark/60">
-              Business verified. You can claim one course for free. Subscribe for editing
-              control, unlimited courses, and the badge.
+              Business verified, free. You can claim a course for free and it carries your
+              Registered Business badge. Subscribe if you want to manage the listing: edit
+              it, claim more courses, and reply to reviews. Subscribing never changes
+              ratings, rankings, or verification.
               {tier === "founding" &&
                 " Founding owners pay no setup fee, and the rate stays locked in for as long as you stay subscribed."}
             </p>
