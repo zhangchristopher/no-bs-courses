@@ -20,6 +20,7 @@
     "outreach:sync": "tsx scripts/outreach/sync.ts",
     "outreach:metrics": "tsx scripts/outreach/metrics.ts",
     "outreach:preflight": "tsx scripts/outreach/preflight.ts",
+    "outreach:gate": "tsx scripts/outreach/gate.ts",
     "outreach:verify-prod": "tsx scripts/outreach/verifyProduction.ts",
     "outreach:status": "tsx scripts/outreach/status.ts"
   },
