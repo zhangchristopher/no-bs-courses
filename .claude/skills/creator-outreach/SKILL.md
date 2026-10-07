@@ -71,3 +71,10 @@ Email 1 comes from the fixed template in `scripts/outreach/template.ts`, run wit
 - The signature, one-click unsubscribe, unsubscribe line and postal address are added automatically at send time.
 
 A claim link only names a listing. It never skips business verification or admin review. `save`/`draft` reject any draft that breaks these rules. A saved draft is `ready_for_review`; redrafting clears any earlier approval. Show the user each batch together with, per creator: the listing, the contact source, what ties the person to the course, the match confidence, the claim URL, and any ambiguity.
+
+## Replies, follow-ups, scoring and the principles
+
+- Never write a reply, follow-up or first email outside the fixed templates. Use `outreach:reply` to classify an inbound reply and `outreach:followup` for Email 2 and 3 (drafts only; there is no follow-up send command).
+- Every piece of copy must pass `copyViolations()` in `principles.ts`: an affiliate relationship is not an endorsement or proof of profit; a registered business is not a good course; a paying subscriber gets no better rating or stronger verification; an advertiser is not a recommended course; revenue is not profit unless profit is verified. Affiliate participation never raises a prospect's score or anything else.
+- Research output may include `official_website`, `course_price`, `risk`, `segment` (`source_type`, `creator_size`, `testimonials_visible`, `appears_active`) and `score_input` (`match`, `contactSource`, `activity`, `business`, `commercial`, `fit`, optional `addressKind`). If the exact course-to-owner match isn't established, set `needs_review: true`; the record goes to `manual_review`. Don't force a quota. Similar names or similar community URLs are not proof.
+- See `docs/outreach.md` for the full operating guide and the live-send blockers (including `OUTREACH_MAILBOX_CONFIRMED`).

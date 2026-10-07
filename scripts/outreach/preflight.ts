@@ -4,6 +4,8 @@
 //
 //   npm run outreach:preflight
 import dns from "node:dns/promises";
+import fs from "node:fs";
+import path from "node:path";
 import { sql } from "./lib";
 import { OFFER } from "./offer";
 import { postalAddress, postalAddressProblem, mailboxConfirmed } from "./footer";
@@ -60,7 +62,15 @@ async function main() {
 
     const dkim = (await txt(`google._domainkey.${fromDomain}`)).find((r) => r.startsWith("v=DKIM1"));
     report(dkim ? "PASS" : "FAIL", "DKIM public key published (selector 'google')", dkim ? "record exists" : "no record");
-    report("UNVERIFIED", "DKIM is actually signing outgoing mail", "send one test message to a Gmail address you control and check 'Show original' for dkim=pass header.d=" + fromDomain);
+    const auth = JSON.parse(fs.readFileSync(path.join(__dirname, "auth-status.json"), "utf8")) as Record<string, string>;
+    const confirmed = auth.domain === fromDomain && auth.dkim === "PASS" && auth.dkimSigningDomain === fromDomain;
+    report(
+      confirmed ? "PASS" : "UNVERIFIED",
+      "DKIM is signing outgoing mail",
+      confirmed
+        ? `confirmed by the founder on ${auth.confirmedOn} from an internal test: SPF ${auth.spf}, DKIM ${auth.dkim} (d=${auth.dkimSigningDomain}), DMARC ${auth.dmarc} (${auth.dmarcPolicy}), List-Unsubscribe ${auth.listUnsubscribeHeader}, one-click header ${auth.listUnsubscribePostOneClickHeader}`
+        : "no matching confirmation in scripts/outreach/auth-status.json; send scripts/outreach test-email and check Show original"
+    );
 
     const dmarc = (await txt(`_dmarc.${fromDomain}`)).find((r) => r.startsWith("v=DMARC1"));
     report(dmarc ? "PASS" : "FAIL", "DMARC", dmarc ?? `no TXT record at _dmarc.${fromDomain}; add e.g. v=DMARC1; p=none; rua=mailto:<your address>`);

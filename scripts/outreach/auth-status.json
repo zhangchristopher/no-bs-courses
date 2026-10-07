@@ -1,0 +1,13 @@
+{
+  "_comment": "Result of the founder's internal authentication test, read from Gmail 'Show original' on a message sent through the outreach SMTP path. Recorded from the founder's confirmation; re-test after any DNS or mail-provider change.",
+  "domain": "nobscourses.com",
+  "confirmedOn": "2026-10-07",
+  "confirmedBy": "founder (Christopher Zhang)",
+  "spf": "PASS",
+  "dkim": "PASS",
+  "dkimSigningDomain": "nobscourses.com",
+  "dmarc": "PASS",
+  "dmarcPolicy": "p=none",
+  "listUnsubscribeHeader": "present",
+  "listUnsubscribePostOneClickHeader": "present"
+}

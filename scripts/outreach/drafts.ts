@@ -3,6 +3,7 @@
 import { sql, SITE_TOKEN, ALREADY_CONTACTED, isSuppressed } from "./lib";
 import { OFFER } from "./offer";
 import { MAX_WORDS, wordCount } from "./template";
+import { copyViolations } from "./principles";
 
 export function lintDraft(subject: string, body: string): string | null {
   if (!subject || subject.length > 60) return "subject missing or over 60 characters";
@@ -19,6 +20,8 @@ export function lintDraft(subject: string, body: string): string | null {
   if (/forever|last chance|act now|limited time|hurry|only \d+ spots|deadline|expires/i.test(body)) return "no fake urgency or 'forever' pricing";
   if (/endorse|guarantee|proves?\b.*\b(quality|profit)/i.test(body)) return "no endorsement or quality claims";
   if (/registered business/i.test(body)) return "the free badge is called Verified Business; Registered Business is retired";
+  const principles = copyViolations(`${subject}\n${body}`);
+  if (principles.length > 0) return `independence principles: ${principles.join("; ")}`;
   const unknown = (body.match(/\$\d[\d,]*(\.\d+)?/g) ?? []).filter((m) => !OFFER.allowedAmounts.has(m));
   if (unknown.length > 0) return `price(s) not in lib/pricing.ts: ${unknown.join(", ")}`;
   return null;

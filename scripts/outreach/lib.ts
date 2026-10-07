@@ -9,10 +9,8 @@ dotenv.config({ path: path.join(__dirname, "..", "..", ".env.local"), quiet: tru
 
 export const sql = postgres(process.env.DATABASE_URL!, { ssl: "require" });
 
-// Drafts are written with "{{site}}" in place of the domain and send.ts
-// substitutes the public URL, so a draft made while NEXT_PUBLIC_SITE_URL is
-// localhost can't go out with localhost links.
-export const SITE_TOKEN = "{{site}}";
+import { SITE_TOKEN } from "./lib-constants";
+export { SITE_TOKEN };
 
 // Institutions and large orgs won't join a startup's founding program, and
 // freeCodeCamp alone is 78 of the listings. "Unknown" has no one to contact.
@@ -41,7 +39,8 @@ export type EventType =
   | "sent" | "reply" | "positive_reply" | "link_click"
   | "claim_started" | "claim_completed" | "business_verified" | "free_verified_owner"
   | "founding_subscription" | "first_verified_review" | "five_verified_reviews" | "activated"
-  | "wrong_person" | "not_interested" | "unsubscribed" | "bounced" | "complaint";
+  | "wrong_person" | "not_interested" | "unsubscribed" | "bounced" | "complaint"
+  | "followup_1_sent" | "followup_2_sent" | "sequence_stopped";
 
 export type OutreachRow = {
   id: string;
@@ -63,7 +62,7 @@ export type OutreachRow = {
   sent_at: Date | null;
 };
 
-export type CreatorCourse = { id: string; title: string; slug: string; platform: string; platform_url: string; total_reviews: number };
+export type CreatorCourse = { id: string; title: string; slug: string; platform: string; platform_url: string; total_reviews: number; category: string | null; price: string | null };
 
 // Upserts one outreach row per independent creator with an unclaimed,
 // published listing. Existing rows keep their status and research; only the
@@ -93,8 +92,10 @@ export async function syncCreators(): Promise<number> {
 
 export async function coursesFor(row: Pick<OutreachRow, "course_ids">): Promise<CreatorCourse[]> {
   return sql<CreatorCourse[]>`
-    SELECT c.id, c.title, c.slug, c.platform, c.platform_url, COALESCE(s.total_reviews, 0)::int AS total_reviews
+    SELECT c.id, c.title, c.slug, c.platform, c.platform_url, COALESCE(s.total_reviews, 0)::int AS total_reviews,
+           c.category, f.price::text AS price
     FROM courses c LEFT JOIN course_scores s ON s.course_id = c.id
+    LEFT JOIN course_owner_fields f ON f.course_id = c.id
     WHERE c.id = ANY(${row.course_ids}) ORDER BY c.title
   `;
 }

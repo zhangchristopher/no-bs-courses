@@ -6,6 +6,7 @@
 // outreach row gets claimed, whatever route the owner took to the site. There
 // is no click tracking (see the note in outreach:metrics).
 import { sql, recordEvent, type OutreachRow, type EventType } from "./lib";
+import { sweepSequences } from "./sequence";
 
 // "Activated" = a verified claimed listing with real marketplace activity,
 // not merely a payment. Initial definition: at least this many
@@ -75,6 +76,8 @@ export async function syncMilestones(): Promise<number> {
       changed++;
     }
   }
+  // Claims, verification and replies end any running follow-up sequence.
+  changed += (await sweepSequences()).length;
   return changed;
 }
 

@@ -11,6 +11,7 @@
 // Anything that means "stop" also suppresses the address, immediately and
 // permanently, in outreach_suppressions.
 import { sql, findRow, suppress, recordEvent, type EventType } from "./lib";
+import { stopSequence } from "./sequence";
 
 const STOP_REASON: Record<string, string> = {
   wrong_person: "wrong_person",
@@ -47,6 +48,8 @@ async function main() {
     complaint: "unsubscribed", unsubscribed: "unsubscribed", do_not_contact: "do_not_contact",
   };
   await sql`UPDATE creator_outreach SET status = ${nextState[event]}, approved_at = NULL, approved_by = NULL, updated_at = now() WHERE id = ${row.id}`;
+  // Any of these ends the cold follow-up sequence, deterministically.
+  await stopSequence(row.id, `${event} recorded by hand`);
   console.log(`${row.creator_name}: ${event} recorded -> ${nextState[event]}${event in STOP_REASON ? " (address suppressed)" : ""}`);
 }
 

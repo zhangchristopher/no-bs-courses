@@ -39,6 +39,8 @@ async function main() {
         platform: c.platform,
         platform_url: c.platform_url,
         listing_url: `${SITE_TOKEN}/courses/${c.slug}`,
+        category: c.category,
+        listed_price: c.price,
         reviews: c.total_reviews,
       })),
     }))

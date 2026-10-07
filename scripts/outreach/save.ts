@@ -5,12 +5,16 @@
 //   npm run -s outreach:save -- path/to/results.json
 //
 // File shape: an array of
-//   { id, research?: { email, source_url, contact_form_url, confidence, notes },
+//   { id, research?: { email, source_url, contact_form_url, confidence, notes,
+//                      needs_review?, official_website?, course_price?, risk?,
+//                      segment?: { source_type, creator_size, testimonials_visible, appears_active },
+//                      score_input?: { match, contactSource, activity, business, commercial, fit } },
 //         channel?: { preferred, instagram_handle, instagram_source_url },
 //         draft?: { subject, body } }
 import fs from "node:fs";
 import { sql, isSuppressed, normalizeEmail } from "./lib";
 import { saveDraft } from "./drafts";
+import { scoreProspect, type ScoreInput } from "./scoring";
 
 type Research = {
   email: string;
@@ -18,6 +22,19 @@ type Research = {
   contact_form_url: string;
   confidence: "high" | "medium" | "low" | "none";
   notes: string;
+  // Set when the exact course-to-owner match can't be established, even if
+  // there is no email: the record goes to a person instead of a quota.
+  needs_review?: boolean;
+  official_website?: string;
+  course_price?: string;
+  risk?: string;
+  segment?: {
+    source_type?: string;
+    creator_size?: string;
+    testimonials_visible?: boolean;
+    appears_active?: string;
+  };
+  score_input?: ScoreInput;
 };
 type Channel = { preferred: "email" | "instagram" | "other"; instagram_handle?: string; instagram_source_url?: string };
 type Entry = { id: string; research?: Research; channel?: Channel; draft?: { subject: string; body: string } };
@@ -46,9 +63,20 @@ async function saveResearch(id: string, r: Research): Promise<string> {
 
   // The owner match, not just the address, has to be solid: low confidence
   // goes to a human instead of the send queue.
-  const status = !hasEmail ? "no_contact" : r.confidence === "low" ? "manual_review" : "contact_found";
+  const status = r.needs_review || (hasEmail && r.confidence === "low") ? "manual_review" : !hasEmail ? "no_contact" : "contact_found";
+  const seg = r.segment ?? {};
+  const scored = r.score_input ? scoreProspect(r.score_input) : null;
   const [row] = await sql`
     UPDATE creator_outreach SET
+      official_website = ${r.official_website || null},
+      course_price_text = ${r.course_price || null},
+      research_risk = ${r.risk || null},
+      contact_source_type = ${seg.source_type ?? null},
+      creator_size = ${seg.creator_size ?? null},
+      testimonials_visible = ${seg.testimonials_visible ?? null},
+      appears_active = ${seg.appears_active ?? null},
+      prospect_score = ${scored?.score ?? null},
+      score_breakdown = ${scored ? sql.json({ ...scored.breakdown, cap: scored.cap }) : null},
       status = ${status},
       contact_email = ${hasEmail ? email : null},
       contact_source_url = ${r.source_url || null},

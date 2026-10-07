@@ -4,7 +4,7 @@
 // get the owner to claim their listing for free; the paid plan gets one
 // sentence.
 import { OFFER } from "./offer";
-import { SITE_TOKEN } from "./lib";
+import { SITE_TOKEN } from "./lib-constants";
 
 export const MAX_WORDS = 170;
 
