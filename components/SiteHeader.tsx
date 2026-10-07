@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
+import { ownerAuth } from "@/owner-auth";
 import { SearchIcon } from "@/components/icons";
 import Logo from "@/components/Logo";
 import CategoryMenu from "@/components/CategoryMenu";
@@ -16,10 +17,16 @@ export default async function SiteHeader() {
   // The header renders on every page, including ones that otherwise never
   // touch the database — a failed category lookup drops the dropdown
   // rather than taking the whole page down with it.
-  const [session, categories] = await Promise.all([
+  const [session, ownerSession, categories] = await Promise.all([
     auth(),
+    ownerAuth(),
     getCategoryMenuItems().catch(() => []),
   ]);
+  // Learner and owner accounts sign in separately (see owner-auth.ts), so
+  // either, both or neither can be signed in. Each signed-in account shows
+  // as its name, linking to that account's dashboard; sign-out lives there.
+  const learner = session?.user;
+  const owner = ownerSession?.user;
 
   return (
     <>
@@ -53,29 +60,25 @@ export default async function SiteHeader() {
           >
             Courses
           </Link>
-          {session?.user ? (
-            <>
-              <Link
-                href="/account"
-                className="text-ink-dark/60 hover:text-ink-dark"
-              >
-                {session.user.name || session.user.email}
-              </Link>
-              <form
-                action={async () => {
-                  "use server";
-                  await signOut({ redirectTo: "/" });
-                }}
-              >
-                <button
-                  type="submit"
-                  className="text-ink-dark/60 hover:text-ink-dark"
-                >
-                  Sign out
-                </button>
-              </form>
-            </>
-          ) : (
+          {learner && (
+            <Link
+              href="/account"
+              title="Your account"
+              className="max-w-[12rem] truncate text-ink-dark/60 hover:text-ink-dark"
+            >
+              {learner.name || learner.email}
+            </Link>
+          )}
+          {owner && (
+            <Link
+              href="/owner/dashboard"
+              title="Course owner dashboard"
+              className="max-w-[12rem] truncate text-ink-dark/60 hover:text-ink-dark"
+            >
+              {owner.name || owner.email}
+            </Link>
+          )}
+          {!learner && !owner && (
             <>
               <Link
                 href="/signin"
@@ -94,7 +97,7 @@ export default async function SiteHeader() {
         </nav>
       </div>
     </header>
-    {session?.user && !session.user.isEmailVerified && (
+    {learner && !learner.isEmailVerified && (
       <EmailVerificationBanner action={resendLearnerVerificationAction} />
     )}
     </>

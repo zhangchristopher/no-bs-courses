@@ -1,16 +1,21 @@
 import Link from "next/link";
 
+// Switches between the personal (learner) and business (course owner)
+// versions of the sign-up or sign-in page — the two are separate account
+// systems with separate pages, so this just links across.
 export default function AccountTypeToggle({
   active,
+  mode = "signup",
   callbackUrl,
 }: {
   active: "personal" | "business";
+  mode?: "signup" | "signin";
   callbackUrl?: string;
 }) {
   const suffix = callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : "";
   const tabs = [
-    { key: "personal" as const, label: "Personal", href: `/signup${suffix}` },
-    { key: "business" as const, label: "Business", href: `/owner/signup${suffix}` },
+    { key: "personal" as const, label: "Personal", href: `/${mode}${suffix}` },
+    { key: "business" as const, label: "Business", href: `/owner/${mode}${suffix}` },
   ];
 
   return (

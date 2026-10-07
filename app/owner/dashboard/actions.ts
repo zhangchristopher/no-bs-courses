@@ -1,10 +1,11 @@
 "use server";
 
+import { headers } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { ownerAuth } from "@/owner-auth";
 import sql from "@/lib/db";
 import stripe from "@/lib/stripe";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_URL } from "@/lib/site";
 import { currentOwnerTier, isBillingInterval, type BillingInterval } from "@/lib/pricing";
 import { buildOwnerCheckoutItems, PricingConfigError } from "@/lib/ownerCheckout";
 import type { CheckoutSessionResult } from "@/components/EmbeddedStripeCheckout";
@@ -17,12 +18,27 @@ import type { CheckoutSessionResult } from "@/components/EmbeddedStripeCheckout"
 // one-time line item in the same session.
 //
 // The payment form renders inside our own /owner/dashboard/checkout page,
-// and Stripe sends the owner to return_url when it finishes. Activation
+// and Stripe sends the owner to return_url once the payment succeeds. Activation
 // itself still happens in the checkout.session.completed webhook — the
 // return page only reads status.
 //
 // Called with the interval bound in by the checkout page; it's still
 // validated here since a client can call a server action directly.
+// Where Stripe sends the owner back to: the site they're actually on.
+// SITE_URL is the canonical (production) address, which is wrong on a
+// Vercel preview or localhost and would strand the owner on another site
+// right after paying. The host only ever comes from the owner's own
+// request, so it can't redirect anyone else.
+async function requestOrigin(): Promise<string> {
+  const h = await headers();
+  const host = (h.get("x-forwarded-host") ?? h.get("host"))?.split(",")[0].trim();
+  if (!host) return SITE_URL;
+  const proto = (h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https"))
+    .split(",")[0]
+    .trim();
+  return `${proto}://${host}`;
+}
+
 export async function createBusinessCheckoutSessionAction(
   interval: BillingInterval
 ): Promise<CheckoutSessionResult> {
@@ -72,7 +88,9 @@ export async function createBusinessCheckoutSessionAction(
     const items = await buildOwnerCheckoutItems(tier, interval, { introEligible });
 
     const checkoutSession = await stripe.checkout.sessions.create({
-      ui_mode: "embedded_page",
+      // "elements": Stripe's card fields inside our own form, themed to the
+      // site (see components/EmbeddedStripeCheckout.tsx).
+      ui_mode: "elements",
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: items.line_items,
@@ -81,19 +99,10 @@ export async function createBusinessCheckoutSessionAction(
       ...(owner.stripe_customer_id
         ? { customer: owner.stripe_customer_id }
         : { customer_email: owner.email }),
-      return_url: `${SITE_URL}/owner/dashboard/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
+      return_url: `${await requestOrigin()}/owner/dashboard/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
       metadata,
       // Also on the subscription, so it's visible in Stripe for support.
       subscription_data: { metadata },
-      // Match the site's dark palette so the embedded form doesn't sit on
-      // the page as a white box.
-      branding_settings: {
-        display_name: SITE_NAME,
-        background_color: "#141414",
-        button_color: "#ffffff",
-        border_style: "rectangular",
-        font_family: "inter",
-      },
     });
 
     if (!checkoutSession.client_secret) {
