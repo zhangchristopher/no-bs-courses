@@ -12,6 +12,7 @@
     "stripe:setup-pricing": "tsx scripts/setupStripePricing.ts",
     "stripe:verify-checkout": "tsx scripts/verifyStripeCheckout.ts",
     "outreach:next": "tsx scripts/outreach/next.ts",
+    "outreach:draft": "tsx scripts/outreach/draft.ts",
     "outreach:save": "tsx scripts/outreach/save.ts",
     "outreach:approve": "tsx scripts/outreach/approve.ts",
     "outreach:send": "tsx scripts/outreach/send.ts",

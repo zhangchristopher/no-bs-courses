@@ -85,6 +85,13 @@ async function main() {
       const oneClickBody = (await oneClick.text()).trim();
       const live = oneClick.status === 400 && oneClickBody === "Unrecognized link";
       report(live ? "PASS" : "FAIL", "One-click unsubscribe endpoint is live", `POST with an invalid token -> ${oneClick.status} (expected 400 "Unrecognized link"; deploy this branch)`);
+      const claim = await fetch(`${siteUrl}/claim/preflight-not-a-real-code`);
+      const claimBody = await claim.text();
+      report(
+        claim.status === 200 && claimBody.includes("Link not recognized") ? "PASS" : "FAIL",
+        "Claim page is live",
+        `GET /claim/<invalid> -> ${claim.status}${claimBody.includes("Link not recognized") ? "" : " (expected the 'Link not recognized' page; deploy this branch)"}`
+      );
     } catch (err) {
       report("FAIL", "Site reachable", err instanceof Error ? err.message : String(err));
     }

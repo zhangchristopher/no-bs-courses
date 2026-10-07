@@ -67,6 +67,16 @@ async function main() {
           await stripe.products.update(product.id, { active: true });
           console.log(`  ↺ product ${product.id} re-activated`);
         }
+      } else if (existing.name !== product.name || (existing.description ?? "") !== product.description) {
+        // Customer-facing name/description follow the offer flag (see
+        // lib/stripeCatalog.ts); Stripe lets these be edited in place.
+        if (CHECK_ONLY) {
+          console.log(`  ✗ product ${product.id} is named "${existing.name}", expected "${product.name}"`);
+          problems++;
+        } else {
+          await stripe.products.update(product.id, { name: product.name, description: product.description });
+          console.log(`  ↺ product ${product.id} renamed to "${product.name}"`);
+        }
       } else {
         console.log(`  ✓ product ${product.id}`);
       }
@@ -97,6 +107,16 @@ async function main() {
     }`;
     const existing = byKey.get(expected.lookupKey);
     if (existing && priceMatches(existing, expected)) {
+      if ((existing.nickname ?? "") !== expected.nickname) {
+        if (CHECK_ONLY) {
+          console.log(`  ✗ ${label}  — nickname is "${existing.nickname}", expected "${expected.nickname}"`);
+          problems++;
+        } else {
+          await stripe.prices.update(existing.id, { nickname: expected.nickname });
+          console.log(`  ↺ ${label}  (${existing.id}) — nickname updated`);
+        }
+        continue;
+      }
       console.log(`  ✓ ${label}  (${existing.id})`);
       continue;
     }

@@ -3,11 +3,15 @@
 // true. Every price is derived from lib/pricing.ts, the same source checkout
 // and the terms page use, so an email can't quote a price the site doesn't
 // charge.
-import { OWNER_PRICING, FOUNDING_OFFER_OPEN, planSummary, formatUsd, type PricingTier } from "../../lib/pricing";
+import { OWNER_PRICING, FOUNDING_OFFER_OPEN, formatUsd, ownerPlanName, type PricingTier } from "../../lib/pricing";
 
 if (!FOUNDING_OFFER_OPEN) {
-  throw new Error("The founding offer is closed (lib/pricing.ts), so founding-owner outreach no longer applies.");
+  throw new Error("The founding offer is closed (lib/pricing.ts), so Founding Owner outreach no longer applies.");
 }
+
+const founding = OWNER_PRICING.founding;
+const monthlyIntro = founding.monthly.intro!;
+const annualIntro = founding.annual.intro!;
 
 // Every dollar amount an email may contain: each price in either tier, plus
 // the per-month equivalent of the annual plan.
@@ -30,33 +34,30 @@ export const OFFER = {
   // recipient needs its own approval (npm run outreach:approve).
   confirmed: false,
 
-  // The first email is about claiming a listing. The paid plan is secondary.
+  // The free layer: what email 1 is actually about.
   free: [
-    "Claiming an existing listing is free.",
-    "Business verification is free, and earns the Registered Business badge.",
+    "Claiming your first course listing is free.",
+    "Business verification is free, and earns the Verified Business badge.",
     "A free verified owner owns the listing and receives genuine reviews; they just don't get the listing-management tools.",
   ],
 
   // The optional paid layer. It manages a listing; it never buys credibility.
   paidPlan: {
-    purpose: "Optional tools for managing the listing yourself, such as editing its details and claiming more courses.",
-    founding: {
-      monthly: planSummary("founding", "monthly"),
-      annual: planSummary("founding", "annual"),
-      setupFee: "no setup fee",
-      locked: "the founding rate stays for as long as the subscription stays active",
-    },
-    standard: {
-      monthly: planSummary("standard", "monthly"),
-      annual: planSummary("standard", "annual"),
-    },
+    name: ownerPlanName("founding"),
+    purpose: "Optional listing-management tools: editing the listing, claiming more courses, owner tools.",
+    // The only pricing sentence in email 1. Detailed pricing lives on the
+    // pricing and checkout pages.
+    short:
+      `${formatUsd(monthlyIntro.cents)}/month for the first ${monthlyIntro.periods} months ` +
+      `(or ${formatUsd(annualIntro.cents)} upfront for the first year), with no setup fee and ` +
+      `discounted founder pricing after that`,
   },
 
   // Said in every email.
-  integrityNote: "Payment never changes your reviews, score, or ranking. Those come only from learners.",
+  integrityNote: "Payment never affects reviews, scores, verification, or ranking.",
 
-  // Arbitrary pre-launch deadlines are not allowed. The founding offer ends
-  // when FOUNDING_OFFER_OPEN is switched off, nothing sooner.
+  // No deadlines. The founding offer ends when FOUNDING_OFFER_OPEN is switched
+  // off, nothing sooner.
   deadline: null as string | null,
 
   allowedAmounts: allowedAmounts(),

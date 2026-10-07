@@ -61,7 +61,7 @@ async function checkCoupon(expected: ExpectedCoupon): Promise<void> {
   }
 }
 
-// Line items and discounts for a Registered Business Checkout Session,
+// Line items and discounts for an owner-plan Checkout Session,
 // checked against lib/pricing.ts before anything is charged.
 export async function buildOwnerCheckoutItems(
   tier: PricingTier,

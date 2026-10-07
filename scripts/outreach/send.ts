@@ -66,6 +66,16 @@ function requireSendConfig(): string[] {
 // must not be sent, or null if it is clear.
 async function blockedState(row: OutreachRow): Promise<string | null> {
   if (await isSuppressed(row.contact_email)) return "do_not_contact";
+  // The claim link in the draft must still be a live invitation for one of
+  // this creator's own listings.
+  const code = row.email_body?.match(/\/claim\/([A-Za-z0-9_-]{16,})/)?.[1];
+  const [invitation] = code
+    ? await sql`
+        SELECT 1 FROM claim_invitations
+        WHERE code = ${code} AND outreach_id = ${row.id} AND revoked_at IS NULL AND expires_at > now()
+      `
+    : [];
+  if (!invitation) return "manual_review";
   const [alreadySent] = await sql`
     SELECT 1 FROM creator_outreach
     WHERE lower(contact_email) = lower(${row.contact_email}) AND id <> ${row.id} AND sent_at IS NOT NULL

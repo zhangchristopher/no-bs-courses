@@ -8,6 +8,7 @@ import StarRating from "@/components/StarRating";
 import ReviewSection from "@/components/ReviewSection";
 import TrackedSection from "@/components/TrackedSection";
 import { RegisteredBusinessBadge, VerifiedCourseBadge } from "@/components/CourseBadges";
+import { ownerPlanName } from "@/lib/pricing";
 import { Button } from "@/components/ui/Button";
 import { StatusBanner } from "@/components/ui/StatusBanner";
 import { ArrowIcon, PlayIcon } from "@/components/icons";
@@ -213,7 +214,7 @@ export default async function CourseDetailPage({
             <>
               Are you the creator?{" "}
               <Link href="/owner/dashboard" className="underline">
-                Subscribe to Registered Business
+                Subscribe to {ownerPlanName()}
               </Link>{" "}
               to claim more than one course.
             </>

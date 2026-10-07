@@ -7,6 +7,7 @@ import {
   INTERVAL_LABEL,
   annualValueNote,
   currentOwnerTier,
+  ownerPlanName,
   isBillingInterval,
   planSummary,
 } from "@/lib/pricing";
@@ -15,7 +16,7 @@ import { StatusBanner } from "@/components/ui/StatusBanner";
 import { ArrowIcon } from "@/components/icons";
 import { createBusinessCheckoutSessionAction } from "../actions";
 
-export const metadata: Metadata = { title: "Subscribe to Registered Business" };
+export const metadata: Metadata = { title: "Subscribe" };
 
 // Stripe's payment form, embedded on our own page instead of a redirect to
 // checkout.stripe.com, for the plan chosen on the dashboard (?plan=monthly
@@ -58,7 +59,7 @@ export default async function BusinessCheckoutPage({
       </Link>
 
       <p className="mt-6 text-[11px] font-bold uppercase tracking-eyebrow text-ink-dark/50">
-        Registered Business{tier === "founding" ? " · Founding owner" : ""}
+        {ownerPlanName(tier)}
       </p>
       <h1 className="mt-1 text-2xl font-black uppercase tracking-headline text-ink-dark">
         {INTERVAL_LABEL[plan]}: {planSummary(tier, plan, { introEligible })}
@@ -68,8 +69,8 @@ export default async function BusinessCheckoutPage({
           ? "No setup fee. Your founding rate stays locked in for as long as you stay subscribed. "
           : ""}
         {plan === "annual" ? `Billed once a year: ${annualValueNote(tier, { introEligible })}. ` : ""}
-        Renews automatically until you cancel. Unlimited courses, editing control, and the
-        Registered Business badge. See the{" "}
+        Renews automatically until you cancel. Unlimited course claims and listing-management tools. It never affects
+        ratings, rankings, or verification. See the{" "}
         <Link href="/terms#payments-refunds" className="underline hover:no-underline">
           refund terms
         </Link>

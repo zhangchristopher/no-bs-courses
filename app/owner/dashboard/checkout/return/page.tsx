@@ -3,7 +3,7 @@ import { ownerAuth } from "@/owner-auth";
 import stripe from "@/lib/stripe";
 import { isBillingInterval } from "@/lib/pricing";
 
-// Stripe's return_url for the embedded Registered Business checkout. This
+// Stripe's return_url for the embedded owner-plan checkout. This
 // page only reads the session's status and routes the owner to the right
 // screen — the subscription itself is activated by the
 // checkout.session.completed webhook, which stays the source of truth.

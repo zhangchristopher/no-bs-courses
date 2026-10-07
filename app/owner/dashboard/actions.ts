@@ -10,7 +10,7 @@ import { currentOwnerTier, isBillingInterval, type BillingInterval } from "@/lib
 import { buildOwnerCheckoutItems, PricingConfigError } from "@/lib/ownerCheckout";
 import type { CheckoutSessionResult } from "@/components/EmbeddedStripeCheckout";
 
-// Starts a Registered Business subscription in Stripe's embedded Checkout
+// Starts a owner-plan subscription in Stripe's embedded Checkout
 // for the chosen billing interval. Prices come from lib/pricing.ts via
 // buildOwnerCheckoutItems, which checks Stripe holds matching prices and
 // coupons first. Founding owners get no setup fee and an intro coupon on
@@ -70,7 +70,7 @@ export async function createBusinessCheckoutSessionAction(
     return { error: "Complete business verification first." };
   }
   if (owner.business_subscription_status === "active") {
-    return { error: "Registered Business is already active." };
+    return { error: "Your plan is already active." };
   }
 
   const tier = currentOwnerTier();

@@ -8,7 +8,7 @@ export type OwnerBusinessInfo = {
   business_verification_status: string;
   business_rejection_reason: string | null;
   business_subscription_status: string;
-  // True once any Registered Business checkout has completed for this
+  // True once any owner-plan checkout has completed for this
   // owner, even if that subscription has since been cancelled. The intro
   // rate in lib/pricing.ts is for a first subscription only.
   has_subscribed_before: boolean;
@@ -107,7 +107,7 @@ export async function rejectBusinessVerification(ownerId: string, reason: string
   return rows.length > 0;
 }
 
-// Owners who have ever started a Registered Business subscription — i.e. a
+// Owners who have ever started a owner-plan subscription — i.e. a
 // Stripe checkout has completed for them. Used by the admin panel to record
 // manual refunds of the setup fee, which only standard (post-launch) plans
 // charge; founding owners pay none. Refunds themselves happen in the Stripe

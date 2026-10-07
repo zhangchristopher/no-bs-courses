@@ -27,7 +27,7 @@ export async function signContractAction(formData: FormData) {
   const course = await getOwnedCourseForContract(slug, session.user.id);
   if (!course) {
     redirect(
-      `/owner/dashboard?error=${encodeURIComponent("Registered Business must be active to sign this contract.")}`
+      `/owner/dashboard?error=${encodeURIComponent("An active owner plan is required to sign this contract.")}`
     );
   }
 

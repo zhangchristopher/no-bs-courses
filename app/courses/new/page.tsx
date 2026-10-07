@@ -86,7 +86,7 @@ export default async function AddCoursePage({
             Description
             <textarea name="description" rows={3} className={FIELD_CLASSES} />
             <span className="mt-1 block text-xs font-normal text-ink-dark/50">
-              500 words max. Verified owners with an active Registered Business subscription get
+              500 words max. Verified owners on an active owner plan get
               a 1000-word limit when editing from their dashboard.
             </span>
           </label>

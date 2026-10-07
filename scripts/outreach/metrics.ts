@@ -33,6 +33,7 @@ async function main() {
   console.log(`  sent                         ${sent}`);
   console.log(`  delivered (sent - bounced)   ${delivered}`);
   console.log(`  replies / positive           ${n("reply")} / ${n("positive_reply")}`);
+  console.log(`  claim link opened            ${n("link_click")}  (upper bound: includes mail scanners)`);
   console.log("\nFunnel (counts)");
   for (const t of [
     "claim_started", "claim_completed", "business_verified", "free_verified_owner",

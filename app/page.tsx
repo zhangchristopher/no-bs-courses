@@ -49,7 +49,7 @@ const PLEDGES = [
   {
     icon: Scale,
     title: "A course can't pay for a better score.",
-    body: "Ratings are computed only from reviews. Registered Business and Verified Course status never touch the number.",
+    body: "Ratings are computed only from reviews. Verified Business and Verified Course status, and paid owner plans, never touch the number.",
   },
   {
     icon: Ban,

@@ -1,5 +1,5 @@
 import path from "node:path";
-import { createHash } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import dotenv from "dotenv";
 import postgres from "postgres";
 
@@ -127,6 +127,22 @@ export async function recordEvent(outreachId: string, type: EventType, detail?: 
     RETURNING id
   `;
   return rows.length > 0;
+}
+
+// A course-specific claim link for one outreach row and one course. The code
+// is 128 random bits and names a listing; it is not a credential (claiming
+// still needs an owner account, approved business verification and admin
+// approval). Idempotent: the same row and course always get the same code.
+export async function ensureInvitation(outreachId: string, courseId: string): Promise<string> {
+  const code = randomBytes(16).toString("base64url");
+  await sql`
+    INSERT INTO claim_invitations (code, outreach_id, course_id) VALUES (${code}, ${outreachId}, ${courseId})
+    ON CONFLICT (outreach_id, course_id) WHERE outreach_id IS NOT NULL DO NOTHING
+  `;
+  const [row] = await sql<{ code: string }[]>`
+    SELECT code FROM claim_invitations WHERE outreach_id = ${outreachId} AND course_id = ${courseId}
+  `;
+  return row.code;
 }
 
 export function hashToken(token: string): string {

@@ -33,7 +33,12 @@ export async function syncMilestones(): Promise<number> {
       SELECT count(*)::int AS n FROM reviews WHERE course_id = ANY(${row.course_ids}) AND verified_purchase
     `;
 
-    const claimStarted = courses.some((c) => ["pending", "verified"].includes(c.verification_status));
+    const [invitation] = await sql<{ first_opened_at: Date | null; claim_started_at: Date | null }[]>`
+      SELECT min(first_opened_at) AS first_opened_at, min(claim_started_at) AS claim_started_at
+      FROM claim_invitations WHERE outreach_id = ${row.id}
+    `;
+
+    const claimStarted = Boolean(invitation?.claim_started_at) || courses.some((c) => ["pending", "verified"].includes(c.verification_status));
     const claimed = courses.some((c) => c.verification_status === "verified");
     const bizVerified = courses.some(
       (c) => ["pending", "verified"].includes(c.verification_status) && c.business_verification_status === "verified"
@@ -41,6 +46,9 @@ export async function syncMilestones(): Promise<number> {
     const subscribed = courses.some((c) => c.business_subscription_status === "active");
 
     const events: [boolean, EventType, string?][] = [
+      // Opens include mail-security scanners, so this is an upper bound on human
+      // clicks and is never used as a conversion signal.
+      [Boolean(invitation?.first_opened_at), "link_click", "claim link opened; may include automated scanners"],
       [claimStarted, "claim_started"],
       [claimed, "claim_completed"],
       [bizVerified, "business_verified"],

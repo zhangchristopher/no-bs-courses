@@ -43,7 +43,7 @@ export default async function OwnerProfilePage({
         This is separate from your legal business name, which you provide (and which stays
         private, used only to verify your paperwork) on the{" "}
         <Link href="/owner/business" className="underline">
-          Registered Business
+          business verification
         </Link>{" "}
         page.
       </p>

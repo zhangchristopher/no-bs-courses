@@ -83,7 +83,7 @@ export default async function EditOwnerCoursePage({
           name="description"
           rows={3}
           defaultValue={course.description ?? ""}
-          helperText="1000 words max (Registered Business limit)."
+          helperText="1000 words max (owner plan limit)."
         />
         <FormTextarea label="Syllabus" name="syllabus" rows={5} defaultValue={course.syllabus ?? ""} />
 

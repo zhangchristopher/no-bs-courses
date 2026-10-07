@@ -1,6 +1,7 @@
 import {
   BILLING_INTERVALS,
   OWNER_PRICING,
+  ownerPlanName,
   type BillingInterval,
   type PricingTier,
 } from "@/lib/pricing";
@@ -21,13 +22,15 @@ import {
 export const STRIPE_PRODUCTS = {
   subscription: {
     id: "nobs_registered_business",
-    name: "Registered Business",
+    // Follows the offer flag: "Founding Owner" while it's open, "Owner Plan"
+    // after. scripts/setupStripePricing.ts renames the product to match.
+    name: ownerPlanName(),
     description: "Listing editing, unlimited course claims, and review replies. Verification and badges are free and not part of this plan.",
   },
   setupFee: {
     id: "nobs_registered_business_setup_fee",
-    name: "Registered Business setup fee",
-    description: "One-time setup fee for standard (post-launch) Registered Business plans.",
+    name: `${ownerPlanName()} setup fee`,
+    description: "One-time setup fee for standard (post-launch) Owner Plan subscriptions.",
   },
 } as const;
 
@@ -61,7 +64,7 @@ export function subscriptionPrice(tier: PricingTier, interval: BillingInterval):
     productId: STRIPE_PRODUCTS.subscription.id,
     unitAmountCents: OWNER_PRICING[tier][interval].recurringCents,
     recurringInterval: STRIPE_INTERVAL[interval],
-    nickname: `Registered Business — ${tier} ${interval}`,
+    nickname: `${ownerPlanName(tier)} — ${interval}`,
   };
 }
 
@@ -74,7 +77,7 @@ export function setupFeePrice(tier: PricingTier): ExpectedPrice | null {
     productId: STRIPE_PRODUCTS.setupFee.id,
     unitAmountCents: cents,
     recurringInterval: null,
-    nickname: `Registered Business setup fee — ${tier}`,
+    nickname: `${ownerPlanName(tier)} setup fee`,
   };
 }
 

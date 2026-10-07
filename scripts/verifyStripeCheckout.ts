@@ -1,4 +1,4 @@
-// Proves what each Registered Business checkout would charge today, using
+// Proves what each owner-plan checkout would charge today, using
 // the same code path as the site (lib/ownerCheckout.ts) against Stripe's TEST
 // mode. Creates an unpaid Checkout Session per plan, reads the amount Stripe
 // says is due now, and expires the session. No payment is made and nothing is

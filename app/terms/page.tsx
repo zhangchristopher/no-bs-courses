@@ -139,10 +139,11 @@ export default function TermsPage() {
           </p>
           <p className="mt-3">
             <strong>What &ldquo;Verified&rdquo; does and doesn&apos;t mean:</strong>{" "}
-            The &ldquo;Registered Business&rdquo; badge confirms that we reviewed the
+            The &ldquo;Verified Business&rdquo; badge confirms that we reviewed the
             provider&apos;s identity and business paperwork — that they are who they say they
-            are. Claiming a listing and getting your business verified are free; no payment
-            is required for them, and paying does not make either easier or more likely. A
+            are. Claiming your first course listing and getting your business verified are
+            free; no payment is required for them, and paying does not make either easier or
+            more likely. A
             &ldquo;Verified Course&rdquo; badge additionally means the owner has signed our
             affiliate agreement and we approved their link. These badges are{" "}
             <strong>not</strong> an endorsement, certification, or guarantee of the
@@ -172,12 +173,13 @@ export default function TermsPage() {
           </h2>
           <p className="mt-3">
             Payments are processed by Stripe, and all fees are listed in USD. Learner accounts
-            are free. The Registered Business tier is a subscription, billed monthly or
-            annually, that renews automatically until cancelled. It is optional: it adds
+            are free. The Founding Owner plan (called the Owner Plan after launch) is a
+            subscription, billed monthly or annually, that renews automatically until
+            cancelled. It is optional: it adds
             listing-management tools (editing your listing, claiming more than one course,
             replying to reviews) and does not buy verification, a badge, a higher rating, or
             a higher ranking. Cancelling removes those tools but does not revoke ownership
-            of courses already claimed or your Registered Business badge.
+            of courses already claimed or your Verified Business badge.
           </p>
           <p className="mt-3">
             Founding owners — owners who subscribe before {SITE_NAME} launches — pay no setup

@@ -9,7 +9,7 @@ Invite the independent creators behind unclaimed listings to **claim their exist
 
 ## The product rules (do not drift from these)
 
-- Claiming an existing listing is **free**. Business verification is **free** and earns the Registered Business badge.
+- Claiming an existing listing is **free**. Business verification is **free** and earns the Verified Business badge.
 - The paid subscription is only a **management layer** (editing the listing, claiming more courses, owner tools). It never buys verification, a badge, a rating, a ranking, or review treatment. A free verified owner owns the listing and receives genuine reviews.
 - Email 1 exists to get the owner to claim for free. The paid plan is one short, secondary paragraph.
 - Pricing comes only from `lib/pricing.ts` (via `scripts/outreach/offer.ts`). Never describe the founding price as "$12 forever": $12 is the first annual term only. No countdowns or deadlines; the founding offer ends when `FOUNDING_OFFER_OPEN` is switched off.
@@ -61,15 +61,13 @@ Every researched creator also gets a `channel`: `email` (a high or medium confid
 
 ## Drafting
 
-Email 1 comes from the fixed template in `scripts/outreach/template.ts` (`renderFirstEmail`). Don't improvise a different pitch. The only per-recipient parts are the greeting and the course. Plain text, under 170 words, no hype, flattery, exclamation marks or invented urgency, and no invented personalization or facts about their course.
+Email 1 comes from the fixed template in `scripts/outreach/template.ts`, run with `npm run -s outreach:draft -- "<creator>" [--greeting "<name>"]`. It mints a **course-specific claim link** (`{{site}}/claim/<code>`) for that creator and that listing, renders the email, validates it, and saves it as `ready_for_review`. Don't improvise a different pitch, and never point a first email at the generic sign-up page. Plain text, well under 170 words, no hype, flattery, exclamation marks or invented urgency, and no invented personalization.
 
+- The email is about claiming. It says the **first** course listing is free to claim, business verification is free, and payment never affects reviews, scores, verification, or ranking. Never say "claim all your listings".
+- The paid plan gets one sentence, generated from `lib/pricing.ts`: the Founding Owner plan. Detailed pricing lives on the checkout and pricing pages.
+- The free status is called **Verified Business**; the paid plan is **Founding Owner**. Never use "Registered Business" and never suggest paying makes anyone more verified, trusted or recommended. No endorsement of the course, no claim that affiliate status proves quality or profit.
 - Greeting: a first name only if the creator field is clearly one person, otherwise "Hi there".
-- It must say claiming is free, link the listing with `{{site}}/courses/<slug>` and the sign-up page `{{site}}/owner/signup`, state that payment never changes reviews, score or ranking, and keep the paid plan to one secondary paragraph.
-- Always write `{{site}}`, never a real domain. The signature, one-click unsubscribe, unsubscribe line and postal address are added automatically.
-- `save` rejects a draft over 170 words, with an exclamation mark, urgency wording, "forever", no "free", no integrity line, or any dollar amount that isn't in `lib/pricing.ts`.
+- Creators with more than one unclaimed listing are refused by `outreach:draft` (only the first claim is free); draft those by hand.
+- The signature, one-click unsubscribe, unsubscribe line and postal address are added automatically at send time.
 
-```json
-{ "id": "<row id>", "draft": { "subject": "", "body": "" } }
-```
-
-A saved draft is `ready_for_review`. Redrafting clears any earlier approval. Show the user each batch of drafts together with, per creator: the listing record, the contact source, the match confidence, and any ambiguity.
+A claim link only names a listing. It never skips business verification or admin review. `save`/`draft` reject any draft that breaks these rules. A saved draft is `ready_for_review`; redrafting clears any earlier approval. Show the user each batch together with, per creator: the listing, the contact source, what ties the person to the course, the match confidence, the claim URL, and any ambiguity.

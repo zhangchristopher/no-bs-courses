@@ -48,7 +48,7 @@ export async function getCourseSections(courseId: string): Promise<CourseSection
 
 export type AddSectionResult = { ok: true } | { ok: false; error: string };
 
-// Enforces ownership, an active Registered Business subscription, and the
+// Enforces ownership, an active owner-plan subscription, and the
 // 5-section cap in the query itself — not just in the UI.
 export async function addCourseSection(params: {
   courseId: string;
@@ -81,7 +81,7 @@ export async function addCourseSection(params: {
       RETURNING id
     `;
     if (rows.length === 0) {
-      return { ok: false, error: "Registered Business must be active to add sections." };
+      return { ok: false, error: "An active owner plan is required to add sections." };
     }
     return { ok: true };
   } catch (err) {
